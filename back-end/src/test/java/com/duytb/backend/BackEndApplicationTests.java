@@ -1,10 +1,10 @@
-package com.example.backend;
+package com.duytb.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendApplicationTests {
+class BackEndApplicationTests {
 
 	@Test
 	void contextLoads() {
