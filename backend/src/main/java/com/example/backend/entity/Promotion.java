@@ -2,18 +2,22 @@ package com.example.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+import javax.validation.constraints.AssertTrue;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "promotion")
 public class Promotion {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -33,5 +37,10 @@ public class Promotion {
 
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
+
+    @AssertTrue(message = "Start date must be before or equal to end date")
+    public boolean isValidDateRange() {
+        return startDate.isBefore(endDate) || startDate.isEqual(endDate);
+    }
 
 }
