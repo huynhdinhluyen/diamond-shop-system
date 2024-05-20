@@ -1,10 +1,20 @@
-import "./App.css";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Layout from "./layouts/Layout";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <Home />
+          </Layout>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
 
