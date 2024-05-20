@@ -130,3 +130,6 @@ CREATE TABLE point (
     customer_id INT REFERENCES [user](id)
 );
 
+ALTER TABLE category
+ADD image_url VARCHAR(255);
+
