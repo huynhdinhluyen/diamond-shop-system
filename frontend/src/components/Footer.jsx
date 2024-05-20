@@ -1,10 +1,12 @@
 
-import {  Typography, Link, Box } from '@mui/material';
+import {  Typography, Link, Box, Fade } from '@mui/material';
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+
 
 export default function Footer() {
   return (
     <footer className="bg-gray-100 py-8 mt-8">
+      <Fade in={true} timeout={2000}>
       <div className="container mx-auto flex flex-col md:flex-row justify-between">
 
         <div className="md:w-1/4 mb-4 md:mb-0">
@@ -69,6 +71,7 @@ export default function Footer() {
           </Typography>
         </div>
       </div>
+      </Fade>
     </footer>
   )
 }
