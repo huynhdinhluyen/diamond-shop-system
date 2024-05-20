@@ -10,7 +10,8 @@ import org.hibernate.annotations.Nationalized;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "category")
+@Table(name = "category", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "name")})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +22,6 @@ public class Category {
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    @Column(name = "image_url")
+    private String imageUrl;
 }
