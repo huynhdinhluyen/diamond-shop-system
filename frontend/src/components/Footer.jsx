@@ -12,7 +12,7 @@ export default function Footer() {
             Thông tin liên hệ
           </Typography>
           <Typography variant="body2" className="mb-2">
-            Công ty TNHH Kim Cương ABC
+            Công ty TNHH Kim Cương DHL
           </Typography>
           <Typography variant="body2" className="mb-2">
             Địa chỉ: 123 Đường XYZ, Quận 1, TP.HCM
@@ -21,7 +21,7 @@ export default function Footer() {
             Điện thoại: 0987654321
           </Typography>
           <Typography variant="body2">
-            Email: info@kimcuongabc.com
+            Email: dhldiamond@gmail.com
           </Typography>
         </div>
 
@@ -65,7 +65,7 @@ export default function Footer() {
 
         <div className="md:w-1/4 text-center md:text-right">
           <Typography variant="body2">
-            &copy; {new Date().getFullYear()} Công ty TNHH Kim Cương ABC
+            &copy; {new Date().getFullYear()} Công ty TNHH Kim Cương DHL
           </Typography>
         </div>
       </div>
