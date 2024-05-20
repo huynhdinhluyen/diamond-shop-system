@@ -27,16 +27,10 @@ export default function ProductCategory() {
     return <CircularProgress />;
   }
   return (
-    <div className="container mx-auto mb-8">
+    <div className="container mx-auto my-8">
       <div className="flex items-center justify-center mb-4">
         <div className="w-96 border-t border-gray-300"></div>
-        <Typography
-          variant="h4"
-          component="h4"
-          className="text-center font-bold mb-4 !mx-8"
-        >
-          DANH MỤC SẢN PHẨM
-        </Typography>
+        <h1 className="text-2xl text-center font-bold mb-4 mx-8">DANH MỤC SẢN PHẨM</h1>
         <div className="w-96 border-t border-gray-300"></div>
       </div>
       <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8">
