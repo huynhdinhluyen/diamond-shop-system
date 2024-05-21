@@ -21,8 +21,9 @@ public class ProductController {
 
     @Transactional(readOnly = true)
     @GetMapping
-    public List<ProductDTO> getAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        List<ProductDTO> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
     @Transactional(readOnly = true)
