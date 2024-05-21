@@ -15,7 +15,7 @@ export default function Slider() {
               Tìm hiểu thêm
             </button>
           </div>
-          <div className="hidden xl:flex max-w-[640px] h-[630px]  self-end">
+          <div className="hidden xl:flex max-w-[640px] h-[630px] self-end">
             <img
               src="/public/assets/img/slider/slider-2.jpg"
               alt=""
