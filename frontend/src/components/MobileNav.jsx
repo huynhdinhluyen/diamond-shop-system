@@ -1,91 +1,66 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  IconButton,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
-import Button from "@mui/material/Button";
 import Logo from "./Logo";
-import { pages } from "./Header";
 
-export default function MobileNav() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setIsOpen(open);
+const MobileNav = ({ pages }) => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
   };
-
-  const list = () => (
-    <div className="bg-white h-full w-64">
-      <List>
-        <ListItem disablePadding>
-          <div className="p-4 mx-auto">
-            <Button variant="contained" className="!bg-orange-500 hover:!bg-orange-700 text-white" fullWidth>
-              <Link to="/login">Đăng nhập</Link>
-            </Button>
-          </div>
-        </ListItem>
-        <ListItem disablePadding>
-          <div className="p-4">
-            <div className="flex items-center border border-gray-300 rounded-md">
-              <SearchIcon className="text-gray-500 mx-2" />
-              <InputBase
-                placeholder="Tìm kiếm sản phẩm..."
-                inputProps={{ "aria-label": "search" }}
-                className="w-full"
-              />
-            </div>
-          </div>
-        </ListItem>
-        {pages.map((page) => (
-          <ListItem disablePadding key={page.title}>
-            <ListItemButton
-              component={Link}
-              to={page.href}
-              onClick={toggleDrawer(false)}
-            >
-              <ListItemText primary={page.title} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-
   return (
-    <div className="mx-4 flex flex-1">
-      <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="menu"
-        onClick={toggleDrawer(true)}
-        className="text-black"
+    <div>
+      <nav
+        className={`fixed ${
+          isNavOpen ? "left-0" : "-left-[300px]"
+        } bg-white w-[300px] top-0 h-screen shadow-2xl lg:hidden transition-all duration-300 z-20`}
       >
-        <MenuIcon />
-      </IconButton>
-      <Logo />
-      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
-        <div className="flex justify-end p-4">
-          <IconButton onClick={toggleDrawer(false)} className="text-black">
-            <CloseIcon />
-          </IconButton>
+        <div className="bg-primary w-8 h-8 relative -right-full top-8 flex justify-center items-center rounded-tr-lg rounded-br-lg cursor-pointer transition-all">
+          {isNavOpen ? (
+            <ArrowLeftIcon
+              className="text-2xl text-white"
+              onClick={toggleNav}
+            />
+          ) : (
+            <ArrowRightIcon
+              className="text-2xl text-white"
+              onClick={toggleNav}
+            />
+          )}
         </div>
-        {list()}
-      </Drawer>
+        <div className="px-12 flex flex-col gap-y-12 h-full">
+          <a href="#">
+            <Logo />
+          </a>
+          <ul>
+            {pages.map((page, index) => (
+              <li key={index}>
+                <a
+                  href={page.href}
+                  className="text-secondary hover:text-accent transition-all duration-300"
+                >
+                  {page.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <form className="relative flex gap-x-[10px] ">
+            <label htmlFor="mnav-search-input">
+              <SearchIcon />
+            </label>
+            <input
+              type="text"
+              id="mnav-input-search"
+              placeholder="Search..."
+              className="outline-none w-[160px] border-b-2 focus:border-b-2 focus: border-accent placeholder:italic"
+            />
+          </form>
+        </div>
+      </nav>
     </div>
   );
-}
+};
+
+export default MobileNav;

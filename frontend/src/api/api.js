@@ -1,10 +1,28 @@
-import axios from 'axios'
+import axios from "axios";
 
-const API_BASE_URL = import.meta.env.API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const api = axios.create({
- baseURL: API_BASE_URL,
- withCredentials:true
-})
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+});
 
-export const getProducts = () => api.get('/products');
+export async function getProducts() {
+  try {
+    const response = await axiosInstance.get("/api/products");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+}
+
+export async function getCategories() {
+  try {
+    const response = await axiosInstance.get("/api/categories");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
+  }
+}
