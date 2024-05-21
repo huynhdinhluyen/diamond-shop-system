@@ -10,7 +10,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -63,6 +62,6 @@ public class Product {
 
     @Getter
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductDiamond> productDiamonds = new ArrayList<>();
+    private List<ProductDiamond> productDiamonds;
 
 }
