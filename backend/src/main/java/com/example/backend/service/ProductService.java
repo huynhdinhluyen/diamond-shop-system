@@ -26,7 +26,6 @@ public class ProductService {
     private DiamondCasingRepository diamondCasingRepository;
 
     private ProductDTO convertToDTO(Product product) {
-        Long costPrice = calculateCostPrice(product);
         Long salePrice = calculateSalePrice(product);
 
         DiamondDTO mainDiamondDTO = product.getProductDiamonds().stream()
@@ -44,7 +43,6 @@ public class ProductService {
                 ))
                 .orElse(null);
 
-        // Lấy danh sách kim cương phụ (nếu có)
         List<DiamondDTO> auxiliaryDiamondDTOs = product.getProductDiamonds().stream()
                 .filter(productDiamond -> !productDiamond.getIsMain())
                 .map(productDiamond -> new DiamondDTO(
