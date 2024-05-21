@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    @Query("SELECT p FROM Product p JOIN FETCH p.diamondCasing")
+    @Query("SELECT p FROM Product p JOIN FETCH p.diamondCasing dc JOIN FETCH p.productDiamonds pd JOIN FETCH pd.diamond d")
     List<Product> findAll();
 }
