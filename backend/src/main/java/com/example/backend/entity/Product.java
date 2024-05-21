@@ -10,6 +10,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -52,5 +54,15 @@ public class Product {
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "warranty_id")
     private Warranty warranty;
+
+    @Transient
+    private Long costPrice;
+
+    @Transient
+    private Long salePrice;
+
+    @Getter
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductDiamond> productDiamonds = new ArrayList<>();
 
 }
