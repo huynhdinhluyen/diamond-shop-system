@@ -10,7 +10,6 @@ export default function Footer() {
             <a href="">
               <Logo />
             </a>
-
             <div className="flex flex-col gap-y-3 mb-10">
               <div className="flex items-center gap-x-[6px]">
                 <i className="ri-map-pin-line text-accent text-[24px]"></i>
@@ -121,8 +120,7 @@ export default function Footer() {
             &copy; 2024 Insove - All rights reserved.
           </div>
         </div>
-      </div>
-      </Fade>
+      </div>    
     </footer>
   );
 }
