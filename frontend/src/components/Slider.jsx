@@ -4,7 +4,7 @@ export default function Slider() {
       <div className="container mx-auto h-full">
         <div className="flex flex-col xl:flex-row items-center justify-between h-full">
           {/* text */}
-          <div className="xl:w-[48%] text-center xl:text-left">
+          <div className="w-[50%] text-center xl:text-left">
             <h1 className="h1 mb-6">Kim cương đến từ thiên đường</h1>
             <p className="mb-[42px] md:max-w-xl">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore

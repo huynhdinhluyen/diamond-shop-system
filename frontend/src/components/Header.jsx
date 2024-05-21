@@ -7,6 +7,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 import MobileNav from "./MobileNav";
+import { Link } from "react-router-dom";
 
 export const pages = [
   { title: "Trang chủ", href: "/" },
@@ -18,7 +19,7 @@ export const pages = [
 
 export default function Header() {
   return (
-    <header className="py-8 lg:pt-6 lg:pb:14">
+    <header className="py-8 lg:pt-6 ">
       <div className="container px-[15px] mx-auto relative flex flex-col lg:flex-row lg:justify-between gap-y-4 lg:gap-y-0 ">
         <Logo />
 
@@ -36,24 +37,19 @@ export default function Header() {
         </div>
 
         <div className="lg:flex lg:gap-x-10 items-center w-auto bg-grey px-5 hidden rounded-xl ">
-          <a
+          <Link
             href=""
             className="text-secondary hover:text-accent cursor-pointer transition-all duration-300"
           >
             <AccountCircleOutlinedIcon />
-          </a>
-          <a
-            href=""
-            className="text-secondary hover:text-accent cursor-pointer transition-all duration-300"
-          >
-            <FavoriteBorderIcon />
-          </a>
-          <a
+          </Link>
+
+          <Link
             href=""
             className="text-secondary hover:text-accent cursor-pointer transition-all duration-300"
           >
             <ShoppingCartIcon />
-          </a>
+          </Link>
         </div>
 
         <div className="lg:hidden absolute sm:flex right-[15px] top-[15px]">
