@@ -1,8 +1,7 @@
-
 import Logo from "./Logo";
 export default function Footer() {
   return (
-    <footer className="pt-12 xl:pt-[150px] ">
+    <footer className="pt-12 ">
       <div className="container mx-auto xl:flex-row gap-x5 gap-y-10 mb-12">
         <div className="flex flex-col xl:flex-row gap-x-5 gap-y-10">
           {/* contact*/}
@@ -120,7 +119,7 @@ export default function Footer() {
             &copy; 2024 Insove - All rights reserved.
           </div>
         </div>
-      </div>    
+      </div>
     </footer>
   );
 }
