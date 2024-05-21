@@ -1,42 +1,35 @@
-import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Button, InputBase, IconButton } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { pages } from "./Header";
-export default function MainNav() {
+/* eslint-disable react/prop-types */
+import SearchIcon from "@mui/icons-material/Search";
+
+export default function MainNav({ pages }) {
   return (
-    <div className='h-full'>
-      <AppBar position="static" color='transparent' className="bg-transparent shadow-none">
-      <Toolbar className="container mx-auto flex justify-between items-center">
-        <nav className="flex space-x-4">
-          {pages.map((page) => (
-            <Button key={page.title} color="inherit" component={Link} to={page.href}>{page.title}</Button>
-          ))}        
-        </nav>
-
-        <div className="header__search">
-          <div className="flex items-center border border-gray-300 rounded-md">
-            <SearchIcon className="text-gray-500 mx-2" />
-            <InputBase
-              placeholder="Tìm kiếm sản phẩm..."
-              inputProps={{ 'aria-label': 'search' }}
-              className="w-full"
-            />
-          </div>
-        </div>
-
-        <div className="header__actions flex items-center space-x-4">
-          <IconButton color="inherit" component={Link} to="/cart">
-            <ShoppingCartIcon />
-          </IconButton>
-          <IconButton color="inherit" component={Link} to="/account">
-            <AccountCircleIcon />
-          </IconButton>
-        </div>
-      </Toolbar>
-    </AppBar>
-    </div>
-    
-  )
+    <nav className="bg-white absolute w-full left-0 -bottom-[86px] shadow-custom1 h-16 rounded-[10px] hidden lg:flex lg:items-center lg:justify-between lg:px-[50px]">
+      <ul className="flex gap-x-4">
+        {pages.map((page, index) => (
+          <li key={index} className="last:border-r-0 border-r">
+            <a
+              href={page.href}
+              className="text-secondary pr-4 hover:text-accent transition-all duration-300 "
+            >
+              {page.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <form className="relative flex gap-x-[10px]">
+        <label
+          htmlFor="search-input"
+          className="flex justify-center items-center group"
+        >
+          <SearchIcon />
+        </label>
+        <input
+          type="text"
+          placeholder="Search..."
+          id="search-input"
+          className="outline-none w-[100px] focus:w-[180px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-base transition-all duration-150"
+        />
+      </form>
+    </nav>
+  );
 }
