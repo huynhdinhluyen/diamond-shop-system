@@ -7,7 +7,6 @@ export default {
         DEFAULT: "15px",
       },
     },
-   
     extend: {
       colors: {
         primary: "#242a2b",
