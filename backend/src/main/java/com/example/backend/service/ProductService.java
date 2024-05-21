@@ -32,7 +32,9 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
         List<Product> products = productRepository.findAll();
-        return products.stream().map(this::convertToDTO).collect(Collectors.toList());
+        return products.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
