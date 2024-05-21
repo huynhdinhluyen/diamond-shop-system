@@ -42,7 +42,7 @@ export default function ProductCategory() {
           <Typography variant="body1">Không có danh mục sản phẩm</Typography>
         ) : (
           categories.map((category) => (
-            <Grow in={show} timeout={1000} key={category.id}>
+            <Grow in={show} timeout={1500} key={category.id}>
               <Box className="flex flex-col items-center mx-8">
                 <img
                   src={category.imageUrl}
