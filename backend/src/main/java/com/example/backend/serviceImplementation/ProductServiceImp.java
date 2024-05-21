@@ -6,10 +6,14 @@ import com.example.backend.repository.DiamondCasingRepository;
 import com.example.backend.repository.DiamondRepository;
 import com.example.backend.repository.ProductRepository;
 import com.example.backend.service.ProductService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Service
+@AllArgsConstructor
 public class ProductServiceImp implements ProductService {
 
     private ProductRepository productRepository;

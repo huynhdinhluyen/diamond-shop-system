@@ -13,14 +13,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public interface ProductService {
-    public ProductDTO convertToDTO(Product product);
-    public List<ProductDTO> getAllProducts();//{
+    ProductDTO convertToDTO(Product product);
+    List<ProductDTO> getAllProducts();//{
 //        List<Product> products = productRepository.findAll();
 //        return products.stream().map(this::convertToDTO).collect(Collectors.toList());
 //    }
-    public ProductDTO getProductById(Integer id);
+    ProductDTO getProductById(Integer id);
 
 
 }

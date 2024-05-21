@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -9,7 +10,7 @@ import org.hibernate.annotations.Nationalized;
 @Getter
 @Setter
 @Entity
-@Table(name = "\"user\"", uniqueConstraints = {
+@Table(name = "tbl_user", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "phone_number")
@@ -17,7 +18,6 @@ import org.hibernate.annotations.Nationalized;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "username", nullable = false, length = 50)
@@ -32,8 +32,9 @@ public class User {
     @Column(name = "phone_number", nullable = false, length = 20)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
+//    @JsonIgnore
     private Role role;
 
     @Nationalized
