@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "./Logo";
 export default function Footer() {
   return (
@@ -6,9 +7,7 @@ export default function Footer() {
         <div className="flex flex-col xl:flex-row gap-x-5 gap-y-10">
           {/* contact*/}
           <div className="flex-1">
-            <a href="">
-              <Logo />
-            </a>
+            <Logo />
             <div className="flex flex-col gap-y-3 mb-10">
               <div className="flex items-center gap-x-[6px]">
                 <i className="ri-map-pin-line text-accent text-[24px]"></i>
@@ -43,19 +42,19 @@ export default function Footer() {
             <h4 className="h4 mb-5">Về chúng tôi</h4>
             <ul className="flex-1 flex-col gap-y-5">
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Câu chuyện DHL
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Tuyển dụng
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link to="" className="hover:text-accent transition-all">
                   Cảm nhận khách hàng
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -64,24 +63,24 @@ export default function Footer() {
             <h4 className="h4 mb-5">Các chính sách</h4>
             <ul className="flex-1 flex-col gap-y-5">
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Đổi trả
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Mua lại
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Bảo hành
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Điều khoản
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -90,24 +89,22 @@ export default function Footer() {
             <h4 className="h4 mb-5">Kiến thức và hướng dẫn</h4>
             <ul className="flex-1 flex-col gap-y-5">
               <li>
-                <a href="" className="hover:text-accent transition-all">
-                  Blog
-                </a>
+                <Link className="hover:text-accent transition-all">Blog</Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Kiến thức về kim cương
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Kiến thức về các kim loại quý
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="" className="hover:text-accent transition-all">
+                <Link className="hover:text-accent transition-all">
                   Hướng dẫn bảo quản
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
