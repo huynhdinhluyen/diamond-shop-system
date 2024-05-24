@@ -12,11 +12,21 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class UserServiceImp implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserMapper::maptoUserDTO)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public UserDTO addUser(UserDTO userDTO) {
