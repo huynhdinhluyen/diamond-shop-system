@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function MainNav({ pages }) {
   return (
-    <nav className="bg-white absolute w-full left-0 -bottom-[86px] shadow-custom1 h-16 rounded-[10px] hidden lg:flex lg:items-center lg:justify-between lg:px-[50px] ">
+    <nav className="bg-white absolute w-full left-0 -bottom-[86px] shadow-custom1 h-16 rounded-[10px] hidden lg:flex lg:items-center lg:justify-between lg:px-[50px] z-10">
       <ul className="flex gap-x-4">
         {pages.map((page, index) => (
           <li key={index} className="last:border-r-0 border-r">
@@ -26,7 +26,7 @@ export default function MainNav({ pages }) {
         </label>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Tìm kiếm..."
           id="search-input"
           className="outline-none w-[100px] focus:w-[180px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-base transition-all duration-150"
         />

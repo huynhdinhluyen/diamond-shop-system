@@ -26,7 +26,7 @@ export default function Contact() {
   };
   return (
     <div className="container">
-      <div className="flex flex-col gap-y-4  text-center w-full lg:w-[50%] mx-auto mb-10">
+      <div className="flex flex-col gap-y-4 text-center w-full lg:w-[50%] mx-auto mb-5">
         <h3 className="h3 text-accent">
           Nơi tinh hoa của cái đẹp và nghệ thuật trang sức được tạo ra
         </h3>
@@ -36,8 +36,8 @@ export default function Contact() {
           thích sự sang trọng và phong cách.
         </p>
       </div>
-      <div className="grid grid-cols-12">
-        <div className="col-span-12 lg:col-span-4 flex flex-col gap-y-5">
+      <div className="grid grid-cols-12 ">
+        <div className="col-span-12 lg:col-span-4 flex flex-col gap-y-5 my-10 mr-12">
           <div className="flex gap-x-2">
             <i className="ri-map-pin-line text-[30px] text-accent"></i>
             <div className="flex flex-col">
@@ -45,8 +45,8 @@ export default function Contact() {
               <p className="font-bold text-primary">
                 Hoạt động:{" "}
                 <span className="text-sm text-gray-500 font-normal">
-                  Lô E2a-7, Đường D1 Khu Công nghệ cao, P. Long Thạnh Mỹ, TP.
-                  Thủ Đức, TP. Hồ Chí Minh
+                  Lô E2a-7, Đường D1 Khu Công nghệ cao, Phường Long Thạnh Mỹ,
+                  TP. Thủ Đức, TP. Hồ Chí Minh
                 </span>
               </p>
             </div>
@@ -92,14 +92,17 @@ export default function Contact() {
           <img
             src="https://images.unsplash.com/photo-1505686183080-0020a5979305?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt=""
-            className="h-[80%] w-full object-cover"
+            className="h-[90%] w-full object-cover"
           />
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full border-t-2 border-gray-200 pt-5 my-5">
+        <h3 className="h3 text-center text-accent mb-4 uppercase">
+          Vị trí của chúng tôi
+        </h3>
         <Map />
       </div>
-      <div className="mt-4 w-[75%] mx-auto">
+      <div className="mt-4 w-full mx-auto pt-5">
         <h3 className="h3 text-accent uppercase text-center my-5">
           Gửi liên hệ
         </h3>
