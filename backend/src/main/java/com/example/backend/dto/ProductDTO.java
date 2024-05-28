@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -14,15 +14,25 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDTO {
     private Integer id;
-    private DiamondCasingDTO diamondCasing;
     private String name;
     private String imageUrl;
     private Long laborCost;
     private BigDecimal profitMargin;
-    private Integer stockQuantity;
+    private int stockQuantity;
     private PromotionDTO promotion;
     private WarrantyDTO warranty;
-    private DiamondDTO mainDiamond;
-    private List<DiamondDTO> auxiliaryDiamondDTOs;
+    private DiamondCasingDTO diamondCasing;
+    private Long costPrice;
     private Long salePrice;
+    private DiamondDTO mainDiamond;
+    private List<DiamondDTO> auxiliaryDiamonds;
+
+    public List<DiamondDTO> getDiamonds() {
+        List<DiamondDTO> allDiamonds = new ArrayList<>();
+        if (mainDiamond != null) {
+            allDiamonds.add(mainDiamond);
+        }
+        allDiamonds.addAll(auxiliaryDiamonds);
+        return allDiamonds;
+    }
 }
