@@ -334,8 +334,67 @@ export const newsData = {
       title: "Giá kim cương tấm 1ly, 2ly, 2.5ly, 3ly,… Rẻ đến bất ngờ",
       image:
         "https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      content:
+      description:
         "Kim cương tấm là hột xoàn có kích thước rất nhỏ khoảng từ 0,001 – 0,18 carat, có kích thước từ khoảng 1 – 3 mm. Bởi chúng có kích thước và khối lượng khá nhỏ nên giá khá mềm. Kim cương tấm có thể được tìm thấy trong tự nhiên hay cũng có thể được tạo ra bằng phương pháp nhân tạo, loại này sẽ được tạo thành từ các mảnh vụn nhỏ của những viên kim cương có kích thước lớn trong quá trình chế tác.",
+      content: [
+        {
+          type: "bold",
+          text: "Thông tin cần nắm về kim cương tấm",
+        },
+        {
+          type: "paragraph",
+          text: "Theo quy ước của nhiều cửa hàng, kim cương tấm sẽ có kích thước dưới 3 ly. Trong đó, những viên hột xoàn 2 ly được xem là dòng kim cương tấm phổ biến nhất. Thế nên, nó hay được dùng để làm trang sức bởi vừa đẹp mắt mà giá thành lại rất rẻ.",
+        },
+        {
+          type: "bold",
+          text: "Giá kim cương tấm bao nhiêu tiền?",
+        },
+        {
+          type: "paragraph",
+          text: "Bảng giá hột xoàn tấm có sự chênh lệch khá lớn tùy thuộc vào kích thước và chất lượng của viên kim cương tấm đó. Những viên kim cương tấm tự nhiên đương nhiên sẽ được bán với một mức giá cao hơn nhiều lần so với những viên kim cương nhân tạo.",
+        },
+        {
+          type: "unordered-list",
+          items: [
+            "Kim cương tấm 1 ly: 75,000 VND",
+            "Kim cương tấm kích thước 1.3 mm: 160,000 VND",
+            "Kim cương tấm kích thước 1.5 mm: 230,000 VND",
+            "Kim cương tấm kích thước 1.7 mm: 340,000 VND",
+            "Kim cương tấm kích thước 2 mm: 800,000 VND",
+            "Kim cương tấm kích thước 2.45 mm: 1,100,000 VND",
+            "Kim cương tấm kích thước 3.3 - 3.5 mm: 3,900,000 VND",
+          ],
+        },
+        {
+          type: "bold",
+          text: "Kim cương 1 ly giá bao nhiêu tiền?",
+        },
+        {
+          type: "paragraph",
+          text: "Là viên kim cương có đường kính 1 milimet. Giá 1 viên kim cương 1 ly độ sạch VVS1 hoặc VVS2 cực kỳ rẻ đang dao động vào khoảng 75.000 VND cho tới vài trăm nghìn đồng. Cùng là kim cương 1ly nước D nhưng độ tinh khiết VVS1 sẽ có giá thành cao hơn VVS2 là 25%. Mức giá của kim cương nước D lại cao hơn nước E khoảng 15%. Bên cạnh đó, tùy vào hình dạng và giác cắt của từng viên mà giá kim cương cũng sẽ có sự thay đổi.",
+        },
+        {
+          type: "bold",
+          text: "Hột xoàn 2 ly giá bao nhiêu tiền?",
+        },
+        {
+          type: "paragraph",
+          text: "Đối với hột xoàn tấm có trọng lượng nhỏ như hột xoàn 2ly tương đương với trọng lượng 0.035 carat có giá dao động từ 800.000 đến 1.000.000 VNĐ",
+        },
+        {
+          type: "bold",
+          text: "Kim cương 2.5 ly giá bao nhiêu tiền?",
+        },
+        {
+          type: "paragraph",
+          text: "Hột xoàn 2.5 ly sẽ tương đương với trọng lượng 0.065 carat trên thị trường sẽ dao động trong khoảng từ 2.000.000 đến 7.000.000 VNĐ.",
+        },
+        {
+          type: "image",
+          url: "https://images.unsplash.com/photo-1591209627710-d2427565a41f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "image",
+        },
+      ],
       created: "01/01/2024",
       author: "Huỳnh Lê Nhật Hoàng",
     },
@@ -344,8 +403,49 @@ export const newsData = {
       title: "Kim cương 9 Ly giá bao nhiêu? đẳng cấp thượng lưu",
       image:
         "https://images.unsplash.com/photo-1638517747420-c31bef7cf640?q=80&w=2038&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      content:
+      description:
         "Hiện nay kim cương 9 ly hiện nay có giá dao động khoảng 742 triệu đến 4 tỷ 8. Giá có sự chêch lệch lớn như vậy là do chúng còn phụ thuộc vào rất nhiều yếu tố khác nhau từ tiêu chuẩn 4C và tình trạng giấy chứng nhận của viên kim cương này.",
+      content: [
+        {
+          type: "paragraph",
+          text: "Hiện nay kim cương 9 ly hiện nay có giá dao động khoảng 742 triệu đến 4 tỷ 8. Giá có sự chêch lệch lớn như vậy là do chúng còn phụ thuộc vào rất nhiều yếu tố khác nhau từ tiêu chuẩn 4C và tình trạng giấy chứng nhận của viên kim cương này.",
+        },
+        {
+          type: "bold",
+          text: "Dưới đây là bảng giá kim cương GIA 9 ly cụ thể:",
+        },
+        {
+          type: "table",
+          data: [
+            ["Nước kim cương", "Độ sạch VVS1", "Độ sạch VVS2"],
+            ["Kim cương 9ly – D", "2,800,000,000 VND", "2,700,000,000 VND"],
+            ["Kim cương 9ly – E", "2,700,000,000 VND", "2,400,000,000 VND"],
+            ["Kim cương 9ly – F", "2,400,000,000 VND", "2,200,000,000 VND"],
+            ["Kim cương 9ly – J", "850,200,000 VND", "839,900,000 VND"],
+          ],
+        },
+        {
+          type: "bold",
+          text: "Nên mua kim cương 9 ly ở đâu tốt và uy tín?",
+        },
+        {
+          type: "paragraph",
+          text: "Để mua được 1 viên kim cương, bạn sẽ phải bỏ ra số tiền vô cùng lớn. Chính vì vậy, để tránh mất tiền oan hay mua phải những sản phẩm kém chất lượng, hãy lựa chọn những địa chỉ uy tín, được nhiều người đánh giá cao. Cao Hùng Diamond tự hào là một trong những nơi chuyên cung cấp các sản phẩm trang sức kim cương, đá quý chất lượng như bông tai, nhẫn hột xoàn… là địa chỉ quen thuộc của nhiều nghệ sĩ nổi tiếng Việt Nam. DHL Diamond luôn cam kết:",
+        },
+        {
+          type: "unordered-list",
+          items: [
+            "Các sản phẩm của cửa hàng đều đạt độ tinh xảo và hoàn mỹ cao, trải qua chọn lọc kỹ càng và được bán ra với mức giá rẻ nhất trên thị trường hiện nay",
+            "Cam kết kim cương thiên nhiên 100% chính ngạch, có đầy đủ giấy tờ và được kiểm định GIA rõ ràng",
+            "Chế độ bảo hành an toàn và chất lượng. Cam kết bảo hành và làm mới trang sức trọn đời.",
+            "Đội ngũ nhân viên có vốn hiểu biết rộng, chuyên môn cao, sẵn sàng giải đáp tất cả những thắc mắc của khách hàng.",
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "Trên đây là một số thông tin để trả lời cho câu hỏi kim cương 9 ly giá bao nhiêu tiền. Nếu bạn đang có ý định tìm mua kim cương tự nhiên chính hãng Gia giá tốt, đừng quên tham khảo ngay thông tin và mức giá tại DHL Diamond, hoặc liên hệ ngay với địa chỉ sau để được tư vấn hoàn toàn miễn phí.",
+        },
+      ],
       created: "01/01/2024",
       author: "Huỳnh Lê Nhật Hoàng",
     },
