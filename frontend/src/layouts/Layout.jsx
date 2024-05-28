@@ -2,14 +2,18 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Newsletter from "../components/Newsletter";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function Layout({ children }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative flex flex-col min-h-screen">
       <Header />
-      <div className="mx-auto flex-1 py-10">{children}</div>
+      <div className="container mx-auto flex-1 py-10">{children}</div>
       <Newsletter />
       <Footer />
+      <div className="lg:hidden absolute sm:flex bottom-0">
+        <ShoppingCartIcon />
+      </div>
     </div>
   );
 }
