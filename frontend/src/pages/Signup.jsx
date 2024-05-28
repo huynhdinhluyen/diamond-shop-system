@@ -6,7 +6,7 @@ export default function Signup() {
       <div className="bg-white flex rounded-2xl shadow-lg max-w-4xl p-5 items-center">
         <div className="md:block hidden w-1/2">
           <img
-            src="/assets/img/register/cover.jpg"
+            src="/src/assets/img/register/cover.jpg"
             alt=""
           />
         </div>
