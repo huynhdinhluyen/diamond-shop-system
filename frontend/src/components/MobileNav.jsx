@@ -4,6 +4,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import SearchIcon from "@mui/icons-material/Search";
 import Logo from "./Logo";
+import { Link } from "react-router-dom";
 
 const MobileNav = ({ pages }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -12,7 +13,7 @@ const MobileNav = ({ pages }) => {
   };
   return (
     <div>
-      <nav
+      <div
         className={`fixed ${
           isNavOpen ? "left-0" : "-left-[300px]"
         } bg-white w-[300px] top-0 h-screen shadow-2xl lg:hidden transition-all duration-300 z-20`}
@@ -31,18 +32,16 @@ const MobileNav = ({ pages }) => {
           )}
         </div>
         <div className="px-12 flex flex-col gap-y-12 h-full">
-          <a href="#">
-            <Logo />
-          </a>
+          <Logo />
           <ul>
             {pages.map((page, index) => (
               <li key={index}>
-                <a
-                  href={page.href}
+                <Link
+                  to={page.href}
                   className="text-secondary hover:text-accent transition-all duration-300"
                 >
                   {page.title}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -58,7 +57,7 @@ const MobileNav = ({ pages }) => {
             />
           </form>
         </div>
-      </nav>
+      </div>
     </div>
   );
 };
