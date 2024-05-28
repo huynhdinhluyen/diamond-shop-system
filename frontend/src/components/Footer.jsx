@@ -113,7 +113,7 @@ export default function Footer() {
       <div className="py-[30px] border-t">
         <div className="container mx-auto text-center">
           <div className="font-light text-base">
-            &copy; 2024 Insove - All rights reserved.
+            Copyright &copy; 2024 DHL Diamond - All rights reserved.
           </div>
         </div>
       </div>
