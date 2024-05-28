@@ -1,32 +1,48 @@
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
+// import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+// import jwt_decode from "jwt-decode";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { EMAIL } from "../components/Pattern";
 
 export default function Login() {
-  const [userName, setUserName] = useState("");
+  // const [userName, setUserName] = useState("");
 
-  const clientId =
-    "419187574922-ir8o56i63i3lpu4q86nedcv3p9lmjqn7.apps.googleusercontent.com";
-  const onSuccess = (response) => {
-    const userObject = jwt_decode(response.credential);
-    setUserName(userObject);
-    console.log(userObject.given_name);
-    localStorage.setItem("user", userObject.given_name);
-  };
-  const onFailure = (res) => {
-    console.log("Login Failed: ", res);
-  };
+  // const clientId =
+  //   "419187574922-ir8o56i63i3lpu4q86nedcv3p9lmjqn7.apps.googleusercontent.com";
+  // const onSuccess = (response) => {
+  //   const userObject = jwt_decode(response.credential);
+  //   setUserName(userObject);
+  //   console.log(userObject.given_name);
+  //   localStorage.setItem("user", userObject.given_name);
+  // };
+  // const onFailure = (res) => {
+  //   console.log("Login Failed: ", res);
+  // };
   const navigate = useNavigate();
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const { user, login } = useAuth();
+
+  const submit = async ({ email, password }) => {
+    await login(email, password);
+  };
+
   useEffect(() => {
-    if (userName) {
+    if (user) {
       navigate("/");
     }
-  }, [userName]);
+  }, [user]);
 
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="bg-white flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
+      <div className="bg-white flex rounded-2xl shadow-lg max-w-4xl p-5 items-center">
         <div className="md:w-1/2 px-16">
           <h2 className="font-bold text-2xl text-accent text-center">
             Đăng nhập
@@ -34,12 +50,20 @@ export default function Login() {
           <p className="text-sm mt-4 text-center uppercase tracking-[1px]">
             Chào mừng bạn đến với cửa hàng kim cương DHL
           </p>
-          <form className="flex flex-col gap-y-4">
+          <form
+            onSubmit={handleSubmit(submit)}
+            noValidate
+            className="flex flex-col gap-y-4"
+          >
             <input
               className="py-2 px-4 mt-8 rounded-xl border w-full outline-none focus:border-accent transition-all duration-300 placeholder:italic placeholder:text-sm"
-              type="text"
-              name="username"
-              placeholder="Tên đăng nhập"
+              type="email"
+              name="email"
+              placeholder="Email"
+              {...register("email", {
+                required: true,
+                pattern: EMAIL,
+              })}
             />
             <div className="relative">
               <input
@@ -47,9 +71,13 @@ export default function Login() {
                 type="password"
                 name="password"
                 placeholder="Mật khẩu"
+                {...register("password", {
+                  required: true,
+                })}
               />
+              {errors.email && <p>{errors.email.message}</p>}
             </div>
-            <button className="btn btn-lg btn-accent rounded-xl">
+            <button className="btn btn-lg btn-accent rounded-xl" type="submit">
               Đăng nhập
             </button>
             <div className="flex justify-between my-5">
@@ -67,11 +95,11 @@ export default function Login() {
             <hr className="border-gray-400" />
           </div>
 
-          <div className="flex justify-center mt-3">
+          {/* <div className="flex justify-center mt-3">
             <GoogleOAuthProvider clientId={clientId}>
               <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
             </GoogleOAuthProvider>
-          </div>
+          </div> */}
           <Link className="text-xs flex justify-center mt-4" to="/">
             Trở về trang chủ
           </Link>
