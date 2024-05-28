@@ -6,9 +6,12 @@ import About from "./pages/About";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
-import News from "./pages/News";
 import NewsDetails from "./pages/NewsDetails";
 import Contact from "./pages/Contact";
+import Knowledge from "./pages/Knowledge";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboard from "./pages/AdminDashboard";
+// import AdminProductManagement from "./pages/AdminProductManagement";
 
 function App() {
   return (
@@ -30,12 +33,11 @@ function App() {
         }
       />
 
-
       <Route
-        path="/news"
+        path="/knowledge"
         element={
           <Layout>
-            <News />
+            <Knowledge />
           </Layout>
         }
       />
@@ -56,6 +58,11 @@ function App() {
           </Layout>
         }
       />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
+        {/* <Route path="products" element={<AdminProductManagement />} /> */}
+      </Route>
+      <Route path="/admin/*" element={<Navigate to="/admin" />} />
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
