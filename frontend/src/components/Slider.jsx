@@ -7,9 +7,9 @@ export default function Slider() {
     navigate("/product");
   };
   const sliderData = [
-    { image: "/public/assets/img/slider/swipe-1.jpg" },
-    { image: "/public/assets/img/slider/swipe-2.jpg" },
-    { image: "/public/assets/img/slider/swipe-3.jpg" },
+    { image: "/src/assets/img/slider/swipe-1.jpg" },
+    { image: "/src/assets/img/slider/swipe-2.jpg" },
+    { image: "/src/assets/img/slider/swipe-3.jpg" },
   ];
   const items = sliderData.map((data, index) => (
     <div key={index} className="mx-auto h-full w-full ">
