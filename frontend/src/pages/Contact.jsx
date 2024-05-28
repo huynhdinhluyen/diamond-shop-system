@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import Map from "../components/Map.jsx";
 import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
 
 export default function Contact() {
   const form = useRef();
@@ -15,9 +16,10 @@ export default function Contact() {
       .then(
         () => {
           form.current.reset();
-          console.log("SUCCESS!");
+          toast.success("Gửi thành công!");
         },
         (error) => {
+          toast.error("Gửi thất bại!");
           console.log("FAILED...", error.text);
         }
       );

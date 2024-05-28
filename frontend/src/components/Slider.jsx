@@ -1,29 +1,52 @@
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
+import { useNavigate } from "react-router-dom";
 export default function Slider() {
-  return (
-    <section className="bg-grey py-12 xl:pt-12 xl:pb-0 overflow-hidden">
-      <div className="container mx-auto h-full">
-        <div className="flex flex-col xl:flex-row items-center justify-between h-full ">
-          {/* text */}
-          <div className="w-full xl:w-[48%] text-center xl:text-left">
-            <h1 className="h1 mb-6">Kim cương đến từ thiên đường</h1>
-            <p className="mb-[42px] md:max-w-xl mx-auto ">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore
-              tempore reiciendis fugit corporis sint et quae, temporibus
-              deleniti numquam nesciunt sit.
-            </p>
-            <button className="btn btn-accent btn-lg mx-auto xl:mx-0">
-              Tìm hiểu thêm
-            </button>
-          </div>
-          <div className="hidden xl:flex max-w-[640px] h-[630px] self-end">
-            <img
-              src="/public/assets/img/slider/slider-2.jpg"
-              alt=""
-              className="object-cover"
-            />
-          </div>
-        </div>
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("/product");
+  };
+  const sliderData = [
+    { image: "/public/assets/img/slider/swipe-1.jpg" },
+    { image: "/public/assets/img/slider/swipe-2.jpg" },
+    { image: "/public/assets/img/slider/swipe-3.jpg" },
+  ];
+  const items = sliderData.map((data, index) => (
+    <div key={index} className="mx-auto h-full w-full ">
+      <img
+        className="w-full object-cover h-[630px] rounded-md relative"
+        role="presentation"
+        src={data.image}
+        alt=""
+      />
+      <div className="absolute w-full text-center lg:text-left md:text-center md:justify-center sm:text-center sm:w-full top-[20%] lg:left-[5%]">
+        <h2 className="h2 mb-6  text-white">Kim cương đến từ thiên đường</h2>
+        <p className="mb-[42px] text-white  leading-8">
+          Tạo Nên Những Kỷ Niệm Vĩnh Cửu Với Kim Cương Hoàn Mỹ Và Khám Phá Sự
+          Tinh Tế Và Hoàn Hảo Trong Từng Thiết Kế
+        </p>
+        <button
+          className="btn btn-accent btn-lg w-[250px] mx-auto lg:mx-0"
+          onClick={handleNavigate}
+        >
+          Mua sắm ngay
+        </button>
       </div>
-    </section>
+    </div>
+  ));
+  return (
+    <div className="sm:flex lg:flex md:flex mt-6">
+      <AliceCarousel
+        animationType="fadeout"
+        animationDuration={800}
+        mouseTracking
+        items={items}
+        disableButtonsControls
+        autoPlay
+        autoPlayInterval={1000}
+        infinite
+        disableDotsControls
+      />
+    </div>
   );
 }
