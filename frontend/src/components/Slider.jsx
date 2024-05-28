@@ -14,7 +14,7 @@ export default function Slider() {
   const items = sliderData.map((data, index) => (
     <div key={index} className="mx-auto h-full w-full ">
       <img
-        className="w-full object-cover h-[630px] rounded-md relative"
+        className="w-full object-cover h-[480px] rounded-md relative"
         role="presentation"
         src={data.image}
         alt=""
