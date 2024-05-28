@@ -5,8 +5,8 @@ export default function Logo() {
     <Link to="/" className="flex lg:justify-normal justify-center">
       <img
         className="w-[250px] h-[60px] object-cover"
-        src="/public/assets/img/logo/logo.svg"
-        alt=""
+        src="/assets/img/logo/logo.svg"
+        alt="logo"
       />
     </Link>
   );
