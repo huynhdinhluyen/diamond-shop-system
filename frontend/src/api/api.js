@@ -26,3 +26,13 @@ export async function getCategories() {
     throw error;
   }
 }
+
+export async function getDashboardData() {
+  try {
+      const response = await axiosInstance.get("/api/admin/dashboard");
+      return response.data;
+  } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+      throw error;
+  }
+}
