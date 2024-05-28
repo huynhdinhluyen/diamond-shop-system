@@ -100,6 +100,7 @@ CREATE TABLE [order] (
     delivery_fee BIGINT DEFAULT 0 CHECK (delivery_fee >= 0),
     discount_price BIGINT DEFAULT 0 CHECK (discount_price >= 0),
     total_price BIGINT NOT NULL CHECK (total_price > 0)
+	
 );
 
 CREATE TABLE order_status (
@@ -144,6 +145,8 @@ ALTER COLUMN warranty_excluded NVARCHAR(255) NOT NULL;
 
 ALTER TABLE promotion
 ALTER COLUMN description NVARCHAR(255) NOT NULL; 
+
+ALTER TABLE [order] ADD created_at DATETIME NOT NULL DEFAULT GETDATE();
 
 INSERT INTO category (name, image_url) VALUES
     (N'Nhẫn', 'https://d1xzdqg8s8ggsr.cloudfront.net/664a22d2cbfa393cc4c9ceef/76e4e9b1-c95c-489c-9e32-9ff471942c74_1716134727505021543?Expires=-62135596800&Signature=n6nHy9d2V7znbC85kv1Z0JSDRVLFhD7T4ur9TOrCx03uBsW2AbPB0q6mzxg7-sXiexGQ43NIgEnAZJx0itrkN62YTs207V~a5B6OMHDR-SHa4Oy~z9QtGHX8Gi9onsKb1epLUJARsHaWw~q3U-LMUCRdHRQN9LqWD~8rb~703wy3IBPhbcKC0tCLjg5t0vpNf10ThxC4U~-USmNkKK4iNw0jGUoWItZkUSxTynrqUsuGUxJjZXDKr1wpu1AyRPLkPPMRAANQFdqZqhJJ7MZcsbyOk0qxdJgJwvfMAuD~0ysPg3P2MkfXm-9vLx3O0EItDVmdNoSnqGZQClOrkBhHaQ__&Key-Pair-Id=K1P54FZWCHCL6J'),
@@ -245,8 +248,41 @@ VALUES
     (3, 3, 1),  
     (3, 4, 0);
 
+	INSERT INTO role (role_name) VALUES ('ADMIN');
+	INSERT INTO role (role_name) VALUES ('CUSTOMER');
+	INSERT INTO role (role_name) VALUES ('SALES_STAFF');
+
+	INSERT INTO [user] (username, password, email, phone_number, role_id, first_name, last_name, city, address) VALUES
+	('adminn', '1', 'customer2@gmail.com', '0987654325', 2, N'Trần', N'Thị B', N'Đà Nẵng', N'789 Hoàng Diệu');
+
+	INSERT INTO [transaction] (payment_method, transaction_date, transaction_amount, status) VALUES
+    ('COD', '2024-05-20 10:30:00', 12000000, 'completed'),
+    ('Banking', '2024-05-19 14:45:00', 13500000, 'shipped');
+
+	INSERT INTO [order] (customer_id, transaction_id, delivery_fee, discount_price, total_price, created_at) VALUES
+    (2, 1, 0, 0, 12000000, '2024-05-20 10:30:00'),
+    (2, 2, 0, 1500000, 13500000, '2024-05-19 14:45:00');
+
+	INSERT INTO order_detail (order_id, product_id, quantity, unit_price) VALUES
+    (2, 1, 1, 12000000),
+    (3, 2, 1, 15000000);
+
+	INSERT INTO order_status (order_id, user_id, name) VALUES
+    (2, 1, 'completed'),
+    (3, 1, 'shipped');
+
 	select * from warranty
 	select * from category
+	select * from size
 	select * from product
 	select * from diamond
+	select * from diamond_casing
 	select * from product_diamonds
+	select * from [order]
+	select * from order_detail
+	select * from order_status
+	select * from [user]
+	select * from [role]
+	select * from [transaction]
+
+

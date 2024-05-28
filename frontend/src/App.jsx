@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
+
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
@@ -28,6 +29,7 @@ function App() {
           </Layout>
         }
       />
+
 
       <Route
         path="/news"
