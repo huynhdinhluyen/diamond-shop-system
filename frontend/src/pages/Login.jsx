@@ -2,6 +2,7 @@
 // import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { EMAIL } from "../components/Pattern";
@@ -106,7 +107,7 @@ export default function Login() {
         </div>
 
         <div className="md:block hidden w-1/2">
-          <img src="/public/assets/img/login/cover2.jpg" alt="" className="" />
+          <img src="/src/assets/img/login/cover2.jpg" alt="" className="" />
         </div>
       </div>
     </div>
