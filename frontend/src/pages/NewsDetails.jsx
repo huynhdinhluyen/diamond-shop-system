@@ -93,6 +93,14 @@ const NewsDetails = () => {
                         className="w-full h-full object-cover mb-2 "
                       />
                     );
+                  } else if (item.type === "unordered-list") {
+                    return (
+                      <ul key={index} className="list-disc list-inside mb-4">
+                        {item.items.map((listItem, i) => (
+                          <li key={i}>{listItem}</li>
+                        ))}
+                      </ul>
+                    );
                   }
                   return null;
                 })}
