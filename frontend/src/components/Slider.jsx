@@ -2,11 +2,11 @@ export default function Slider() {
   return (
     <section className="bg-grey py-12 xl:pt-12 xl:pb-0 overflow-hidden">
       <div className="container mx-auto h-full">
-        <div className="flex flex-col xl:flex-row items-center justify-between h-full">
+        <div className="flex flex-col xl:flex-row items-center justify-between h-full ">
           {/* text */}
-          <div className="w-[50%] text-center xl:text-left">
+          <div className="w-full xl:w-[48%] text-center xl:text-left">
             <h1 className="h1 mb-6">Kim cương đến từ thiên đường</h1>
-            <p className="mb-[42px] md:max-w-xl">
+            <p className="mb-[42px] md:max-w-xl mx-auto ">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore
               tempore reiciendis fugit corporis sint et quae, temporibus
               deleniti numquam nesciunt sit.
