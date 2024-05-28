@@ -52,7 +52,7 @@ const MobileNav = ({ pages }) => {
             <input
               type="text"
               id="mnav-input-search"
-              placeholder="Search..."
+              placeholder="Tìm kiếm..."
               className="outline-none w-[160px] border-b-2 focus:border-b-2 focus: border-accent placeholder:italic"
             />
           </form>
