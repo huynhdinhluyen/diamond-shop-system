@@ -1,19 +1,19 @@
 package com.example.backend.controller;
 
-import com.example.backend.Exception.ResourceNotFoundException;
 import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
 public class UserController {

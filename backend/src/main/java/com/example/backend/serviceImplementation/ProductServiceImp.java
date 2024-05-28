@@ -7,31 +7,34 @@ import com.example.backend.repository.DiamondRepository;
 import com.example.backend.repository.ProductRepository;
 import com.example.backend.service.ProductService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
 
-    private ProductRepository productRepository;
-    private DiamondRepository diamondRepository;
-    private DiamondCasingRepository diamondCasingRepository;
+    private final ProductRepository productRepository;
+    private final DiamondRepository diamondRepository;
+    private final DiamondCasingRepository diamondCasingRepository;
 
 
     @Override
     public ProductDTO convertToDTO(Product product) {
-            Long costPrice = calculateCostPrice(product);
-            Long salePrice = calculateSalePrice(product);
+            Long costPrice = this.calculateCostPrice(product);
+            Long salePrice = this.calculateSalePrice(product);
             return new ProductDTO(product.getId(), product.getName(), product.getImageUrl(), costPrice, salePrice);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
-        return List.of();
+        List<Product> products = productRepository.findAll();
+        return products.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override

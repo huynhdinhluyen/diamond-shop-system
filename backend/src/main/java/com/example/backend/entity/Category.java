@@ -19,7 +19,7 @@ public class Category {
     private Integer id;
 
     @Nationalized
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 500)
     private String name;
 
     @Column(name = "image_url")
