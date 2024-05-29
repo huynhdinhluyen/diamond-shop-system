@@ -90,7 +90,7 @@ const NewsDetails = () => {
                         key={index}
                         src={item.url}
                         alt={item.alt}
-                        className="w-full h-full object-cover mb-2 "
+                        className="w-[60%] h-96 object-cover mb-2 mx-auto"
                       />
                     );
                   } else if (item.type === "unordered-list") {
