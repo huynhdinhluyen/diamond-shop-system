@@ -2,6 +2,7 @@
 // import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { EMAIL } from "../components/Pattern";
@@ -65,6 +66,9 @@ export default function Login() {
                 pattern: EMAIL,
               })}
             />
+            {errors.email && (
+              <p className="text-red-500 text-center">{errors.email.message}</p>
+            )}
             <div className="relative">
               <input
                 className="py-2 px-4 rounded-xl border w-full outline-none focus:border-accent transition-all duration-300 placeholder:italic placeholder:text-sm"
@@ -75,16 +79,15 @@ export default function Login() {
                   required: true,
                 })}
               />
-              {errors.email && <p>{errors.email.message}</p>}
             </div>
             <button className="btn btn-lg btn-accent rounded-xl" type="submit">
               Đăng nhập
             </button>
             <div className="flex justify-between my-5">
-              <Link to="/forgot" className=" text-xs hover:underline">
+              <Link to="/forgot" className=" text-md hover:underline">
                 Quên mật khẩu?
               </Link>
-              <Link to="/signup" className=" text-xs hover:underline">
+              <Link to="/signup" className=" text-md hover:underline">
                 Đăng ký ngay
               </Link>
             </div>
@@ -100,7 +103,10 @@ export default function Login() {
               <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
             </GoogleOAuthProvider>
           </div> */}
-          <Link className="text-xs flex justify-center mt-4" to="/">
+          <Link
+            className="text-md flex justify-center mt-4 hover:underline transition-all duration-300"
+            to="/"
+          >
             Trở về trang chủ
           </Link>
         </div>

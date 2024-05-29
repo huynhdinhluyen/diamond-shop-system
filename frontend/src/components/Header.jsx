@@ -3,26 +3,50 @@ import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 import MobileNav from "./MobileNav";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import Swal from "sweetalert2";
 export const pages = [
   { title: "Trang chủ", href: "/" },
   { title: "Giới thiệu", href: "/about" },
   { title: "Sản phẩm", href: "/products" },
-  { title: "Tin tức", href: "/news" },
+  { title: "Bảng giá kim cương", href: "/prices-table" },
+  { title: "Kiến thức trang sức", href: "/knowledge" },
   { title: "Liên hệ", href: "/contact" },
 ];
 
 export default function Header() {
-  const username = localStorage.getItem("user");
-  const navigate = useNavigate();
+  // const [user, setUser] = useState(localStorage.getItem("user"));
+  const { user, logout } = useAuth();
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/");
+    Swal.fire({
+      title: "Bạn có chắc chắn muốn đăng xuất không?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Hủy",
+      cancelButtonColor: "#d33",
+      confirmButtonColor: "#3085d6",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        Swal.fire({
+          title: "Thành công!",
+          text: "Bạn đã đăng xuất",
+          icon: "success",
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: "Đã hủy",
+          text: "Bạn vẫn đang đăng nhập",
+          icon: "error",
+        });
+      }
+    });
   };
   return (
     <header className="py-8 lg:pt-6 ">
@@ -44,9 +68,9 @@ export default function Header() {
 
         <div className="lg:flex lg:gap-x-10 items-center w-auto bg-grey px-5 hidden rounded-xl ">
           <div className="text-secondary cursor-pointer flex items-center gap-x-2">
-            {username ? (
-              <div className="text-nowrap flex items-center gap-x-2 relative group z-10">
-                <AccountCircleOutlinedIcon /> {username}
+            {user ? (
+              <div className="text-nowrap flex items-center gap-x-2 relative group z-20">
+                <AccountCircleOutlinedIcon /> {user.firstName} {user.lastName}
                 <div className="absolute z-10000 bg-white hidden group-hover:flex w-[200px] top-12 flex-col rounded-lg text-base ">
                   <Link
                     to="/profile"
@@ -76,7 +100,7 @@ export default function Header() {
                 className="text-nowrap flex items-center gap-x-2 relative group z-10 hover:text-accent transition-all duration-300"
               >
                 <AccountCircleOutlinedIcon />
-                <span>Đăng nhập</span>
+                Đăng nhập
               </Link>
             )}
           </div>

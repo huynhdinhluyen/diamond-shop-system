@@ -25,7 +25,7 @@ export default function Contact() {
       );
   };
   return (
-    <div className="container">
+    <div className="container mt-10">
       <div className="flex flex-col gap-y-4 text-center w-full lg:w-[50%] mx-auto mb-5">
         <h3 className="h3 text-accent">
           Nơi tinh hoa của cái đẹp và nghệ thuật trang sức được tạo ra

@@ -76,10 +76,10 @@ export default function Signup() {
             />
             <button className="btn btn-sm btn-accent mt-2">Đăng ký</button>
             <div className="flex flex-col gap-y-2 items-center mt-2 ">
-              <Link to="/login" className=" text-xs hover:underline">
+              <Link to="/login" className=" text-md hover:underline">
                 Quay lại đăng nhập nếu bạn đã có tài khoản
               </Link>
-              <Link to="/" className=" text-xs hover:underline">
+              <Link to="/" className=" text-md hover:underline">
                 Trở về trang chủ
               </Link>
             </div>

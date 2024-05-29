@@ -26,15 +26,14 @@ function ProductList() {
 
   return (
     <div className="container mx-auto mt-8">
-      
       <div className="flex items-center justify-center mb-4">
         <div className="w-96 border-t border-gray-300"></div>
-        <h1 className="text-2xl text-center font-bold mb-4 mx-8">
-           SẢN PHẨM NỔI BẬT
+        <h1 className="text-2xl text-center font-bold mb-4 mx-8 text-nowrap text-accent">
+          SẢN PHẨM NỔI BẬT
         </h1>
         <div className="w-96 border-t border-gray-300"></div>
       </div>
-      
+
       {isLoading ? (
         <div className="flex justify-center items-center h-screen">
           <CircularProgress />
@@ -43,7 +42,7 @@ function ProductList() {
         <div>Error: {error.message}</div>
       ) : (
         <>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-col md:flex-row justify-center gap-4">
             {products.slice(0, visibleProducts).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
