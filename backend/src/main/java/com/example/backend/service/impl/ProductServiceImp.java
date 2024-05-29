@@ -1,4 +1,4 @@
-package com.example.backend.serviceImplementation;
+package com.example.backend.service.impl;
 
 import com.example.backend.dto.ProductDTO;
 import com.example.backend.entity.Product;
@@ -6,7 +6,6 @@ import com.example.backend.repository.DiamondCasingRepository;
 import com.example.backend.repository.DiamondRepository;
 import com.example.backend.repository.ProductRepository;
 import com.example.backend.service.ProductService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +47,11 @@ public class ProductServiceImp implements ProductService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Long countProducts() {
+        return productRepository.count();
+    }
 
 
     private Long calculateCostPrice(Product product) {

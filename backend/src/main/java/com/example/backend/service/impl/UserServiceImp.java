@@ -1,6 +1,6 @@
-package com.example.backend.serviceImplementation;
+package com.example.backend.service.impl;
 
-import com.example.backend.Exception.ResourceNotFoundException;
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
@@ -8,10 +8,9 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,5 +36,11 @@ public class UserServiceImp implements UserService {
         User newUser = UserMapper.maptoUserEntity(userDTO);
         User savedUser = userRepository.save(newUser);
         return UserMapper.maptoUserDTO(savedUser);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long getTotalCustomers() {
+        return userRepository.countByRole_RoleName("CUSTOMER");
     }
 }

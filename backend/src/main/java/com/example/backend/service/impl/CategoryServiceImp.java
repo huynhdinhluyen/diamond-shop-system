@@ -1,9 +1,8 @@
-package com.example.backend.serviceImplementation;
+package com.example.backend.service.impl;
 
 import com.example.backend.entity.Category;
 import com.example.backend.repository.CategoryRepository;
 import com.example.backend.service.CategoryService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
