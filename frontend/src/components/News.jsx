@@ -5,18 +5,16 @@ import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
 
 const News = () => {
-  // const [selectedTag, setSelectedTag] = useState(newsData.tags[0].id);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 3;
 
-  // const selectedTagData = newsData.tags.find((tag) => tag.id === selectedTag);
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const totalPosts = newsData.news.length;
   const currentPost = newsData.news.slice(firstPostIndex, lastPostIndex);
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <div className="flex items-center justify-center mb-4">
         <div className="w-96 border-t border-gray-300"></div>
         <h4 className="text-2xl text-center font-bold mb-4 mx-8 text-nowrap text-accent uppercase">
