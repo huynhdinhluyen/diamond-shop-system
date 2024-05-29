@@ -106,7 +106,7 @@ export default function Login() {
         </div>
 
         <div className="md:block hidden w-1/2">
-          <img src="/assets/img/login/cover2.jpg" alt="" className="" />
+          <img src="/src/assets/img/login/cover2.jpg" alt="" className="" />
         </div>
       </div>
     </div>
