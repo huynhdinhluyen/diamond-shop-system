@@ -454,8 +454,61 @@ export const newsData = {
       title: "Kim cương 10ly, 12ly giá bao nhiêu tiền? có khó tiếp cận?",
       image:
         "https://images.unsplash.com/photo-1638517747460-4d9e114ab3e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      content:
+      description:
         "Kim cương 10 ly không chỉ là biểu tượng của sự sang trọng và đẳng cấp mà còn mang đến ý nghĩa cho sự hoàn hảo và trọn vẹn. Do đó, dù có giá thành vô cùng cao, loại kim cương này vẫn được nhiều người săn đón. Bài viết dưới đây sẽ cho bạn biết kim cương 10ly giá bao nhiêu tiền, cũng như địa chỉ mua chất lượng, uy tín với giá thành phải chăng.",
+      content: [
+        {
+          type: "bold",
+          text: "Kim cương 10 ly giá bao nhiêu tiền?",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương 10ly là viên kim cương có thể xem là đắt nhất ở nhiều cửa hàng bán kim cương, hột xoàn hiện nay. Có thể thấy, kim cương có số ly càng cao, mức giá chênh lệch càng nhiều. Giá kim cương kích cỡ 10 ly hiện nay dao động từ 4 tỷ 125 triệu – 9 tỷ 200 triệu VNĐ.",
+        },
+        {
+          type: "paragraph",
+          text: "Đây tuy là mức giá khá cao, nhưng hoàn toàn xứng đáng với chất lượng và vẻ đẹp mà viên kim cương 10 ly mang lại, đặc biệt, đây là viên kim cương có kích thước lớn, rất hiếm có và giá trị vô cùng cao. Do đó, nó có thể tôn vinh vẻ quý phái của bản thân người mang.",
+        },
+        {
+          type: "image",
+          url: "https://vtv1.mediacdn.vn/thumb_w/640/2021/7/6/vua-kim-cuong-an-do-1625562117739326255142.jpg",
+          alt: "kim cương 10 ly",
+        },
+        {
+          type: "bold",
+          text: "Kim cương 12 ly giá bao nhiêu tiền?",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương 12 ly là kim cương có kích thước 12mm, nặng khoảng 6 đến 7 carat (áp dụng cho hột xoàn giác cắt tròn). Hiện nay trên thị trường cho loại kim cương thiên nhiên dao động từ 8 tỷ 300 triệu đến 16 tỷ VNĐ. Mức giá này là rất cao, tuy nhiên, giá càng cao thì càng phản ánh chất lượng và vẻ đẹp đặc biệt của viên kim cương lớn, hiếm có này.",
+        },
+        {
+          type: "image",
+          url: "https://tamluxury.vn/wp-content/uploads/2024/01/gia-tri-kim-cuong-12ly.png",
+          alt: "kim cương 12 ly",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương 10 ly trở lên là một trong những loại kim cương hiếm có và đắt giá nhất trên thị trường. Tuy nhiên, đây cũng là sản phẩm được nhiều người mơ ước, bởi những ý nghĩa thực sự mà nó mang lại:",
+        },
+        {
+          type: "unordered-list",
+          items: [
+            "ôn vinh vẻ đẹp: biểu tượng cho sự sang trọng phú quý.",
+            "Khẳng định vị thế: 1 viên kim cương kích cỡ 10 ly trên thị trường hiện nay có giá thấp nhất cũng hơn 3 tỷ. Do đó, những người sở hữu được chắc chắn phải có địa vị xã hội cao cũng như khối tài sản khổng lồ. Chính vì vậy, kim cương bên cạnh vẻ đẹp hình thức, còn là minh chứng cho sự giàu sang và vị thế của người dùng. Đó cũng là nguyên nhân tại sao loại trang sức này lại được giới thượng lưu ưa chuộng đến thế.",
+            "Mang nhiều ý nghĩa về phong thủy: Kim cương 10 ly còn là biểu tượng của sự hoàn hảo và trọn vẹn nhất. Do đó, rất nhiều người sử dụng nó để tặng cho người thân, người yêu, có ý nghĩa tượng trưng cho sự bền bỉ và những tình cảm bất diệt.",
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "Và bạn biết đấy, viên kim cương 10 ly có giá trị vô cùng lớn và rất hiếm. Nên hầu hết ai sở hữu đều rất ít khi dùng làm đồ trang sức và mang vào những dịp bình thường. Bởi giá trị có thể sẽ tăng theo thời gian nên họ sẽ thường có xu hướng bảo dưỡng kỹ và bán lại.",
+        },
+        {
+          type: "image",
+          url: "https://plus.unsplash.com/premium_photo-1670537037688-94a5428256b7?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "kim cương 12 ly",
+        },
+      ],
       created: "01/01/2024",
       author: "Huỳnh Lê Nhật Hoàng",
     },
@@ -464,8 +517,146 @@ export const newsData = {
       title: "Kim cương VVS1 và VVS2 khác nhau như nào? giá ra sao?",
       image:
         "https://caohungdiamond.com/wp-content/uploads/2023/05/kim-cuong-vvs1-va-vvs2-chdm.jpg",
-      content:
+      description:
         "Kim cương VVS1 và VVS2 là những viên đã được đánh giá theo tiêu chuẩn GIA. Sự sang trọng và đẳng cấp của những viên kim cương này luôn làm cho người sở hữu phải choáng ngợp. Vậy giá kim cương VVS1 và VVS2 bao nhiêu? Kim cương VVS1 vs VVS2 là gì? Cùng DHL Diamond tìm hiểu ngay bên dưới nhé!",
+      content: [
+        {
+          type: "paragraph",
+          text: "Kim cương VVS1 và VVS2 là những viên đã được đánh giá theo tiêu chuẩn GIA. Sự sang trọng và đẳng cấp của những viên kim cương này luôn làm cho người sở hữu phải choáng ngợp. Vậy giá kim cương VVS1 và VVS2 bao nhiêu? Kim cương VVS1 vs VVS2 là gì? Cùng DHL Diamond tìm hiểu ngay bên dưới nhé!",
+        },
+        {
+          type: "bold",
+          text: "Kim cương VVS1 và VVS2 là gì?",
+        },
+        {
+          type: "paragraph",
+          text: "VVS1 và VVS2 là viết tắt của hai từ tiếng Anh Very Very Slightly Included 1 và Very Very Slightly Included 2. Đó là những tiêu chuẩn quan trọng nhất để đánh giá tình trạng bên trong của mỗi viên kim cương. Nếu một viên kim cương được đánh giá là VVS1 hoặc VVS2, thì nghĩa là nó có rất ít những tạp chất bên trong.",
+        },
+        {
+          type: "paragraph",
+          text: "Những tạp chất này có thể là các vết nhỏ, màu sắc hoặc các viền đen bên trong viên đá, nhưng chúng rất khó nhận thấy bằng mắt thường. Với những khách hàng có nhu cầu mua kim cương, việc hiểu rõ các tiêu chuẩn đánh giá chất lượng của kim cương là vô cùng quan trọng. Bởi sẽ giúp bạn đưa ra quyết định đúng đắn và chọn được sản phẩm phù hợp nhất với nhu cầu của mình.",
+        },
+        {
+          type: "image",
+          url: "https://mp20-assets.ritani.com/cms/vvs1_vs_vvs2_diamond_753069ec60/vvs1_vs_vvs2_diamond_753069ec60.png",
+          alt: "kim cương vvs1, vvs2 ly",
+        },
+        {
+          type: "bold",
+          text: "Tổng quan về VVS",
+        },
+        {
+          type: "paragraph",
+          text: "VVS là một trong những giá trị thể hiện độ tinh khiết của kim cương, chỉ đứng sau FL và IF. Những viên kim cương VVS có tạp chất vô cùng nhỏ, bằng mắt thường không thể nào quan sát được. Nếu muốn quan sát thì chỉ có phóng đại lên x10 lần.",
+        },
+        {
+          type: "image",
+          url: "https://www.ourosjewels.com/cdn/shop/articles/VVS_Diamond_Main_Banner_1260x630.webp?v=1712384953",
+          alt: "kim cương vvs1, vvs2 ly",
+        },
+        {
+          type: "bold",
+          text: "Kim cương VVS1 là gì?",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương VVS1 là một loại đá quý cao cấp, được đánh giá là có chất lượng tốt nhất trong các loại kim cương chỉ sau kim cương IF và FL. Bên trong kim cương VVS1 chỉ có một số rất nhỏ các khuyết điểm và chỉ có thể nhìn thấy được bằng kính lúp chuyên nghiệp.",
+        },
+        {
+          type: "paragraph",
+          text: "Với độ trong suốt hoàn hảo và ánh sáng phản chiếu tốt, kim cương VVS1 được coi là một trong những loại kim cương đắt giá nhất trên thị trường. Đối với kim cương VVS1, nếu không phải là chuyên gia, khách hàng sẽ có thể phát hiện ra các tạp chất, tì vết hay vết nứt dù nhỏ nhất. Trong đó kim cương VVS1 thuộc nước D là một trong những sản phẩm được ưu chuộng, có thể được bán với giá khoảng 8 triệu đồng đến hơn 6 tỷ đồng một viên tùy theo kích thước.",
+        },
+        {
+          type: "bold",
+          text: "Kim cương VVS2 là gì?",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương VVS2 là loại đá quý có chất lượng rất cao, đứng chung với VVS1 và chỉ sau IF, FL. Điều này có nghĩa, kim cương VVS2 chỉ chứa một số lượng rất nhỏ các khuyết tật bên trong, chỉ có chuyên gia đánh giá đá quý mới có thể phát hiện ra.",
+        },
+        {
+          type: "paragraph",
+          text: "VVS2 có màu trắng sáng và có khả năng phản chiếu ánh sáng rất cao, khiến nó trở thành một lựa chọn phổ biến cho các món đồ trang sức và nhẫn cưới cao cấp. Khuyết điểm của loại kim cương VVS2 sẽ có phần giống so với kim cương VVS1. Nhưng chúng sẽ chiếm nhiều các tạp chất nhỏ hơn và nhiều hơn một chút.",
+        },
+
+        {
+          type: "bold",
+          text: "Giá kim cương VVS1 và VVS2:",
+        },
+        {
+          type: "paragraph",
+          text: "Giá kim cương vvs1 và vvs2 dao động khoảng giá từ 7 triệu 2 đến 2 tỷ 8 VNĐ cho các nước từ D – E – F ở nhiều mức ly. Bảng giá cụ thể kim cương vvs1 vs vvs2 có giấy kiểm định GIA như sau:",
+        },
+        {
+          type: "bold",
+          text: "Bảng giá kim cương VVS1:",
+        },
+        {
+          type: "table",
+          data: [
+            ["Loại", "D", "E", "F"],
+            ["3.6 ly", "9,800,000", "9,100,000", "9,100,000"],
+            ["3.9 ly", "11,500,000", "10,800,000", "10,100,000"],
+            ["4.1 ly", "16,147,000", "15,289,000", "14,432,000"],
+            ["4.5 ly", "25,500,000", "19,200,000", "18,100,000"],
+            ["5.0 ly", "38,200,000", "37,300,000", "30,900,000"],
+            ["5.2 ly", "55,000,000", "54,100,000", "53,000,000"],
+            ["5.3 ly", "62,200,000", "60,300,000", "55,000,000"],
+            ["5.4 ly", "83,200,000", "80,000,000", "70,400,000"],
+            ["6.0 ly", "164,400,000", "160,800,000", "144,600,000"],
+            ["6.2 ly", "180,900,000", "173,200,000", "163,800,000"],
+            ["6.3 ly < 1ct", "188,100,000", "186,400,000", "183,200,000"],
+            ["6.3 ly > 1ct", "203,600,000", "201,700,000", "195,600,000"],
+            ["6.8 ly", "501,000,000", "452,000,000", "408,000,000"],
+            ["7.2 ly", "639,000,000", "605,000,000", "502,000,000"],
+            ["8.1 ly", "1,900,000,000", "1,450,000,000", "1,310,000,000"],
+            ["9.0 ly", "2,800,000,000", "2,700,000,000", "2,400,000,000"],
+          ],
+        },
+        {
+          type: "bold",
+          text: "Bảng giá kim cương VVS2:",
+        },
+
+        {
+          type: "table",
+          data: [
+            ["Loại", "D", "E", "F"],
+            ["3.6 ly", "8,800,000", "8,000,000", "7,200,000"],
+            ["3.9 ly", "11,000,000", "10,300,000", "9,200,000"],
+            ["4.1 ly", "15,289,000", "14,432,000", "13,575,000"],
+            ["4.5 ly", "22,200,000", "17,500,000", "16,000,000"],
+            ["5.0 ly", "37,400,000", "36,600,000", "28,800,000"],
+            ["5.2 ly", "53,200,000", "52,600,000", "50,100,000"],
+            ["5.3 ly", "59,100,000", "58,000,000", "53,200,000"],
+            ["5.4 ly", "68,900,000", "66,500,000", "64,500,000"],
+            ["6.0 ly", "160,000,000", "153,900,000", "142,200,000"],
+            ["6.2 ly", "179,000,000", "171,600,000", "159,800,000"],
+            ["6.3 ly < 1ct", "183,600,000", "182,600,000", "180,000,000"],
+            ["6.3 ly > 1ct", "202,000,000", "198,300,000", "189,100,000"],
+            ["6.8 ly", "406,000,000", "392,000,000", "380,000,000"],
+            ["7.2 ly", "509,000,000", "501,000,000", "480,000,000"],
+            ["8.1 ly", "1,500,000,000", "1,300,000,000", "1,200,000,000"],
+            ["9.0 ly", "2,700,000,000", "2,400,000,000", "2,200,000,000"],
+          ],
+        },
+        {
+          type: "bold",
+          text: "So sánh chi tiết:",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương VVS1 là loại kim cương có mức độ tinh khiết cao nhất, chỉ có rất ít hoặc không có khuyết điểm nào trên bề mặt của nó. Kim cương VVS2 cũng rất tinh khiết, nhưng có thể có một vài khuyết điểm nhỏ không thể nhìn thấy bằng mắt thường.",
+        },
+        {
+          type: "paragraph",
+          text: "Để so sánh cấp độ tinh khiết, kim cương VVS1 sẽ ít có tạp chất hơn kim cương VVS2. Trên thực tế, hầu như chúng ta không thể nhìn thấy các tạp chất có trong kim cương. Khi phóng đại kim cương gấp 10 lần, chúng ta có thể thấy các tạp chất có trong trong kim cương VVS1 nhỏ hơn một chút so với loại VVS2.",
+        },
+        {
+          type: "paragraph",
+          text: "Nói về giá, kim cương VVS1 sẽ có phần nhỉnh và đắt giá hơn kim cương VVS2 vì độ tinh khiết cao hơn. Tuy nhiên, sự khác biệt giữa hai loại kim cương này là rất nhỏ và khó để phân biệt bằng mắt thường. Vì vậy, khi mua kim cương, điều quan trọng là chọn một món đồ trang sức mà bạn thích và phù hợp với ngân sách của bạn.",
+        },
+      ],
       created: "01/01/2024",
       author: "Huỳnh Lê Nhật Hoàng",
     },
@@ -474,8 +665,125 @@ export const newsData = {
       title: "Kim cương nước D là gì? điều gì khiến nó trở nên đắt giá nhất",
       image:
         "https://caohungdiamond.com/wp-content/uploads/2022/09/kim-cuong-nuoc-f-co-gia-tri-cao.jpg",
-      content:
+      description:
         "Kim cương được xem là vua của đá quý bởi có vẻ ngoài long lanh và vẻ đẹp tinh tế. Bên cạnh đó, loại đá quý này có khả năng quang học tốt và dùng để chế tạo nên những bộ trang sức tinh tế, cao cấp. Trong đó, kim cương nước D là niềm ao ước của nhiều người bởi vẻ đẹp và giá trị mang lại.",
+      content: [
+        {
+          type: "paragraph",
+          text: "Kim cương được xem là vua của đá quý bởi có vẻ ngoài long lanh và vẻ đẹp tinh tế. Bên cạnh đó, loại đá quý này có khả năng quang học tốt và dùng để chế tạo nên những bộ trang sức tinh tế, cao cấp. Trong đó, kim cương nước D là niềm ao ước của nhiều người bởi vẻ đẹp và giá trị mang lại.",
+        },
+        {
+          type: "bold",
+          text: "Khái niệm kim cương nước D là gì?",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương là loại đá quý thượng hạng được nhiều người yêu thích bởi có thể thiết kế thành những bộ trang sức đắt tiền nhất trong các loại kim cương. Kim cương nước D là thang điểm cao nhất để đánh giá kim cương nhờ chất lượng tự nhiên và độ tinh khiết cao.",
+        },
+        {
+          type: "image",
+          url: "https://jemmia.vn/wp-content/uploads/2023/05/kim-cuong-nuoc-d-vvs1-va-kim-cuong-nuoc-d-vvs2-Jemmia-3.jpeg",
+          alt: "kim cương vvs1, vvs2 ly",
+        },
+
+        {
+          type: "paragraph",
+          text: "Có chất lượng tốt cả về độ trong, độ tinh khiết nên được nhiều người yêu thích. Các sản phẩm của kim cương nước D tốt nhất có giá thành cao và thường được ưu tiên để làm các bộ trang sức như nhẫn kim cương, mặt dây chuyền, đồng hồ, nhẫn, khuyên tai.",
+        },
+        {
+          type: "bold",
+          text: "Tại sao kim cương nước D lại được mệnh danh là đẳng cấp và đắt giá?",
+        },
+        {
+          type: "paragraph",
+          text: "Kim cương nước D được xem là đẳng cấp và đắt giá nhất trong các loại kim cương. Trong đó, màu kim cương tự nhiên được tính từ D đến Z, bao gồm các nước màu là colorless gồm D, E, F; near colorless là G, H, I và Faint K, L, M, cuối cùng là very light và light.",
+        },
+        {
+          type: "bold",
+          text: "Tham khảo bảng giá kim cương nước D tốt nhất",
+        },
+        {
+          type: "image",
+          url: "https://jemmia.vn/wp-content/uploads/2023/05/kim-cuong-nuoc-G-Jemmia-1.jpg",
+          alt: "kim cương vvs1, vvs2 ly",
+        },
+        {
+          type: "bold",
+          text: "Giá tham khảo kim cương 5 ly nước D",
+        },
+        {
+          type: "table",
+          data: [
+            ["Độ tinh khiết", "Giá tham khảo"],
+            ["VVS1", "36,500,000 VND"],
+            ["VVS2", "35,000,000 VND"],
+            ["VS1", "32,000,000 VND"],
+            ["VS2", "30,500,000 VND"],
+          ],
+        },
+        {
+          type: "bold",
+          text: "Giá tham khảo kim cương 5 ly 4 nước D",
+        },
+        {
+          type: "table",
+          data: [
+            ["Độ tinh khiết", "Giá tham khảo"],
+            ["VVS1", "75,200,000 VND"],
+            ["VVS2", "69,900,000 VND"],
+            ["VS1", "62,900,000 VND"],
+            ["VS2", "54,800,000 VND"],
+          ],
+        },
+        {
+          type: "bold",
+          text: "Kim cương 7 ly 2 nước D",
+        },
+        {
+          type: "table",
+          data: [
+            ["Độ tinh khiết", "Giá tham khảo"],
+            ["VVS1", "430,000,000 VND"],
+            ["VVS2", "418,800,000 VND"],
+            ["VS1", "416,000,000 VND"],
+            ["VS2", "415,000,000 VND"],
+          ],
+        },
+        {
+          type: "bold",
+          text: "Kim cương 2 carat nước D giá tham khảo",
+        },
+        {
+          type: "paragraph",
+          text: "Đây là loại kim cương có kích cỡ hiếm có và được các đại gia trong giới thượng lưu rất yêu thích. Có độ hoàn hảo cao về kích thước, hình dáng và chất lượng nên có giá trị rất cao. Hiện nay, một viên kim cương 2 carat với dáng cắt tròn round sẽ có kích thước chính xác là 8.1mm. Cùng tham khảo bảng giá dưới đây:",
+        },
+        {
+          type: "table",
+          data: [
+            ["Độ tinh khiết", "Giá tham khảo"],
+            ["VVS1", "1,680,000,000 VND"],
+            ["VVS2", "1,420,000,000 VND"],
+            ["VS1", "1,100,000,000 VND"],
+            ["VS2", "980,000,000 VND"],
+          ],
+        },
+        {
+          type: "bold",
+          text: "Cần lưu ý những gì khi mua trang sức kim cương nước D?",
+        },
+        {
+          type: "unordered-list",
+          items: [
+            "Nên chọn chất liệu vàng trắng hoặc bạch kim cho những món trang sức đính kim cương nước D. Vì màu trắng từ những chất liệu này sẽ càng làm viên kim cương bừng sáng và lấp lánh hơn, còn những chất liệu có màu sắc như vàng hoặc vàng hồng sẽ làm cho viên kim cương dễ bị ám màu, khiến nó không còn mang màu trong suốt nữa.",
+            "Chỉ nên mua trang kim cương nước D có kèm giấy kiểm định GIA hoặc IGI. Vì kim cương nước D có giá trị rất cao, giấy kiểm định cũng là tiền đề để khi bạn không có nhu cầu dùng nữa thì bán ra không bị mất giá quá nhiều.",
+            "Lựa chọn địa điểm mua trang sức, đá quý uy tín sẽ giúp bạn yên tâm khi mua sản phẩm có giá trị cao như trang sức đính kim cương. Bất luận là bạn mua với mục đích sưu tầm hay đầu tư thì vẫn luôn yên tâm về chất lượng sản phẩm.",
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "Bên cạnh đó, chính sách hậu mãi với các quy định về bảo hành, đổi trả có thủ tục đơn giản, thời gian nhanh chóng. Đội ngũ nhân viên tư vấn nhiệt tình đã làm nên thương hiệu của đơn vị cung cấp kim cương nước D được nhiều người tin tưởng. Nếu có bất kỳ vấn đề nào hãy liên hệ ngay để được tư vấn tận tình.",
+        },
+      ],
       created: "01/01/2024",
       author: "Huỳnh Lê Nhật Hoàng",
     },
@@ -484,8 +792,53 @@ export const newsData = {
       title: "Kim cương nước F là gì? có tốt không?",
       image:
         "https://jemmia.vn/wp-content/uploads/2023/05/kim-cuong-nuoc-d-hay-f-Jemmia-2-1110x624.jpg",
-      content:
+      description:
         "Kim cương nước F nằm ở vị trí thứ 3 chỉ sau viên kim cương mang nước D và kim cương nước E. Tuy vậy nhưng giá trị của nước F vẫn rất cao. Bởi bạn sẽ không thể quan sát được sự khác biệt giữa 3 loại này bằng mắt thường mà cần đến các chuyên gia kiểm định cũng như thiết bị hiện đại hỗ trợ.",
+      content: [
+        {
+          type: "paragraph",
+          text: "Thuộc nhóm không màu. Đây là kim cương tự nhiên có độ trong suốt, đẹp, sáng và hiếm có. Do đó, giá thành khá cao và rất phù hợp để gia công trang sức. Đây là lựa chọn hoàn hảo dành cho bạn nếu đang có nhu cầu tìm mua trang sức, nữ trang kim cương mà có ngân sách hạn chế.",
+        },
+        {
+          type: "image",
+          url: "https://tuanmoissanite.com/wp-content/uploads/2022/10/co-nen-mua-kim-cuong-nuoc-d.jpg",
+          alt: "kim cương vvs1, vvs2 ly",
+        },
+        {
+          type: "bold",
+          text: "Bảng giá của kim cương nước F chi tiết mới nhất:",
+        },
+        {
+          type: "table",
+          data: [
+            [
+              "Loại kim cương",
+              "Nước màu",
+              "Độ tinh khiết VVS1",
+              "Độ tinh khiết VVS2",
+            ],
+            ["Kim cương 4 ly 1", "F", "14.5 triệu", "13.6 triệu"],
+            ["Kim cương 4 ly 5", "F", "18.1 triệu", "16 triệu"],
+            ["Kim cương 5 ly 4", "F", "56.5 triệu", "49.8 triệu"],
+            ["Kim cương 6 ly 3", "F", "183.2 triệu", "180 triệu"],
+            ["Kim cương 7 ly 2", "F", "400 triệu", "384.6 triệu"],
+            ["Kim cương 9 ly", "F", "2.4 tỷ", "2.2 tỷ"],
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "Qua bảng giá tham khảo trên, bạn có thể nhận ra rằng giá trị cũng như kích thước của kim cương nước F đang có sự chuyển biến tích cực. Không chỉ tăng theo mức cộng dồn mà tăng gấp 1.5 lần so với trước. Đây là minh chứng rõ ràng cho thấy rằng kim cương F có giá trị cao không thua kém so với nước D và E.",
+        },
+        {
+          type: "image",
+          url: "https://ciriladiamond.com/wp-content/uploads/2023/03/da-quy-la-gi-10-loai-da-quy-trang-suc-pho-bien-dep-mat-nhat-1-min.jpg",
+          alt: "kim cương vvs1, vvs2 ly",
+        },
+        {
+          type: "paragraph",
+          text: "Bài viết trên của Cao Hùng Diamond đã gửi đến bạn câu trả lời cho kim cương nước F là gì cùng bảng giá tham khảo và địa chỉ uy tín cung cấp kim cương hiện nay. Hy vọng sẽ giúp bạn dễ dàng hơn trong việc đưa ra quyết định lựa chọn cũng như có được nơi mua hàng phù hợp với bản thân mình.",
+        },
+      ],
       created: "01/01/2024",
       author: "Huỳnh Lê Nhật Hoàng",
     },
