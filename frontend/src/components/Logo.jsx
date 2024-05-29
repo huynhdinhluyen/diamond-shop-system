@@ -6,7 +6,7 @@ export default function Logo() {
       <img
         className="w-[250px] h-[60px] object-cover"
         src="/src/assets/img/logo/logo.svg"
-        alt=""
+        alt="logo"
       />
     </Link>
   );
