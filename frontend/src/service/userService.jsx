@@ -1,4 +1,5 @@
 import { axiosInstance } from "../api/api";
+
 export const getUser = () =>
   localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))

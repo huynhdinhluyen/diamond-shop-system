@@ -13,8 +13,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  BarChart,
-  Bar,
 } from "recharts";
 import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
 export default function AdminDashboard() {
