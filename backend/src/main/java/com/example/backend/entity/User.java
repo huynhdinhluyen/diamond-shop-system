@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.example.backend.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,10 +37,10 @@ public class User {
     @Column(name = "phone_number", nullable = false, length = 20, unique = true)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
+//    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_name")
 //    @JsonIgnore
-    private Role role;
+    private Role role = Role.CUSTOMER;
 
     @Nationalized
     @Column(name = "first_name", nullable = false, length = 50)

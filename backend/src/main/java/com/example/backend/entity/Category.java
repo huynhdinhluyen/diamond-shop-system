@@ -22,6 +22,6 @@ public class Category {
     @Column(name = "name", nullable = false, length = 500)
     private String name;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", nullable = false, length = 1000)
     private String imageUrl;
 }

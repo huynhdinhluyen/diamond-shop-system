@@ -13,7 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class DashboardDataDTO {
     private Long totalOrders;
-    private Long totalCustomers;
+    //private Long totalCustomers;
     private Long totalRevenue;
     private Long numberOfProducts;
     private Map<String, Long> monthlySales;
