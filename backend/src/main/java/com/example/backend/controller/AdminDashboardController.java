@@ -31,12 +31,12 @@ public class AdminDashboardController {
     @GetMapping
     public ResponseEntity<DashboardDataDTO> getDashboardData() {
         Long totalOrders = orderService.getTotalOrders();
-        //Long totalCustomers = userService.getTotalCustomers();
+        Long totalCustomers = userService.getTotalCustomers();
         Long totalRevenue = orderService.getTotalRevenue();
         Long totalProducts = productService.countProducts();
         Map<String, Long> monthlySales = orderService.getMonthlySales();
         Map<String, Long> categoryRevenue = orderService.getCategoryRevenue();
-        DashboardDataDTO data = new DashboardDataDTO(totalOrders, /*totalCustomers*/ totalRevenue, totalProducts,
+        DashboardDataDTO data = new DashboardDataDTO(totalOrders, totalCustomers, totalRevenue, totalProducts,
                 monthlySales, categoryRevenue);
         return ResponseEntity.ok(data);
     }

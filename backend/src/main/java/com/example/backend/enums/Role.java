@@ -3,9 +3,9 @@ package com.example.backend.enums;
 import lombok.RequiredArgsConstructor;
 
 public enum Role {
-    ADMIN,
-    CUSTOMER,
-    SALES_STAFF,
-    DELIVERY_STAFF,
-    MANAGER
+    ROLE_ADMIN,
+    ROLE_CUSTOMER,
+    ROLE_SALES_STAFF,
+    ROLE_DELIVERY_STAFF,
+    ROLE_MANAGER
 }

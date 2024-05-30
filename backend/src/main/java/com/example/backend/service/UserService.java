@@ -11,7 +11,7 @@ public interface UserService {
     List<User> findByRole(Role role);
     List<UserDTO> getAllUsers();
     UserDTO addUser(UserDTO userDTO);
-    //Long getTotalCustomers();
+    Long getTotalCustomers();
 
     //
     User login(String email, String password);

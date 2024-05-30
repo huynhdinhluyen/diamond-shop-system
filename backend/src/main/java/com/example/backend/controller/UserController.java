@@ -26,7 +26,7 @@ public class UserController {
     }
 
     //Add a user REST API
-    @PostMapping("addUser")
+    @PostMapping("/addUser")
     public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userDTO) {
         UserDTO dto = userService.addUser(userDTO);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
@@ -40,7 +40,7 @@ public class UserController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginForm loginForm) {
         User user = userService.login(loginForm.getEmail(), loginForm.getPassword());
         return ResponseEntity.ok(user);

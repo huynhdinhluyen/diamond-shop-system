@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
-    // private final RoleRepository roleRepository;
 
     @Override
     public List<User> findByRole(Role role) {
@@ -45,11 +44,11 @@ public class UserServiceImp implements UserService {
         return UserMapper.maptoUserDTO(savedUser);
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Long getTotalCustomers() {
-//        return userRepository.countByRoleName(Role.CUSTOMER);
-//    }
+    @Override
+    @Transactional(readOnly = true)
+    public Long getTotalCustomers() {
+        return userRepository.totalCustomer();
+    }
 
     @Override
     public User login(String email, String password) {

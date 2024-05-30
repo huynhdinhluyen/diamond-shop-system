@@ -38,9 +38,9 @@ public class User {
     private String phoneNumber;
 
 //    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_name")
+    @Column(name = "role_id")
 //    @JsonIgnore
-    private Role role = Role.CUSTOMER;
+    private Role role;
 
     @Nationalized
     @Column(name = "first_name", nullable = false, length = 50)
