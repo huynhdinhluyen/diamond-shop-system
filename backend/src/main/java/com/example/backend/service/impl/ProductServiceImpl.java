@@ -33,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
     private WarrantyRepository warrantyRepository;
     @Autowired
     private ProductMapper productMapper;
+
     @Override
     @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
@@ -94,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toDto(productRepository.save(existingProduct));
     }
 
+    @Transactional
     private void updateProductDiamonds(Product product, List<DiamondDTO> diamondDTOs) {
         // Xóa các ProductDiamond hiện có của sản phẩm
         productDiamondRepository.deleteByProduct(product);

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    Long countByRole_RoleName(String roleName);
+    Long countByRoleName(User.RoleName roleName);
 }

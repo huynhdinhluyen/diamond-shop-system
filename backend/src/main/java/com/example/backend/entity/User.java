@@ -31,10 +31,6 @@ public class User {
     @Column(name = "phone_number", nullable = false, length = 20)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
-    private Role role;
-
     @Nationalized
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
@@ -44,11 +40,22 @@ public class User {
     private String lastName;
 
     @Nationalized
-    @Column(name = "city", nullable = false, length = 50)
+    @Column(name = "city", length = 50)
     private String city;
 
     @Nationalized
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
+    private RoleName roleName;
+
+    public enum RoleName {
+        ADMIN,
+        CUSTOMER,
+        SALES_STAFF,
+        DELIVERY_STAFF,
+        MANAGER
+    }
 }
