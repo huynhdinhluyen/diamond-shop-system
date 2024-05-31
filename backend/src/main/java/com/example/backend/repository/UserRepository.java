@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     Long countByRoleName(User.RoleName roleName);
     Optional<User> findByUsername(String username);
+    boolean existsByPhoneNumber(String phoneNumber);
+    boolean existsByUsername(String username);
 }

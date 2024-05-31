@@ -19,7 +19,6 @@ export const pages = [
 ];
 
 export default function Header() {
-  // const [user, setUser] = useState(localStorage.getItem("user"));
   const { user, logout } = useAuth();
   const handleLogout = () => {
     Swal.fire({
@@ -70,7 +69,7 @@ export default function Header() {
           <div className="text-secondary cursor-pointer flex items-center gap-x-2">
             {user ? (
               <div className="text-nowrap flex items-center gap-x-2 relative group z-20">
-                <AccountCircleOutlinedIcon /> {user.firstName} {user.lastName}
+                <AccountCircleOutlinedIcon /> {user.lastName} {user.firstName}
                 <div className="absolute z-10000 bg-white hidden group-hover:flex w-[200px] top-12 flex-col rounded-lg text-base ">
                   <Link
                     to="/profile"
@@ -84,6 +83,12 @@ export default function Header() {
                   >
                     Đơn hàng của bạn
                   </Link>
+                  {user.role === "ADMIN" && (<Link
+                    to="/admin"
+                    className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                  >
+                    Dashboard
+                  </Link>)}
                   <div
                     onClick={handleLogout}
                     className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
