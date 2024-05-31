@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional
-    private void updateProductDiamonds(Product product, List<DiamondDTO> diamondDTOs) {
+    public void updateProductDiamonds(Product product, List<DiamondDTO> diamondDTOs) {
         // Xóa các ProductDiamond hiện có của sản phẩm
         productDiamondRepository.deleteByProduct(product);
         if (diamondDTOs != null) {
