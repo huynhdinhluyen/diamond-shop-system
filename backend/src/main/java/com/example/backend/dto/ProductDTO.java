@@ -15,4 +15,7 @@ public class ProductDTO {
     private String imageUrl;
     private Long costPrice;
     private Long salePrice;
+
 }
+
+// Test
