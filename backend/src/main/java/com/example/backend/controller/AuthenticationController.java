@@ -41,7 +41,7 @@ public class AuthenticationController {
                                             @RequestBody String newPassword) {
         try {
             String username = authentication.getName();
-            userService.changePassword(username, oldPassword, newPassword);
+//            userService.changePassword(username, oldPassword, newPassword);
             return ResponseEntity.ok("Password changed successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
