@@ -16,3 +16,5 @@ public class ProductDTO {
     private Long costPrice;
     private Long salePrice;
 }
+
+// Test conflict
