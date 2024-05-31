@@ -1,11 +1,9 @@
 // import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 // import jwt_decode from "jwt-decode";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 // import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { EMAIL } from "../components/Pattern";
 
 export default function Login() {
   // const [userName, setUserName] = useState("");
@@ -26,20 +24,19 @@ export default function Login() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
 
-  const { user, login } = useAuth();
+  const { login } = useAuth();
 
-  const submit = async ({ email, password }) => {
-    await login(email, password);
-  };
-
-  useEffect(() => {
-    if (user) {
+  const submit = async ({ username, password }) => {
+    const success = await login(username, password);
+    if (success) {
       navigate("/");
+    } else {
+      navigate("/login");
     }
-  }, [user]);
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
@@ -58,17 +55,13 @@ export default function Login() {
           >
             <input
               className="py-2 px-4 mt-8 rounded-xl border w-full outline-none focus:border-accent transition-all duration-300 placeholder:italic placeholder:text-sm"
-              type="email"
-              name="email"
-              placeholder="Email"
-              {...register("email", {
+              type="text"
+              name="username"
+              placeholder="Username"
+              {...register("username", {
                 required: true,
-                pattern: EMAIL,
               })}
             />
-            {errors.email && (
-              <p className="text-red-500 text-center">{errors.email.message}</p>
-            )}
             <div className="relative">
               <input
                 className="py-2 px-4 rounded-xl border w-full outline-none focus:border-accent transition-all duration-300 placeholder:italic placeholder:text-sm"
@@ -112,7 +105,7 @@ export default function Login() {
         </div>
 
         <div className="md:block hidden w-1/2">
-          <img src="/src/assets/img/login/cover2.jpg" alt="" className="" />
+          <img src="https://images.unsplash.com/photo-1527628173875-3c7bfd28ad78?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" className="" />
         </div>
       </div>
     </div>
