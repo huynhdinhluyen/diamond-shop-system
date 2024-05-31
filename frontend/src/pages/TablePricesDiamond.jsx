@@ -54,7 +54,7 @@ export default function TablePricesDiamond() {
                     {prices.map(price => (
                         <span
                             key={price.size}
-                            className={`px-3 py-2 cursor-pointer ${activeSize === price.size ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} text-sm text-nowrap`}
+                            className={`px-3 py-2 cursor-pointer ${activeSize === price.size ? 'bg-accent text-white' : 'bg-gray-200 text-black'} text-sm text-nowrap`}
                             onClick={() => handleSizeClick(price.size)}
                         >
                             {price.size}
