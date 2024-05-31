@@ -53,6 +53,11 @@ public class ProductServiceImp implements ProductService {
         return productRepository.count();
     }
 
+//    @Override
+//    public ProductDTO addProduct(ProductDTO product) {
+//
+//    }
+
 
     private Long calculateCostPrice(Product product) {
         long diamondPrice = product.getProductDiamonds().stream()

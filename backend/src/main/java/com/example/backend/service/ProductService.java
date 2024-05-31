@@ -10,5 +10,6 @@ public interface ProductService {
     List<ProductDTO> getAllProducts();
     ProductDTO getProductById(Integer id);
     Long countProducts();
+    //ProductDTO addProduct(ProductDTO product);
 
 }

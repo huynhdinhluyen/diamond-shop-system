@@ -10,6 +10,7 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> findByRole(Role role) {
@@ -32,14 +34,11 @@ public class UserServiceImp implements UserService {
         return users.stream().map(UserMapper::maptoUserDTO)
                 .collect(Collectors.toList());
     }
-    // commented becauses entity role has been changed to a String property of
-    // User entity
+
     @Override
     public UserDTO addUser(UserDTO userDTO) {
-//        Role role = roleRepository.findById(userDTO.getRole().getId())
-//                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
-//        userDTO.setRole(role);
         User newUser = UserMapper.maptoUserEntity(userDTO);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         User savedUser = userRepository.save(newUser);
         return UserMapper.maptoUserDTO(savedUser);
     }
