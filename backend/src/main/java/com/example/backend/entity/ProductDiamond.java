@@ -2,12 +2,14 @@ package com.example.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "product_diamonds")
 public class ProductDiamond {
@@ -29,4 +31,10 @@ public class ProductDiamond {
     @Column(name = "is_main", nullable = false)
     private Boolean isMain = false;
 
+    public ProductDiamond(Product product, Diamond diamond, boolean isMain) {
+        this.product = product;
+        this.diamond = diamond;
+        this.isMain = isMain;
+        this.id = new ProductDiamondId(product.getId(), diamond.getId());
+    }
 }

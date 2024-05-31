@@ -4,7 +4,7 @@ import { FaTruck, FaCreditCard, FaHeadphones } from "react-icons/fa";
 export default function Benefits() {
   return (
     <div className="hidden md:block container mx-auto my-4">
-      <div className="flex flex-col md:flex-row justify-evenly space-y-4 md:space-y-0 md:space-x-4 mb-8 md:rounded-b-xl shadow-md overflow-hidden py-5">
+      <div className="flex flex-col md:flex-row justify-evenly space-y-4 md:space-y-0 md:space-x-4 mb-8 md:rounded-b-xl overflow-hidden py-5">
         <Grow in={true} timeout={1000}>
           <div className="flex items-center ">
             <FaTruck className="text-orange-500 mr-2" size={24} />
