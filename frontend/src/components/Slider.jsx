@@ -12,15 +12,15 @@ export default function Slider() {
     { image: "/src/assets/img/slider/swipe-3.jpg" },
   ];
   const items = sliderData.map((data, index) => (
-    <div key={index} className="mx-auto h-full w-full ">
+    <div key={index} className="h-[480px] w-full">
       <img
-        className="w-full object-cover h-[480px] rounded-md relative"
+        className="w-full h-full object-cover rounded-md"
         role="presentation"
         src={data.image}
         alt=""
       />
-      <div className="absolute w-full text-center lg:text-left md:text-center md:justify-center sm:text-center sm:w-full top-[20%] lg:left-[5%]">
-        <h2 className="h2 mb-6  text-white">Kim cương đến từ thiên đường</h2>
+      <div className="absolute text-center lg:text-left md:text-center md:justify-center sm:text-center top-[20%] lg:left-[5%]">
+        <h2 className="h2 mb-6 text-white">Kim cương đến từ thiên đường</h2>
         <p className="mb-[42px] text-white  leading-8">
           Tạo Nên Những Kỷ Niệm Vĩnh Cửu Với Kim Cương Hoàn Mỹ Và Khám Phá Sự
           Tinh Tế Và Hoàn Hảo Trong Từng Thiết Kế
@@ -35,7 +35,7 @@ export default function Slider() {
     </div>
   ));
   return (
-    <div className="sm:flex lg:flex md:flex mt-6">
+    <div className="flex mt-6">
       <AliceCarousel
         animationType="fadeout"
         animationDuration={800}
