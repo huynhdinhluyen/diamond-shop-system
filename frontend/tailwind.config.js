@@ -7,12 +7,6 @@ export default {
         DEFAULT: "15px",
       },
     },
-    screens: {
-      sm: "640px",
-      md: "768px",
-      lg: "960px",
-      xl: "1330px",
-    },
     extend: {
       colors: {
         primary: "#242a2b",

@@ -42,7 +42,7 @@ ProductCard.propTypes = {
       size: PropTypes.shape({
         name: PropTypes.string.isRequired,
       }).isRequired,
-    }), // Make diamondCasing optional
+    }),
   }).isRequired,
 };
 
