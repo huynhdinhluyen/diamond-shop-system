@@ -4,13 +4,14 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 
 import Login from "./pages/Login";
-import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import NewsDetails from "./pages/NewsDetails";
 import Contact from "./pages/Contact";
 import Knowledge from "./pages/Knowledge";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
+import ProfileLayout from "./layouts/ProfileLayout";
+import TablePricesDiamond from "./pages/TablePricesDiamond";
 // import AdminProductManagement from "./pages/AdminProductManagement";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           </Layout>
         }
       />
+
       <Route
         path="/about"
         element={
@@ -50,6 +52,7 @@ function App() {
           </Layout>
         }
       />
+
       <Route
         path="/contact"
         element={
@@ -58,6 +61,25 @@ function App() {
           </Layout>
         }
       />
+
+      <Route
+        path="/profile"
+        element={
+          <Layout>
+            <ProfileLayout />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/prices-table"
+        element={
+          <Layout>
+            <TablePricesDiamond />
+          </Layout>
+        }
+      />
+
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
         {/* <Route path="products" element={<AdminProductManagement />} /> */}
@@ -66,7 +88,6 @@ function App() {
       <Route path="*" element={<Navigate to="/" />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }
