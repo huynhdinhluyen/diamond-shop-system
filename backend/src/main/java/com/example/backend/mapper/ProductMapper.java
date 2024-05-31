@@ -44,7 +44,7 @@ public class ProductMapper {
 
         List<DiamondDTO> diamondDTOs = product.getProductDiamonds().stream()
                 .map(productDiamond -> diamondMapper.toDto(productDiamond.getDiamond()))
-                .collect(Collectors.toList());
+                .toList();
 
         productDTO.setMainDiamond(diamondDTOs.stream()
                 .filter(diamondDTO -> product.getProductDiamonds().stream()

@@ -28,7 +28,6 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-
     public AuthenticationResponse register(User request){
         User user = new User();
         user.setFirstName(request.getFirstName());
