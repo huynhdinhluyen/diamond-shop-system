@@ -14,6 +14,7 @@ public class AuthenticationResponse {
     private String phoneNumber;
     private String address;
     private String city;
+    private String role;
 
     public AuthenticationResponse(String token, User user) {
         this.token = token;
@@ -24,5 +25,6 @@ public class AuthenticationResponse {
         this.phoneNumber = user.getPhoneNumber();
         this.address = user.getAddress();
         this.city = user.getCity();
+        this.role = String.valueOf(user.getRoleName());
     }
 }
