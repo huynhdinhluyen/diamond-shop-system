@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-else-if */
 // import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 // import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
@@ -33,8 +34,6 @@ export default function Login() {
     const success = await login(username, password);
     if (success) {
       navigate("/");
-    } else {
-      navigate("/login");
     }
   };
 
