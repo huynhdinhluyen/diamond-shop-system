@@ -81,5 +81,6 @@ public class AuthenticationService {
         }
         user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
         repository.save(user);
+        //tesst
     }
 }
