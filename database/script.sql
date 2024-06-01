@@ -1,20 +1,15 @@
 ﻿
-CREATE TABLE [role] (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    role_name VARCHAR(20) NOT NULL UNIQUE
-);
-
 CREATE TABLE [user] (
     id INT IDENTITY(1,1) PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     [password] VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     phone_number VARCHAR(20) NOT NULL UNIQUE,
-    role_id INT REFERENCES role(id),
     first_name NVARCHAR(50) NOT NULL,
     last_name NVARCHAR(50) NOT NULL,
-    city NVARCHAR(50) NOT NULL,
-    [address] NVARCHAR(255) NOT NULL
+    city NVARCHAR(50),
+    [address] NVARCHAR(255),
+	[role] VARCHAR(20)
 );
 
 CREATE TABLE diamond (
@@ -30,7 +25,8 @@ CREATE TABLE diamond (
 
 CREATE TABLE category (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    name NVARCHAR(50) NOT NULL UNIQUE
+    name NVARCHAR(50) NOT NULL UNIQUE,
+	image_url VARCHAR(MAX)
 );
 
 CREATE TABLE size (
@@ -49,9 +45,9 @@ CREATE TABLE diamond_casing (
 
 CREATE TABLE warranty (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    warranty_free TEXT NOT NULL,
-    warranty_paid TEXT NOT NULL,
-    warranty_excluded TEXT NOT NULL,
+    warranty_free NVARCHAR(255),
+    warranty_paid NVARCHAR(255),
+    warranty_excluded NVARCHAR(255),
     warranty_start_date DATE,
     warranty_end_date DATE,
     category_id INT REFERENCES category(id) ON DELETE CASCADE
@@ -60,7 +56,7 @@ CREATE TABLE warranty (
 CREATE TABLE promotion (
     id INT IDENTITY(1,1) PRIMARY KEY,
     [name] NVARCHAR(100) NOT NULL,
-    [description] TEXT NOT NULL,
+    [description] NVARCHAR(255) NOT NULL,
     discount_rate DECIMAL(8, 2) NOT NULL CHECK (discount_rate >= 0 AND discount_rate <= 1),
     [start_date] DATE NOT NULL,
     [end_date] DATE NOT NULL
@@ -99,8 +95,8 @@ CREATE TABLE [order] (
     transaction_id INT UNIQUE REFERENCES [transaction](id) ON DELETE CASCADE,
     delivery_fee BIGINT DEFAULT 0 CHECK (delivery_fee >= 0),
     discount_price BIGINT DEFAULT 0 CHECK (discount_price >= 0),
-    total_price BIGINT NOT NULL CHECK (total_price > 0)
-	
+    total_price BIGINT NOT NULL CHECK (total_price > 0),
+	created_at DATETIME NOT NULL DEFAULT GETDATE()	
 );
 
 CREATE TABLE order_status (
@@ -232,6 +228,12 @@ VALUES
     (2, N'Dây chuyền kim cương Halo', 'https://cdn.pnj.io/images/detailed/204/sp-gd0000w001067-day-chuyen-vang-trang-10k-pnj-1.png', 1500000, 0.25, 5, NULL, 3),
     (3, N'Bông tai kim cương Princess', 'https://cdn.pnj.io/images/detailed/205/sp-gbddddw060389-bong-tai-kim-cuong-vang-trang-kim-cuong-pnj-1.png', 800000, 0.18, 15, NULL, 4);
 
+	INSERT INTO product (diamond_casing_id, name, image_url, labor_cost, profit_margin, stock_quantity, promotion_id, warranty_id)
+VALUES
+    (1, N'Nhẫn kim cương Solitaire', 'https://cdn.pnj.io/images/detailed/197/sp-gnddddw009976-nhan-kim-cuong-vang-trang-14k-pnj-1.png', 1000000, 0.2, 10, 1, 2),
+    (2, N'Dây chuyền kim cương Halo', 'https://cdn.pnj.io/images/detailed/204/sp-gd0000w001067-day-chuyen-vang-trang-10k-pnj-1.png', 1500000, 0.25, 5, NULL, 3),
+    (3, N'Bông tai kim cương Princess', 'https://cdn.pnj.io/images/detailed/205/sp-gbddddw060389-bong-tai-kim-cuong-vang-trang-kim-cuong-pnj-1.png', 800000, 0.18, 15, NULL, 4);
+
 	INSERT INTO diamond (color, origin, carat_weight, cut_type, clarity, GIA_certificate, price)
 VALUES
     (N'D', N'Nga', 0.50, N'Tuyệt hảo (Excellent)', 'FL', 'GIA123456789', 10000000),
@@ -243,33 +245,28 @@ VALUES
     (N'J', N'Brazil', 0.90, N'Tốt (Good)', 'SI2', 'GIA444444444', 18000000);
 
 	INSERT INTO product_diamonds (product_id, diamond_id, is_main) VALUES
-    (1, 1, 1), 
-    (2, 2, 1), 
-    (3, 3, 1),  
-    (3, 4, 0);
-
-	INSERT INTO role (role_name) VALUES ('ADMIN');
-	INSERT INTO role (role_name) VALUES ('CUSTOMER');
-	INSERT INTO role (role_name) VALUES ('SALES_STAFF');
-
-	INSERT INTO [user] (username, password, email, phone_number, role_id, first_name, last_name, city, address) VALUES
-	('adminn', '1', 'customer2@gmail.com', '0987654325', 2, N'Trần', N'Thị B', N'Đà Nẵng', N'789 Hoàng Diệu');
+    (4, 1, 1), 
+    (5, 2, 1), 
+    (6, 3, 1),  
+    (6, 4, 0);
 
 	INSERT INTO [transaction] (payment_method, transaction_date, transaction_amount, status) VALUES
     ('COD', '2024-05-20 10:30:00', 12000000, 'completed'),
-    ('Banking', '2024-05-19 14:45:00', 13500000, 'shipped');
+    ('Banking', '2024-05-19 14:45:00', 13500000, 'completed');
 
 	INSERT INTO [order] (customer_id, transaction_id, delivery_fee, discount_price, total_price, created_at) VALUES
-    (2, 1, 0, 0, 12000000, '2024-05-20 10:30:00'),
-    (2, 2, 0, 1500000, 13500000, '2024-05-19 14:45:00');
+    (9, 1, 0, 0, 12000000, '2024-06-20 10:30:00'),
+    (9, 2, 0, 1500000, 13500000, '2024-07-19 14:45:00'),
+	(9, 1, 0, 0, 12000000, '2024-08-20 10:30:00'),
+    (9, 2, 0, 1500000, 13500000, '2024-08-19 14:45:00');
 
 	INSERT INTO order_detail (order_id, product_id, quantity, unit_price) VALUES
-    (2, 1, 1, 12000000),
-    (3, 2, 1, 15000000);
+    (4, 1, 1, 12000000),
+    (4, 2, 1, 15000000);
 
 	INSERT INTO order_status (order_id, user_id, name) VALUES
-    (2, 1, 'completed'),
-    (3, 1, 'shipped');
+    (4, 9, 'completed'),
+    (4, 9, 'shipped');
 
 	select * from warranty
 	select * from category
@@ -282,7 +279,24 @@ VALUES
 	select * from order_detail
 	select * from order_status
 	select * from [user]
-	select * from [role]
 	select * from [transaction]
 
+	SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_NAME = 'user';
+	
+	ALTER TABLE [user] DROP CONSTRAINT FK__user__role_id__3D5E1FD2
+	DROP TABLE [role];
+	ALTER TABLE [user] ADD role VARCHAR(20);
+	ALTER TABLE [user] DROP COLUMN role_id;
+	ALTER TABLE [user]
+	ALTER COLUMN role VARCHAR(20) NULL;
 
+	ALTER TABLE [user]
+	ALTER COLUMN city NVARCHAR(50) NULL;
+
+	ALTER TABLE [user]
+	ALTER COLUMN [address] NVARCHAR(255) NULL;
+
+	ALTER TABLE [user]
+	ADD CONSTRAINT DF_user_role DEFAULT 'CUSTOMER' FOR role;
+
+	DELETE FROM [user];

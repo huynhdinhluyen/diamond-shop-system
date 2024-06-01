@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { newsData } from "../newsData";
+import { newsData } from "../data/newsData";
 import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
 
