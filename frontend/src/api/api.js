@@ -7,6 +7,37 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// Hàm lấy danh sách kích thước
+export async function getSizes() {
+  try {
+    const response = await axiosInstance.get("/api/sizes");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching sizes:", error);
+    throw error;
+  }
+}
+
+export async function getDiamonds() {
+  try {
+    const response = await axiosInstance.get("/api/diamonds");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching diamonds:", error);
+    throw error;
+  }
+}
+
+export async function createProduct(productData) {
+  try {
+    const response = await axiosInstance.post("/api/products", productData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating product:", error);
+    throw error;
+  }
+}
+
 export async function getProducts() {
   try {
     const response = await axiosInstance.get("/api/products");
@@ -14,6 +45,16 @@ export async function getProducts() {
   } catch (error) {
     console.error("Error fetching products:", error);
     throw error;
+  }
+}
+
+export async function deleteProduct(id) {
+  try {
+    const response = await axiosInstance.delete(`/api/products/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw error; 
   }
 }
 

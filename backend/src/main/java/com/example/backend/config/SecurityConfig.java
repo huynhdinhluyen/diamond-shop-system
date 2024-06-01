@@ -1,6 +1,5 @@
 package com.example.backend.config;
 
-
 import com.example.backend.filter.JwtAuthenticationFilter;
 import com.example.backend.service.impl.UserDetailsServiceImp;
 import org.springframework.context.annotation.Bean;
@@ -54,5 +53,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 }
