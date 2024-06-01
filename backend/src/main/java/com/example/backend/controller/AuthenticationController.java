@@ -1,11 +1,10 @@
 package com.example.backend.controller;
 
-import com.example.backend.entity.AuthenticationResponse;
+import com.example.backend.request.ChangePasswordRequest;
+import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.entity.User;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +35,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(Authentication authentication,
-                                            @RequestBody String oldPassword,
-                                            @RequestBody String newPassword) {
-        try {
-            String username = authentication.getName();
-            userService.changePassword(username, oldPassword, newPassword);
-            return ResponseEntity.ok("Password changed successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
+        authService.changePassword(passwordChangeRequest);
+        return ResponseEntity.ok("Password changed successfully");
     }
 }

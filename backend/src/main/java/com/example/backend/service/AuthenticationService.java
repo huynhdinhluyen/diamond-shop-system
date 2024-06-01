@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.entity.AuthenticationResponse;
+import com.example.backend.request.ChangePasswordRequest;
+import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -67,5 +68,18 @@ public class AuthenticationService {
         User user = repository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token, user);
+    }
+
+    public void changePassword(ChangePasswordRequest passwordChangeRequest) {
+        User user = repository.findByUsername(passwordChangeRequest.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Old password is incorrect");
+        }
+        if (!passwordChangeRequest.getNewPassword().equals(passwordChangeRequest.getConfirmPassword())) {
+            throw new RuntimeException("New passwords do not match");
+        }
+        user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
+        repository.save(user);
     }
 }
