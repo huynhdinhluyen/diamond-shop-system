@@ -10,36 +10,36 @@ import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/users")
-public class AuthenticationController {
-    private final AuthenticationService authService;
-    private final UserService userService;
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
-
-    public AuthenticationController(AuthenticationService authService, UserService userService) {
-        this.authService=authService;
-        this.userService = userService;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody User request
-    ) throws Exception {
-        return ResponseEntity.ok(authService.register(request));
-    }
-
-    @PostMapping("/login")  
-    public ResponseEntity<AuthenticationResponse> login(
-            @RequestBody User request
-    ){
-        return ResponseEntity.ok(authService.authenticate(request));
-    }
-
-    @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
-        //logger.info("Received change password request: {}", passwordChangeRequest);
-        authService.changePassword(passwordChangeRequest);
-        return ResponseEntity.ok("Password changed successfully");
-    }
-}
+//@RestController
+//@RequestMapping("/api/users")
+//public class AuthenticationController {
+//    private final AuthenticationService authService;
+//    private final UserService userService;
+//    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+//
+//    public AuthenticationController(AuthenticationService authService, UserService userService) {
+//        this.authService=authService;
+//        this.userService = userService;
+//    }
+//
+//    @PostMapping("/register")
+//    public ResponseEntity<AuthenticationResponse> register(
+//            @RequestBody User request
+//    ) throws Exception {
+//        return ResponseEntity.ok(authService.register(request));
+//    }
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<AuthenticationResponse> login(
+//            @RequestBody User request
+//    ){
+//        return ResponseEntity.ok(authService.authenticate(request));
+//    }
+//
+//    @PostMapping("/change-password")
+//    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
+//        //logger.info("Received change password request: {}", passwordChangeRequest);
+//        authService.changePassword(passwordChangeRequest);
+//        return ResponseEntity.ok("Password changed successfully");
+//    }
+//}
