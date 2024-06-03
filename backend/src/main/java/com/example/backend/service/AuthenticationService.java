@@ -4,6 +4,7 @@ import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.util.JwtService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -67,8 +68,7 @@ public class AuthenticationService {
                 ));
         User user = repository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token, user);
-    }
+        return new AuthenticationResponse(token, user);    }
 
     public void changePassword(ChangePasswordRequest passwordChangeRequest) {
         User user = repository.findByUsername(passwordChangeRequest.getUsername())

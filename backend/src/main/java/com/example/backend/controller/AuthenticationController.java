@@ -5,8 +5,9 @@ import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.entity.User;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.UserService;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
     private final AuthenticationService authService;
     private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     public AuthenticationController(AuthenticationService authService, UserService userService) {
         this.authService=authService;
@@ -36,6 +38,7 @@ public class AuthenticationController {
 
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
+        //logger.info("Received change password request: {}", passwordChangeRequest);
         authService.changePassword(passwordChangeRequest);
         return ResponseEntity.ok("Password changed successfully");
     }

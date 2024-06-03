@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.example.backend.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -57,13 +59,6 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false, length = 20)
     private RoleName roleName = RoleName.CUSTOMER;
 
-    public enum RoleName {
-        ADMIN,
-        CUSTOMER,
-        SALES_STAFF,
-        DELIVERY_STAFF,
-        MANAGER
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
