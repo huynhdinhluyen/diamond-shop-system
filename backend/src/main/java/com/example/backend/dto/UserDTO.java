@@ -22,4 +22,6 @@ public class UserDTO {
     private String city;
     private String address;
     private RoleName role_id;
+    private String verificationCode;
+//    private boolean enabled;
 }

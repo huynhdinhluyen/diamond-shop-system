@@ -15,7 +15,8 @@ public class UserMapper {
                 user.getLastName(),
                 user.getCity(),
                 user.getAddress(),
-                user.getRoleName()
+                user.getRoleName(),
+                user.getVerificationCode()
         );
     }
 
@@ -30,7 +31,8 @@ public class UserMapper {
                 dto.getLastName(),
                 dto.getCity(),
                 dto.getAddress(),
-                dto.getRole_id()
+                dto.getRole_id(),
+                dto.getVerificationCode()
         );
     }
 }

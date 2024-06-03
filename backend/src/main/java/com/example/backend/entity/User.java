@@ -59,6 +59,11 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false, length = 20)
     private RoleName roleName = RoleName.CUSTOMER;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    //private boolean enabled;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,6 +87,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled();
     }
 }
