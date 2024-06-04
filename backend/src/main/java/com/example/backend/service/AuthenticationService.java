@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -66,15 +67,43 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(User request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                ));
-        User user = repository.findByUsername(request.getUsername()).orElseThrow();
-        logger.info("Received change password request: {}", request);
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token, user);
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getUsername(),
+//                        request.getPassword()
+//                ));
+//        User user = repository.findByUsername(request.getUsername()).orElseThrow();
+//        logger.info("Received change password request: {}", request);
+//        String token = jwtService.generateToken(user);
+//        return new AuthenticationResponse(token, user);
+        try {
+            logger.info("Starting authentication for user: {}", request.getUsername());
+
+            // Log before authentication
+            logger.info("Before authenticationManager.authenticate");
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    ));
+
+            // Log after successful authentication
+            logger.info("After authenticationManager.authenticate");
+
+            User user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
+                    new UsernameNotFoundException("User not found: " + request.getUsername()));
+
+            logger.info("User found: {}", user.getUsername());
+
+            String token = jwtService.generateToken(user);
+            logger.info("Token generated for user: {}", user.getUsername());
+
+            return new AuthenticationResponse(token, user);
+        } catch (Exception e) {
+            logger.error("Error during authentication", e);
+            throw e;
+        }
     }
 
     public void changePassword(ChangePasswordRequest passwordChangeRequest) {
