@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.DashboardDataDTO;
+import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
 import com.example.backend.enums.RoleName;
 import com.example.backend.service.AdminService;
@@ -36,19 +37,26 @@ public class AdminController {
     private  AdminService adminService;
 
 
-        @Transactional(readOnly = true)
-        @GetMapping("/dashboard")
-        public ResponseEntity<DashboardDataDTO> getDashboardData() {
-            Long totalOrders = orderService.getTotalOrders();
-            Long totalCustomers = userService.getTotalCustomers();
-            Long totalRevenue = orderService.getTotalRevenue();
-            Long totalProducts = productService.countProducts();
-            Map<String, Long> monthlySales = orderService.getMonthlySales();
-            Map<String, Long> categoryRevenue = orderService.getCategoryRevenue();
-            DashboardDataDTO data = new DashboardDataDTO(totalOrders, totalCustomers, totalRevenue, totalProducts,
-                    monthlySales, categoryRevenue);
-            return ResponseEntity.ok(data);
-        }
+    @Transactional(readOnly = true)
+    @GetMapping("/dashboard")
+    public ResponseEntity<DashboardDataDTO> getDashboardData() {
+        Long totalOrders = orderService.getTotalOrders();
+        Long totalCustomers = userService.getTotalCustomers();
+        Long totalRevenue = orderService.getTotalRevenue();
+        Long totalProducts = productService.countProducts();
+        Map<String, Long> monthlySales = orderService.getMonthlySales();
+        Map<String, Long> categoryRevenue = orderService.getCategoryRevenue();
+        DashboardDataDTO data = new DashboardDataDTO(totalOrders, totalCustomers, totalRevenue, totalProducts,
+                monthlySales, categoryRevenue);
+        return ResponseEntity.ok(data);
+    }
+
+    //Get all users REST API
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> employees = userService.getAllUsers();
+        return ResponseEntity.ok(employees);
+    }
 
 //        @GetMapping("/getByRole")
 //        public ResponseEntity<List<User>> findUsersByRole(@RequestParam RoleName role) {

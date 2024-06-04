@@ -20,12 +20,7 @@ public class UserController {
     private final AuthenticationService authService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    //Get all users REST API
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> employees = userService.getAllUsers();
-        return ResponseEntity.ok(employees);
-    }
+
 
     public UserController(AuthenticationService authService, UserService userService) {
         this.authService=authService;
