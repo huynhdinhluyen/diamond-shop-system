@@ -4,12 +4,12 @@ import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "diamond-shop-system.firebaseapp.com",
-  projectId: "diamond-shop-system",
-  storageBucket: "diamond-shop-system.appspot.com",
-  messagingSenderId: "107644225653",
-  appId: "1:107644225653:web:fb90b79a9608bf7e4a103c",
-  measurementId: "G-WT0Y8PSXS0"
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
