@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB4zQpNmuBk6aDf3LOfRubJbfCGKoEhCkY",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "diamond-shop-system.firebaseapp.com",
   projectId: "diamond-shop-system",
   storageBucket: "diamond-shop-system.appspot.com",
