@@ -7,7 +7,7 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleProducts, setVisibleProducts] = useState(12); // Số lượng sản phẩm hiển thị ban đầu
+  const [visibleProducts, setVisibleProducts] = useState(8); // Số lượng sản phẩm hiển thị ban đầu
 
   useEffect(() => {
     getProducts()
@@ -21,7 +21,7 @@ function ProductList() {
   }, []);
 
   const loadMoreProducts = () => {
-    setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 12); // Tăng số lượng sản phẩm hiển thị
+    setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 4); // Tăng số lượng sản phẩm hiển thị
   };
 
   return (
@@ -42,12 +42,11 @@ function ProductList() {
         <div>Error: {error.message}</div>
       ) : (
         <>
-          <div className="flex flex-col md:flex-row justify-center gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {products.slice(0, visibleProducts).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-
           {visibleProducts < products.length && (
             <div className="flex justify-center mt-8">
               <Button
