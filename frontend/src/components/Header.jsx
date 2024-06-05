@@ -38,6 +38,7 @@ export default function Header() {
           text: "Bạn đã đăng xuất",
           icon: "success",
         });
+        window.location.reload();
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
           title: "Đã hủy",
@@ -54,8 +55,8 @@ export default function Header() {
 
         <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-10 lg:gap-y-0 mx-5">
           <div className="flex justify-center items-center gap-x-2 lg:justify-normal">
-            <PlaceIcon className="text-accent" />
-            <div className="text-nowrap">
+            <div className="text-wrap">
+              <PlaceIcon className="text-accent" />
               123 Long Thạnh Mỹ, Thành phố Thủ Đức
             </div>
           </div>
@@ -111,13 +112,11 @@ export default function Header() {
           </div>
 
           <Link
-            href=""
-            className="text-secondary hover:text-accent cursor-pointer transition-all duration-300 flex items-center gap-x-2"
+            to="/cart"
+            className="text-secondary hover:text-accent cursor-pointer transition-all duration-300 flex items-center gap-x-2 text-nowrap"
           >
             <ShoppingCartIcon />
-            <span className="sm:hidden md:hidden lg:flex text-nowrap">
-              Giỏ hàng
-            </span>
+            Giỏ hàng
           </Link>
         </div>
 
