@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 // import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import Input from "../components/Input";
 
 export default function Login() {
   // const [userName, setUserName] = useState("");
@@ -52,26 +53,21 @@ export default function Login() {
             noValidate
             className="flex flex-col gap-y-4"
           >
-            <input
-              className="py-2 px-4 mt-8 rounded-xl border w-full outline-none focus:border-accent transition-all duration-300 placeholder:italic placeholder:text-sm"
-              type="text"
+            <Input type="username"
               name="username"
-              placeholder="Username"
+              placeholder="Tên đăng nhập"
               {...register("username", {
                 required: true,
               })}
             />
-            <div className="relative">
-              <input
-                className="py-2 px-4 rounded-xl border w-full outline-none focus:border-accent transition-all duration-300 placeholder:italic placeholder:text-sm"
-                type="password"
-                name="password"
-                placeholder="Mật khẩu"
-                {...register("password", {
-                  required: true,
-                })}
-              />
-            </div>
+            <Input
+              type="password"
+              name="password"
+              placeholder="Mật khẩu"
+              {...register("password", {
+                required: true,
+              })}
+            />
             <button className="btn btn-lg btn-accent rounded-xl" type="submit">
               Đăng nhập
             </button>
@@ -90,11 +86,10 @@ export default function Login() {
             <hr className="border-gray-400" />
           </div>
 
-          {/* <div className="flex justify-center mt-3">
-            <GoogleOAuthProvider clientId={clientId}>
-              <GoogleLogin onSuccess={onSuccess} onFailure={onFailure} />
-            </GoogleOAuthProvider>
-          </div> */}
+          <button className="flex border py-1 px-5 mt-3 mx-auto hover:bg-gray-50">
+            <i className="ri-google-fill text-accent mr-2"></i>
+            <span>Đăng nhập với Google</span>
+          </button>
           <Link
             className="text-md flex justify-center mt-4 hover:underline transition-all duration-300"
             to="/"

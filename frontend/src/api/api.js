@@ -54,7 +54,7 @@ export async function deleteProduct(id) {
     return response.data;
   } catch (error) {
     console.error("Error deleting product:", error);
-    throw error; 
+    throw error;
   }
 }
 
@@ -70,10 +70,16 @@ export async function getCategories() {
 
 export async function getDashboardData() {
   try {
-      const response = await axiosInstance.get("/api/admin/dashboard");
-      return response.data;
+    const response = await axiosInstance.get("/api/admin/dashboard");
+    return response.data;
   } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-      throw error;
+    console.error("Error fetching dashboard data:", error);
+    throw error;
   }
 }
+
+export async function getProductById(productId) {
+  const { data } = await axiosInstance.get("/api/products/" + productId);
+  return data;
+}
+

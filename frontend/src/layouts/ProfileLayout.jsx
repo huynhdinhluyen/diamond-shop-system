@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyProfile from "../components/MyProfile";
 import SidebarProfile from "../components/SidebarProfile";
 import { useAuth } from "../hooks/useAuth";
@@ -6,14 +6,19 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProfileLayout() {
     const { user } = useAuth();
-
     const navigate = useNavigate();
-
     const [mainComponent, setMainComponent] = useState(<MyProfile />);
 
     const handleMainComponentChange = (component) => {
         setMainComponent(component);
     };
+
+    // Sử dụng useEffect để điều hướng nếu người dùng không tồn tại
+    useEffect(() => {
+        if (!user) {
+            navigate("/");
+        }
+    }, [user, navigate]);
 
     return (
         user ? (
@@ -23,6 +28,6 @@ export default function ProfileLayout() {
                     {mainComponent}
                 </div>
             </div>
-        ) : navigate("/")
-    )
+        ) : null // Trả về null hoặc một loader trong khi chờ điều hướng
+    );
 }
