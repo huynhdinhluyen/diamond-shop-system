@@ -8,6 +8,8 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,4 +38,6 @@ public class DiamondCasing {
     @JoinColumn(name = "size_id")
     private Size size;
 
+    @OneToMany(mappedBy = "diamondCasing", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 }
