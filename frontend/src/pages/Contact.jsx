@@ -25,7 +25,11 @@ export default function Contact() {
       );
   };
   return (
-    <div className="container mt-10">
+    <div className="container lg:mt-10">
+      <img
+        src="https://images.unsplash.com/photo-1586466618167-882f878971ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt=""
+        className="lg:hidden w-full h-[300px] object-cover mb-5" />
       <div className="flex flex-col gap-y-4 text-center w-full lg:w-[50%] mx-auto mb-5">
         <h3 className="h3 text-accent">
           Nơi tinh hoa của cái đẹp và nghệ thuật trang sức được tạo ra
