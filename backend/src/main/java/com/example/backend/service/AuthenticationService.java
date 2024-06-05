@@ -1,11 +1,17 @@
 package com.example.backend.service;
 
-import com.example.backend.entity.AuthenticationResponse;
+import com.example.backend.controller.UserController;
+import com.example.backend.request.ChangePasswordRequest;
+import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.util.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +24,8 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public AuthenticationService(UserRepository repository,
                                  PasswordEncoder passwordEncoder,
@@ -59,13 +67,56 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(User request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                ));
-        User user = repository.findByUsername(request.getUsername()).orElseThrow();
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token, user);
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getUsername(),
+//                        request.getPassword()
+//                ));
+//        User user = repository.findByUsername(request.getUsername()).orElseThrow();
+//        logger.info("Received change password request: {}", request);
+//        String token = jwtService.generateToken(user);
+//        return new AuthenticationResponse(token, user);
+        try {
+            logger.info("Starting authentication for user: {}", request.getUsername());
+
+            // Log before authentication
+            logger.info("Before authenticationManager.authenticate");
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    ));
+
+            // Log after successful authentication
+            logger.info("After authenticationManager.authenticate");
+
+            User user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
+                    new UsernameNotFoundException("User not found: " + request.getUsername()));
+
+            logger.info("User found: {}", user.getUsername());
+
+            String token = jwtService.generateToken(user);
+            logger.info("Token generated for user: {}", user.getUsername());
+
+            return new AuthenticationResponse(token, user);
+        } catch (Exception e) {
+            logger.error("Error during authentication", e);
+            throw e;
+        }
+    }
+
+    public void changePassword(ChangePasswordRequest passwordChangeRequest) {
+        User user = repository.findByUsername(passwordChangeRequest.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Old password is incorrect");
+        }
+        if (!passwordChangeRequest.getNewPassword().equals(passwordChangeRequest.getConfirmPassword())) {
+            throw new RuntimeException("New passwords do not match");
+        }
+        user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
+        repository.save(user);
+        //tesst
     }
 }

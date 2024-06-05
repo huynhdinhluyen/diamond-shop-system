@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { prices } from "../pricesData";
+import { prices } from "../data/pricesData";
 import { useRef } from "react";
 import { useEffect } from "react";
 
 export default function TablePricesDiamond() {
-
     const [activeSize, setActiveSize] = useState(prices[0].size);
     const sectionRefs = useRef([]);
+    const currentDate = new Date().toLocaleString('en-US', {
+        timeZone: 'Asia/Ho_Chi_Minh',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    });
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -42,15 +47,19 @@ export default function TablePricesDiamond() {
     };
 
     return (
-        <div className="mt-10 container">
-            <h3 className="h3 text-center">Bảng giá kim cương thiên nhiên kiểm định quốc tế hôm nay 30/05/2024</h3>
+        <div className="lg:mt-10 container">
+            <img
+                src="https://images.unsplash.com/photo-1584377334016-464803e03b80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt=""
+                className="lg:hidden w-full h-[300px] object-cover mb-5" />
+            <h3 className="h3 text-center">Bảng giá kim cương thiên nhiên kiểm định quốc tế hôm nay {currentDate}</h3>
             <p className="text-md text-center mt-5">
                 Bảng giá hột xoàn tham khảo theo ly (mm), nước màu (color) & độ sạch. Nếu quý khách đang muốn mua trang sức nhẫn, dây chuyền, hoa tai… bằng kim cương nhưng chưa biết giá kim cương thiên nhiên hôm nay như thế nào, hãy tham khảo nhanh báo giá mới nhất mới cập nhật ngay dưới đây.
             </p>
             <p className="text-md text-center mt-5">(Đơn vị tiền tệ: VNĐ)</p>
 
-            <div className="sticky top-0 bg-white p-2 z-10">
-                <div className="flex overflow-x-auto">
+            <div className="sticky top-0 bg-white p-2 z-10 overflow-x-auto">
+                <div className="flex flex-wrap justify-center">
                     {prices.map(price => (
                         <span
                             key={price.size}
@@ -68,10 +77,10 @@ export default function TablePricesDiamond() {
                     id={price.size}
                     key={price.size}
                     ref={el => sectionRefs.current[index] = el}
-                    className="mt-8"
+                    className="mt-8 overflow-x-auto"
                 >
                     <h4 className="h4 text-center text-accent">Giá kim cương {price.size}</h4>
-                    <table className="table-auto w-full mt-2 ">
+                    <table className="w-full mt-2 ">
                         <thead>
                             <tr>
                                 <th className=" border border-gray-300 px-4 py-2 text-left">Clarity</th>

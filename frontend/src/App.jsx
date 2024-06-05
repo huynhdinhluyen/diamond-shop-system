@@ -12,6 +12,8 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProfileLayout from "./layouts/ProfileLayout";
 import TablePricesDiamond from "./pages/TablePricesDiamond";
+import Cart from "./pages/Cart";
+import Product from "./pages/Product";
 // import AdminProductManagement from "./pages/AdminProductManagement";
 
 function App() {
@@ -76,6 +78,24 @@ function App() {
         element={
           <Layout>
             <TablePricesDiamond />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/cart"
+        element={
+          <Layout>
+            <Cart />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/product/:productId"
+        element={
+          <Layout>
+            <Product />
           </Layout>
         }
       />

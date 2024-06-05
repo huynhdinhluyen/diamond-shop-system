@@ -1,7 +1,7 @@
 package com.example.backend.filter;
 
 
-import com.example.backend.service.JwtService;
+import com.example.backend.util.JwtService;
 import com.example.backend.service.impl.UserDetailsServiceImp;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +26,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsServiceImp userDetailsService) {
         this.jwtService = jwtService;
-
         this.userDetailsService = userDetailsService;
     }
 
