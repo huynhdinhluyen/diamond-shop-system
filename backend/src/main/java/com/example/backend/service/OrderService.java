@@ -1,5 +1,7 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.OrderDTO;
+import com.example.backend.entity.Order;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 
@@ -9,4 +11,5 @@ public interface OrderService {
     Long getTotalRevenue();
     Map<String, Long> getMonthlySales();
     Map<String, Long> getCategoryRevenue();
+    void addOrder(OrderDTO orderDTO);
 }

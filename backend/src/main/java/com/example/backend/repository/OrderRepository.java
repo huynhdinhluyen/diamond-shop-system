@@ -17,4 +17,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "GROUP BY FORMAT(o.created_at, 'MM/yyyy') " +
             "ORDER BY monthYear", nativeQuery = true)
     List<Object[]> getMonthlySales(LocalDateTime startDate, LocalDateTime endDate);
+
+
 }

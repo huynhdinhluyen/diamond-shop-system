@@ -1,9 +1,16 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.dto.OrderDTO;
 import com.example.backend.entity.Category;
+import com.example.backend.entity.Order;
+import com.example.backend.entity.User;
+import com.example.backend.mapper.OrderMapper;
 import com.example.backend.repository.OrderDetailRepository;
 import com.example.backend.repository.OrderRepository;
+import com.example.backend.repository.UserRepository;
+import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +24,11 @@ import java.util.stream.Collectors;
 import java.util.LinkedHashMap;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private OrderDetailRepository orderDetailRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -71,4 +77,13 @@ public class OrderServiceImpl implements OrderService {
                 )));
         return categoryRevenue;
     }
+
+    @Override
+    public void addOrder(OrderDTO orderDTO) {
+        User user = userRepository.findById(orderDTO.getCustomer_id())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        orderRepository.save(OrderMapper.maptoOrderEntity(orderDTO));
+    }
+
+
 }
