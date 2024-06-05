@@ -13,7 +13,6 @@ import ProfileLayout from "./layouts/ProfileLayout";
 import TablePricesDiamond from "./pages/TablePricesDiamond";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
-// import AdminProductManagement from "./pages/AdminProductManagement";
 import AdminProductManagement from "./pages/AdminProductManagement";
 // import AddProductForm from "./forms/AddProductForm";
 // import EditProductForm from "./forms/EditProductForm";
