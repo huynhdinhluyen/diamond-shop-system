@@ -10,7 +10,7 @@ import com.example.backend.exception.WarrantyNotFoundException;
 import com.example.backend.mapper.ProductMapper;
 import com.example.backend.repository.*;
 import com.example.backend.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,21 +18,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private DiamondCasingRepository diamondCasingRepository;
-    @Autowired
-    private ProductDiamondRepository productDiamondRepository;
-    @Autowired
-    private DiamondRepository diamondRepository;
-    @Autowired
-    private PromotionRepository promotionRepository;
-    @Autowired
-    private WarrantyRepository warrantyRepository;
-    @Autowired
-    private ProductMapper productMapper;
+    private final ProductRepository productRepository;
+    private final DiamondCasingRepository diamondCasingRepository;
+    private final ProductDiamondRepository productDiamondRepository;
+    private final DiamondRepository diamondRepository;
+    private final PromotionRepository promotionRepository;
+    private final WarrantyRepository warrantyRepository;
+    private final ProductMapper productMapper;
 
     @Override
     @Transactional(readOnly = true)
