@@ -9,15 +9,14 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(userService.getUser());
-
   const login = async (username, password) => {
     try {
       const user = await userService.login(username, password);
       setUser(user);
-      toast.success("Login Successfully");
+      toast.success("Đăng nhập thành công!");
       return true;
     } catch (err) {
-      toast.error("Invalid Username or Password");
+      toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
       return false;
     }
   };
@@ -37,11 +36,28 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     await userService.logout();
     setUser(null);
-    // toast.success("Logout Successfully");
   };
 
+  const updateProfile = async (user) => {
+    const updateUser = await userService.updateProfile(user);
+    if (updateUser) {
+      toast.success("Profile Update was Successfully!");
+      setUser(updateUser)
+    }
+  }
+
+  const changePassword = async (data) => {
+    try {
+      await userService.changePassword(data);
+      logout();
+      toast.success("Thay đổi mật khẩu thành công! Mời bạn đăng nhập lại!");
+    } catch (err) {
+      toast.error("Đổi mật khẩu thất bại!");
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, register }}>
+    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, changePassword }}>
       {children}
     </AuthContext.Provider>
   );
