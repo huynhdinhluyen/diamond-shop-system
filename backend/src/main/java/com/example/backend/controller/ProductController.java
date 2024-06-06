@@ -4,10 +4,11 @@ import com.example.backend.dto.ProductDTO;
 import com.example.backend.exception.ProductNotFoundException;
 import com.example.backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,32 +19,29 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<ProductDTO> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) {
         try{
-            ProductDTO productDTO = productService.getProductById(id);
-            return ResponseEntity.ok(productDTO);
+            return ResponseEntity.ok(productService.getProductById(id));
         }catch (ProductNotFoundException e){
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
-        ProductDTO createdProduct = productService.createProduct(productDTO);
-        return ResponseEntity.created(URI.create("/api/products/" + createdProduct.getId())).body(createdProduct);
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(productDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO productDTO) {
-        try{
-            ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
-            return ResponseEntity.ok(updatedProduct);
-        }catch (ProductNotFoundException e){
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id,
+                                                    @Valid @RequestBody ProductDTO productDTO) {
+        try {
+            return ResponseEntity.ok(productService.updateProduct(id, productDTO));
+        } catch (ProductNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
