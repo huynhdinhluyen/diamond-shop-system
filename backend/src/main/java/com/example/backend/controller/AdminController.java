@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 public class AdminController {
     @Autowired
     @Qualifier("orderServiceImpl")
@@ -34,7 +34,7 @@ public class AdminController {
     @Qualifier("productServiceImpl")
     private ProductService productService;
     @Autowired
-    private  AdminService adminService;
+    private AdminService adminService;
 
 
     @Transactional(readOnly = true)
@@ -52,17 +52,16 @@ public class AdminController {
     }
 
     //Get all users REST API
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> employees = userService.getAllUsers();
         return ResponseEntity.ok(employees);
     }
-    //test
 
-//        @GetMapping("/getByRole")
-//        public ResponseEntity<List<User>> findUsersByRole(@RequestParam RoleName role) {
-//            List<User> users = adminService.findByRole(role);
-//            return ResponseEntity.ok(users);
-//        }
+    @GetMapping("/getUsersByRole")
+    public ResponseEntity<List<UserDTO>> findUsersByRole(@RequestParam RoleName role) {
+        List<UserDTO> users = adminService.findByRole(role);
+        return ResponseEntity.ok(users);
+    }
 
 }
