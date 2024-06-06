@@ -35,7 +35,7 @@ export default function Slider() {
     </div>
   ));
   return (
-    <div className="flex mt-6">
+    <div className="flex lg:mt-6">
       <AliceCarousel
         animationType="fadeout"
         animationDuration={800}
