@@ -2,7 +2,7 @@ import { Fade, Slide } from "@mui/material";
 
 export default function About() {
   return (
-    <div className="container bg-gray-50 p-8 rounded-xl">
+    <div className="container bg-gray-50 mt-10 p-8 rounded-xl">
       <Fade in={true} timeout={1000}>
         <h1 className="font-semibold text-2xl text-center mb-4">GIỚI THIỆU</h1>
       </Fade>
@@ -92,54 +92,54 @@ export default function About() {
         </div>
       </Slide>
       <Slide direction="up" in={true} timeout={1500}>
-      <div className="flex flex-col">
-        <h1 className="font-semibold text-xl mt-8">TẦM NHÌN VÀ SỨ MỆNH</h1>
-        <br />
-        <p>
-          Ngay từ khi bắt đầu, chúng tôi đã mang trên mình sứ mệnh cao cả đó là
-          tạo nên những giá trị sống đặc biệt cho từng khách hàng, và hơn bất cứ
-          điều gì đó chính là cá tính và độc đáo của từng sản phẩm. Chúng tôi
-          cam kết mang đến cho quý vị những sản phẩm sang trọng, hiện đại,
-          “chất” và hoàn toàn khác biệt. Một đơn vị được đánh giá là thành công
-          khi nhận được nhiều nhất sự tín nhiệm, tin cậy và ủng hộ của khách
-          hàng. Thấu hiểu một cách sâu sắc vấn đề đó, DHL DIAMOND luôn truyền
-          cảm hứng cho tất cả các thành viên trong tập thể, để bất cứ ai cũng
-          luôn có được sự chăm chút sản phẩm đến từng chi tiết nhỏ nhất. Mọi
-          giới hạn sẽ được phá vỡ để tạo nên những dịch vụ tốt nhất cho khách
-          hàng.
-        </p>
-      </div>
+        <div className="flex flex-col">
+          <h1 className="font-semibold text-xl mt-8">TẦM NHÌN VÀ SỨ MỆNH</h1>
+          <br />
+          <p>
+            Ngay từ khi bắt đầu, chúng tôi đã mang trên mình sứ mệnh cao cả đó là
+            tạo nên những giá trị sống đặc biệt cho từng khách hàng, và hơn bất cứ
+            điều gì đó chính là cá tính và độc đáo của từng sản phẩm. Chúng tôi
+            cam kết mang đến cho quý vị những sản phẩm sang trọng, hiện đại,
+            “chất” và hoàn toàn khác biệt. Một đơn vị được đánh giá là thành công
+            khi nhận được nhiều nhất sự tín nhiệm, tin cậy và ủng hộ của khách
+            hàng. Thấu hiểu một cách sâu sắc vấn đề đó, DHL DIAMOND luôn truyền
+            cảm hứng cho tất cả các thành viên trong tập thể, để bất cứ ai cũng
+            luôn có được sự chăm chút sản phẩm đến từng chi tiết nhỏ nhất. Mọi
+            giới hạn sẽ được phá vỡ để tạo nên những dịch vụ tốt nhất cho khách
+            hàng.
+          </p>
+        </div>
       </Slide>
       <Slide direction="up" in={true} timeout={2000}>
-      <div className="flex flex-col">
-        <h1 className="font-semibold text-xl mt-8">CHẤT LƯỢNG DỊCH VỤ</h1>
-        <br />
-        <p>
-          Với “kim chỉ nam” phục vụ khách hàng, đề cao chất lượng trong từng sản
-          phẩm và dịch vụ để có lộ trình phát triển bền vững nhất. Dưới bàn tay
-          của những người thợ kim hoàn tại DHL Diamond luôn linh hoạt, công phu,
-          tỉ mỉ đã tạo ra những sản phẩm đẹp sắc sảo, tinh tế trong kiểu dáng,
-          sang trọng, quý phái và hiện đại sẽ làm hài lòng mọi khách hàng khó
-          tính nhất. Môi trường làm việc sáng tạo, thoải mái và đánh thức các
-          giá trị tiềm ẩn của từng cá nhân trong công ty chính là chìa khóa giúp
-          DHL Diamond quy tụ các nhân tài có chuyên môn cao trong lĩnh vực của
-          mình và mong muốn được gắn bó lâu dài. Ngoài ra, DHL Diamond còn mang
-          đến những chính sách hậu mãi tốt nhất khi Quý khách có nhu cầu bảo
-          hành, đổi trả. Thủ tục đơn giản. Thời gian nhanh chóng. Nhân viên phục
-          vụ tận tình. Điều đó đã làm nên một DHL Diamond đã, đang và sẽ trường
-          tồn cùng thời gian.”
-        </p>
-        <br />
-        <p>
-          Với những nỗ lực không ngừng, trong tương lai, DHL Diamond chắc chắn
-          sẽ còn phát triển mạnh mẽ hơn nữa và đạt được những thành tựu nổi bật.
-          Trở thành địa chỉ số 1 trong lòng khách hàng khi có nhu cầu mua trang
-          sức kim cương chính hãng và là nhà phân phối trang sức kim cương hàng
-          đầu Việt Nam cũng như khu vực Đông Nam Á. Bên cạnh đó, ngày càng cải
-          tiến về dịch vụ tư vấn cho khách hàng chọn được viên kim cương ưng ý,
-          có thông số ý nghĩa, tăng lộc phát.
-        </p>
-      </div>
+        <div className="flex flex-col">
+          <h1 className="font-semibold text-xl mt-8">CHẤT LƯỢNG DỊCH VỤ</h1>
+          <br />
+          <p>
+            Với “kim chỉ nam” phục vụ khách hàng, đề cao chất lượng trong từng sản
+            phẩm và dịch vụ để có lộ trình phát triển bền vững nhất. Dưới bàn tay
+            của những người thợ kim hoàn tại DHL Diamond luôn linh hoạt, công phu,
+            tỉ mỉ đã tạo ra những sản phẩm đẹp sắc sảo, tinh tế trong kiểu dáng,
+            sang trọng, quý phái và hiện đại sẽ làm hài lòng mọi khách hàng khó
+            tính nhất. Môi trường làm việc sáng tạo, thoải mái và đánh thức các
+            giá trị tiềm ẩn của từng cá nhân trong công ty chính là chìa khóa giúp
+            DHL Diamond quy tụ các nhân tài có chuyên môn cao trong lĩnh vực của
+            mình và mong muốn được gắn bó lâu dài. Ngoài ra, DHL Diamond còn mang
+            đến những chính sách hậu mãi tốt nhất khi Quý khách có nhu cầu bảo
+            hành, đổi trả. Thủ tục đơn giản. Thời gian nhanh chóng. Nhân viên phục
+            vụ tận tình. Điều đó đã làm nên một DHL Diamond đã, đang và sẽ trường
+            tồn cùng thời gian.”
+          </p>
+          <br />
+          <p>
+            Với những nỗ lực không ngừng, trong tương lai, DHL Diamond chắc chắn
+            sẽ còn phát triển mạnh mẽ hơn nữa và đạt được những thành tựu nổi bật.
+            Trở thành địa chỉ số 1 trong lòng khách hàng khi có nhu cầu mua trang
+            sức kim cương chính hãng và là nhà phân phối trang sức kim cương hàng
+            đầu Việt Nam cũng như khu vực Đông Nam Á. Bên cạnh đó, ngày càng cải
+            tiến về dịch vụ tư vấn cho khách hàng chọn được viên kim cương ưng ý,
+            có thông số ý nghĩa, tăng lộc phát.
+          </p>
+        </div>
       </Slide>
     </div>
   );

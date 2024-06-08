@@ -38,13 +38,15 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const updateProfile = async (user) => {
-    const updateUser = await userService.updateProfile(user);
-    if (updateUser) {
-      toast.success("Profile Update was Successfully!");
-      setUser(updateUser)
+  const updateProfile = async (userUpdate) => {
+    try {
+      const updatedUser = await userService.updateUserProfile(user.id, userUpdate);
+      setUser(updatedUser);
+      toast.success("Cập nhật hồ sơ thành công!");
+    } catch (err) {
+      toast.error("Cập nhật hồ sơ không thành công!");
     }
-  }
+  };
 
   const changePassword = async (data) => {
     try {

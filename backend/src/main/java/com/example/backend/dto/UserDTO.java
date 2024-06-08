@@ -24,4 +24,9 @@ public class UserDTO {
     private RoleName role_id;
     private String verificationCode;
 //    private boolean enabled;
+
+    public UserDTO(Integer id, String username) {
+        this.id = id;
+        this.username = username;
+    }
 }

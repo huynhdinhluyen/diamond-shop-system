@@ -16,18 +16,18 @@ export default function ChangePassword() {
     }
 
     return (
-        <div className="">
+        <div className="ml-5">
             <h3 className="h3">Thay đổi mật khẩu</h3>
             <p className='text-gray-400'>Đổi mật khẩu nếu bạn muốn</p>
             <hr />
             <form onSubmit={handleSubmit(submit)}>
-                <div className="mt-5 flex items-center">
-                    <Input
-                        type="hidden"
-                        name="username"
-                        value={user.username}
-                        {...register("username")}
-                    />
+                <Input
+                    type="hidden"
+                    name="username"
+                    value={user.username}
+                    {...register("username")}
+                />
+                <div className="mt-5 flex-grow items-center">
                     <label htmlFor="" className="mr-5 text-nowrap">Mật khẩu cũ:</label>
                     <Input
                         type="password"
@@ -37,7 +37,7 @@ export default function ChangePassword() {
                         error={errors.oldPassword}
                     />
                 </div>
-                <div className="mt-5 flex items-center">
+                <div className="mt-5 flex-grow items-center">
                     <label htmlFor="" className="mr-5 text-nowrap">Mật khẩu mới: </label>
                     <Input
                         type="password"
@@ -48,7 +48,7 @@ export default function ChangePassword() {
                         error={errors.newPassword}
                     />
                 </div>
-                <div className="mt-5 flex items-center">
+                <div className="mt-5 flex-grow items-center">
                     <label htmlFor="" className="mr-5 text-nowrap">Nhập lại mật khẩu mới:</label>
                     <Input
                         type="password"

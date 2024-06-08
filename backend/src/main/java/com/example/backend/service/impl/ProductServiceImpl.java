@@ -127,4 +127,10 @@ public class ProductServiceImpl implements ProductService {
     public Long countProducts() {
         return productRepository.count();
     }
+
+    @Override
+    public Product getProductId(Integer id) throws ProductNotFoundException {
+        return productRepository.findByIdWithDetails(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+    }
 }

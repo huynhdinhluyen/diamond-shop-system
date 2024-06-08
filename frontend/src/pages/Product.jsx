@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getProductById, getSizes } from "../api/api";
 import NotFound from "../components/NotFound";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, ListItemText } from "@mui/material";
 import { useCart } from "../hooks/useCart";
 import Price from "../components/Price";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Product() {
+    const { user } = useAuth();
     const [product, setProduct] = useState(null);
     const [sizes, setSizes] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [open, setOpen] = useState(false);
     const { productId } = useParams();
     const { addToCart } = useCart();
-    const navigate = useNavigate();
     const handleAddToCart = () => {
-        addToCart(product);
-        navigate("/cart");
+        addToCart({
+            user_id: user.id,
+            product_id: productId,
+            quantity: 1
+        });
     }
 
     useEffect(() => {
