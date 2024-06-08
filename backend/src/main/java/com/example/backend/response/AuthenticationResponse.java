@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class AuthenticationResponse {
     private String token;
+    private Integer id;
     private String username;
     private String firstName;
     private String lastName;
@@ -19,6 +20,7 @@ public class AuthenticationResponse {
 
     public AuthenticationResponse(String token, User user) {
         this.token = token;
+        this.id = user.getId();
         this.username = user.getUsername();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();

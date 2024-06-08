@@ -25,12 +25,12 @@ public class Order {
     //@ManyToOne(fetch = FetchType.LAZY)
     //@OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "customer_id")
-    private Integer customer_id;
+    private Integer customerId;
 
     //@OneToOne(fetch = FetchType.LAZY)
     //@OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "transaction_id")
-    private Integer transaction_id;
+    private Integer transactionId;
 
     @ColumnDefault("0")
     @Column(name = "delivery_fee")
