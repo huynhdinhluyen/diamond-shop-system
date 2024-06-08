@@ -1,105 +1,97 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useState } from "react";
+import * as cartService from "../service/cartService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "./useAuth";
+import { getProductById } from "../api/api";
 
 const CartContext = createContext(null);
-const CART_KEY_PREFIX = "cart_";
-const EMPTY_CART = {
-    items: [],
-    totalPrice: 0,
-    totalCount: 0
-};
-
-export default function CartProvider({ children }) {
+export const CartProvider = ({ children }) => {
+    const [cart, setCart] = useState([]);
     const { user } = useAuth();
-    const initCart = getCartFromLocalStorage();
-    const [cartItems, setCartItems] = useState(initCart.items);
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [totalCount, setTotalCount] = useState(0);
 
     useEffect(() => {
         if (user) {
-            const totalPrice = sum(cartItems.map((item) => item.price));
-            const totalCount = sum(cartItems.map((item) => item.quantity));
-            setTotalPrice(totalPrice);
-            setTotalCount(totalCount);
-            localStorage.setItem(
-                CART_KEY_PREFIX + user.token,
-                JSON.stringify({
-                    items: cartItems,
-                    totalPrice,
-                    totalCount,
-                })
-            );
+            getProductFromCart();
         }
-    }, [cartItems, user]);
+    }, [user]);
 
-    function getCartFromLocalStorage() {
-        if (user) {
-            const storedCart = localStorage.getItem(CART_KEY_PREFIX + user.token);
-            console.log(storedCart)
-            return storedCart ? JSON.parse(storedCart) : EMPTY_CART;
-        } else {
-            return EMPTY_CART;
+    const getProductFromCart = async () => {
+        if (!user) return;
+        const cartItems = await cartService.getCartItems(user.id);
+        const productIds = cartItems.map(item => item.productId);
+        const productRequests = productIds.map(id => getProductById(id));
+        const productResponses = await Promise.all(productRequests);
+        const products = productResponses.map(res => res);
+
+        const combinedCart = cartItems.map(item => {
+            const product = products.find(p => p.id === item.productId);
+            return {
+                ...item,
+                productName: product?.name,
+                image: product?.imageUrl,
+                price: product?.costPrice,
+            };
+        });
+
+        const totalCount = combinedCart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = combinedCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+        setCart({ items: combinedCart, totalCount, totalPrice });
+    };
+
+
+    const addToCart = async (data) => {
+        try {
+            await cartService.addToCart(data);
+            toast.success("Đã thêm vào giỏ hàng!")
+        } catch (err) {
+            toast.error("Thêm vào giỏ hàng không thành công!");
         }
     }
 
-    const sum = (items) => {
-        return items.reduce((previous, curValue) => previous + curValue, 0);
-    };
-
-    const changeQuantity = (cartItem, newQuantity) => {
-        const { product } = cartItem;
-
-        const changedCartItem = {
-            ...cartItem,
-            quantity: newQuantity,
-            price: product.costPrice * newQuantity
-        };
-
-        setCartItems(
-            cartItems.map((item) =>
-                item.product.id === product.id ? changedCartItem : item
-            )
-        );
-    };
-
-    const addToCart = (product) => {
-        const cartItem = cartItems.find((item) => item.product.id === product.id);
-        if (cartItem) {
-            changeQuantity(cartItem, cartItem.quantity + 1);
-        } else {
-            setCartItems([...cartItems, { product, quantity: 1, price: product.costPrice }]);
+    const changeQuantity = async (productId, quantity) => {
+        try {
+            await cartService.changeQuantity(user.id, productId, quantity);
+            setCart(prevCart => {
+                const newCartItems = prevCart.items.map(item =>
+                    item.productId === productId ? { ...item, quantity } : item
+                );
+                const totalCount = newCartItems.reduce((sum, item) => sum + item.quantity, 0);
+                const totalPrice = newCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                return { items: newCartItems, totalCount, totalPrice };
+            });
+            toast.success("Đã cập nhật số lượng sản phẩm!");
+        } catch (err) {
+            console.error("Error changing quantity:", err);
+            toast.error("Cập nhật số lượng sản phẩm không thành công!");
         }
     };
 
-    const removeFromCart = (productId) => {
-        const filteredCartItems = cartItems.filter(
-            (item) => item.product.id !== productId
-        );
-        setCartItems(filteredCartItems);
-    };
-
-    const clearCart = () => {
-        const { items, totalPrice, totalCount } = EMPTY_CART;
-        setCartItems(items);
-        setTotalPrice(totalPrice);
-        setTotalCount(totalCount);
+    const removeFromCart = async (productId) => {
+        try {
+            await cartService.removeFromCart(user.id, productId);
+            setCart(prevCart => {
+                const newCartItems = prevCart.items.filter(item => item.productId !== productId);
+                const totalCount = newCartItems.reduce((sum, item) => sum + item.quantity, 0);
+                const totalPrice = newCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                return { items: newCartItems, totalCount, totalPrice };
+            });
+            toast.success("Đã xóa sản phẩm khỏi giỏ hàng!");
+        } catch (err) {
+            console.error("Error removing from cart:", err);
+            toast.error("Xóa sản phẩm khỏi giỏ hàng không thành công!");
+        }
     };
 
     return (
         <CartContext.Provider
-            value={{
-                cart: { items: cartItems, totalCount, totalPrice },
-                removeFromCart,
-                changeQuantity,
-                addToCart,
-                clearCart,
-            }}
-        >
+            value={{ cart, addToCart, getProductFromCart, changeQuantity, removeFromCart }}>
             {children}
         </CartContext.Provider>
-    );
+    )
 }
 
 export const useCart = () => useContext(CartContext);

@@ -25,12 +25,12 @@ export default function Contact() {
       );
   };
   return (
-    <div className="container lg:mt-10">
+    <div className="container bg-gray-50 p-10 lg:mt-10">
       <img
         src="https://images.unsplash.com/photo-1586466618167-882f878971ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt=""
         className="lg:hidden w-full h-[300px] object-cover mb-5" />
-      <div className="flex flex-col gap-y-4 text-center w-full lg:w-[50%] mx-auto mb-5">
+      <div className="flex flex-col gap-y-4 text-center w-full lg:w-[60%] mx-auto mb-5">
         <h3 className="h3 text-accent">
           Nơi tinh hoa của cái đẹp và nghệ thuật trang sức được tạo ra
         </h3>
@@ -136,9 +136,9 @@ export default function Contact() {
           </div>
           <div className="flex justify-center">
             <input
-              className="uppercase btn-sm btn-accent mt-4 hover:opacity-80 cursor-pointer"
+              className="uppercase btn-sm btn-accent mt-4 hover:opacity-80 cursor-pointer rounded-2xl"
               type="submit"
-              value="Send"
+              value="Gửi"
             />
           </div>
         </form>

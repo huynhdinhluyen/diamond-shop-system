@@ -18,7 +18,7 @@ export default function Newsletter() {
             <div className="flex flex-col md:flex-row relative gap-y-4">
               <input
                 type="text"
-                placeholder="Your email address"
+                placeholder="Email của bạn"
                 className="rounded-full w-full h-[66px] bg-transparent border-2 border-white outline-none pl-[30px] placeholder:text-white focus:text-white"
               />
               <button className="btn btn-lg btn-accent md:absolute right-0">

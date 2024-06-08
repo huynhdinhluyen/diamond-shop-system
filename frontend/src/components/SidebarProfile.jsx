@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth"
 import MyProfile from "./MyProfile";
 import MyOrder from "./MyOrder";
 import MyAddress from "./MyAddress";
+import ChangePassword from "./ChangePassword";
 
 export default function SidebarProfile({ onMainComponentChange }) {
 
@@ -26,6 +27,11 @@ export default function SidebarProfile({ onMainComponentChange }) {
             icon: "ri-user-location-fill mr-2",
             name: "Địa chỉ",
             component: <MyAddress />
+        },
+        {
+            icon: "ri-lock-password-line mr-2",
+            name: "Thay đổi mật khẩu",
+            component: <ChangePassword />
         },
     ]
 

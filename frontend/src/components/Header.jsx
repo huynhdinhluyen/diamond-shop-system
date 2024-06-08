@@ -52,10 +52,9 @@ export default function Header() {
     <header className="py-8 lg:pt-6 ">
       <div className="container px-[15px] mx-auto relative flex flex-col lg:flex-row lg:justify-between gap-y-4 lg:gap-y-0 ">
         <Logo />
-
         <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-10 lg:gap-y-0 mx-5">
           <div className="flex justify-center items-center gap-x-2 lg:justify-normal">
-            <div className="text-wrap">
+            <div className="text-nowrap md:text-wrap text-center ">
               <PlaceIcon className="text-accent" />
               123 Long Thạnh Mỹ, Thành phố Thủ Đức
             </div>
