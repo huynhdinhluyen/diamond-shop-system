@@ -1,6 +1,5 @@
 package com.example.backend.dto;
 
-import com.example.backend.entity.User;
 import com.example.backend.enums.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

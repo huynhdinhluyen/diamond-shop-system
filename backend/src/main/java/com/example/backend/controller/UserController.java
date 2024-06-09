@@ -1,6 +1,5 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
 import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
@@ -19,8 +18,6 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-
 
     public UserController(AuthenticationService authService, UserService userService) {
         this.authService=authService;
