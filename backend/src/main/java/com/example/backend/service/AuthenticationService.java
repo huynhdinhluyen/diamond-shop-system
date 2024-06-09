@@ -11,12 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
+
     private final UserRepository repository;
 
     private final PasswordEncoder passwordEncoder;
@@ -25,27 +28,34 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+
+    private UserDetailsService userDetailsService;
 
     public AuthenticationService(UserRepository repository,
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
-                                 AuthenticationManager authenticationManager) {
+                                 AuthenticationManager authenticationManager,
+                                 UserDetailsService userDetailsService) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
     }
 
 
     public AuthenticationResponse register(User request) throws Exception {
+
         if (repository.existsByPhoneNumber(request.getPhoneNumber())) {
             throw new Exception("Số điện thoại đã tồn tại!");
         }
         if (repository.existsByUsername(request.getUsername())) {
             throw new Exception("Người dùng đã tồn tại!");
         }
-
+        if(repository.existsByEmail(request.getEmail())) {
+            throw new Exception("Email đã tồn tại!");
+        }
         try {
             User user = new User();
             user.setFirstName(request.getFirstName());
@@ -118,5 +128,10 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
         repository.save(user);
         //tesst
+    }
+
+    public UserDetails getUserDetailsFromToken(String token) {
+        String username = jwtService.extractUsername(token);
+        return userDetailsService.loadUserByUsername(username);
     }
 }

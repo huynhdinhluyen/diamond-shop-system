@@ -27,7 +27,7 @@ public class JwtService {
         return (username.equals(user.getUsername())) && !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String  token){
+    private boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
     }
 
@@ -64,4 +64,6 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+
 }

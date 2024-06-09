@@ -8,26 +8,29 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth.jsx";
 import { ToastContainer } from "react-toastify";
-import CartProvider from "./hooks/useCart.jsx";
+import { CartProvider } from "./hooks/useCart.jsx";
+import { OrderProvider } from "./hooks/userOrder.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // {/* <React.StrictMode> */}
   <BrowserRouter>
     <AuthProvider>
       <CartProvider>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <App />
+        <OrderProvider>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          <App />
+        </OrderProvider>
       </CartProvider>
     </AuthProvider>
   </BrowserRouter >

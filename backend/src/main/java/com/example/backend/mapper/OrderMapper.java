@@ -9,17 +9,17 @@ import lombok.RequiredArgsConstructor;
 public class OrderMapper {
     private final UserRepository userRepository;
 
-    public static OrderDTO maptoOrderDTO(Order order) {
-        return new OrderDTO(
-                order.getId(),
-                order.getCustomer_id(),
-                order.getTransaction_id(),
-                order.getDeliveryFee(),
-                order.getDiscountPrice(),
-                order.getTotalPrice(),
-                order.getCreatedAt()
-        );
-    }
+//    public static OrderDTO maptoOrderDTO(Order order) {
+//        return new OrderDTO(
+//                order.getId(),
+//                order.getCustomer_id(),
+//                order.getTransaction_id(),
+//                order.getDeliveryFee(),
+//                order.getDiscountPrice(),
+//                order.getTotalPrice(),
+//                order.getCreatedAt()
+//        );
+//    }
 
     public static Order maptoOrderEntity(OrderDTO dto) {
         return new Order(

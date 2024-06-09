@@ -1,82 +1,111 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NotFound from "../components/NotFound";
-import { useCart } from "../hooks/useCart"
+import { useCart } from "../hooks/useCart";
 import Price from "../components/Price";
+import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function Cart() {
-    const { cart, changeQuantity, removeFromCart } = useCart();
+    const { cart, getProductFromCart, changeQuantity, removeFromCart } = useCart();
+    const { user } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            getProductFromCart();
+        }
+    }, [user]);
+
+    const handleQuantityChange = (productId, newQuantity) => {
+        if (newQuantity < 1) {
+            toast.error("Số lượng sản phẩm phải lớn hơn 0");
+            return;
+        }
+        changeQuantity(productId, newQuantity);
+    };
+
+    const handleRemove = (productId) => {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa sản phẩm khỏi giỏ hàng không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy",
+            cancelButtonColor: "#d33",
+            confirmButtonColor: "#3085d6",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                removeFromCart(productId);
+                Swal.fire({
+                    title: "Thành công!",
+                    text: "Sản phẩm đã được xóa",
+                    icon: "success",
+                });
+                window.location.reload();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: "Đã hủy",
+                    text: "Sản phẩm chưa xóa",
+                    icon: "error",
+                });
+            }
+        });
+    }
+
     return (
         <div className="lg:mt-10">
-            {cart.items.length === 0 ?
-                <NotFound message="Giỏ hàng của bạn đang trống!" />
+            {!cart.items || cart.items.length === 0
+                ? <NotFound message="Giỏ hàng của bạn đang trống" />
                 : (
-                    <div className="container">
-                        <ul className="flex flex-col m-2 flex-grow rounded-lg list-none border-2">
+                    <div className="container mx-auto px-4">
+                        <ul className="flex flex-col gap-4">
                             {cart.items.map((item) => (
-                                <li key={item.product.id}
-                                    className="flex flex-col sm:flex-row items-center border-b-2 border-b-gray-300 last:border-none justify-around">
-                                    <div className="p-2 flex items-center">
-                                        <img
-                                            src={`${item.product.imageUrl}`}
-                                            alt={item.product.name}
-                                            className="w-20 h-20 rounded-full object-cover md:mr-10"
-                                        />
-                                        <div className="p-0 text-lg sm:w-[200px] md:w-[300px]">
-                                            <Link
-                                                to={`/products/${item.product.id}`}
-                                            >
-                                                {item.product.name}
-                                            </Link>
+                                <li key={item.productId} className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 border rounded-lg shadow-md">
+                                    <img src={item.image} className="w-[100px] md:w-32 h-32 object-cover" alt={item.productName} />
+                                    <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4">
+                                        <span className="text-lg text-center">
+                                            {item.productName}
+                                        </span>
+                                        <div className="flex">
+                                            <span className="md:flex mr-2">Giá:</span>
+                                            <Price price={item.price} />
                                         </div>
+                                        <div className="flex gap-x-2">
+                                            <span className="md:flex">Số lượng</span>
+                                            <input
+                                                type="number"
+                                                value={item.quantity}
+                                                onChange={(e) => handleQuantityChange(item.productId, parseInt(e.target.value))}
+                                                className="w-16 text-center border rounded"
+                                            />
+                                        </div>
+                                        <button className="px-4 py-2 text-white rounded-xl bg-accent hover:bg-accent-secondary cursor-pointer" onClick={() => handleRemove(item.productId)}>Xóa</button>
                                     </div>
-                                    <div className="p-0 flex">
-                                        <span className="flex sm:hidden">Số lượng:</span>
-                                        <select
-                                            name=""
-                                            id=""
-                                            value={item.quantity}
-                                            onChange={(e) => changeQuantity(item, Number(e.target.value))}
-                                            className="w-9 ml-2 outline-none border-b-2 border-gray-300"
-                                        >
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                            <option>6</option>
-                                            <option>7</option>
-                                            <option>8</option>
-                                            <option>9</option>
-                                            <option>10</option>
-                                        </select>
-                                    </div>
-                                    <div className="p-4 flex">
-                                        <span className="flex sm:hidden mr-2">Thành tiền:</span><Price price={item.price} />
-                                    </div>
-                                    <button
-                                        className="w-20 py-2 bg-gray-200 rounded-full text-accent hover:bg-gray-100 hover:text-accent-secondary mb-2 mr-2"
-                                        onClick={() => removeFromCart(item.product.id)}
-                                    >
-                                        Xóa
-                                    </button>
                                 </li>
                             ))}
                         </ul>
-                        <div className="flex flex-col gap-y-5 items-center rounded-lg p-2 m-2 w-full">
-                            <div className="my-auto">
-                                <div>Tổng số lượng sản phẩm:
-                                    <span className="ml-2 font-semibold">{cart.totalCount}</span>
+                        <div className="flex flex-col items-center gap-5 p-4 mt-4 ">
+                            <div className="text-center">
+                                <div className="text-lg font-semibold">
+                                    Tổng số lượng sản phẩm:
+                                    <span className="ml-2">{cart.totalCount}</span>
                                 </div>
-                                <div>
+                                <div className="text-lg font-semibold">
                                     Tổng thanh toán:
-                                    <span className="ml-2 font-semibold"><Price price={cart.totalPrice} /></span>
+                                    <span className="ml-2">
+                                        <Price price={cart.totalPrice} />
+                                    </span>
                                 </div>
                             </div>
-                            <Link to="/checkout" className="btn-accent p-3 rounded-lg">Tiến hành thanh toán</Link>
+                            <Link to="/checkout" className="btn-accent p-3 rounded-lg text-white bg-primary hover:bg-primary-dark transition">
+                                Tiến hành thanh toán
+                            </Link>
                         </div>
                     </div>
                 )
             }
         </div>
-    )
+    );
 }

@@ -23,6 +23,7 @@ import java.util.Map;
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
+
     private final OrderService orderService;
     private final UserService userService;
     private final ProductService productService;
@@ -43,17 +44,16 @@ public class AdminController {
     }
 
     //Get all users REST API
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> employees = userService.getAllUsers();
         return ResponseEntity.ok(employees);
     }
-    //test
 
-//        @GetMapping("/getByRole")
-//        public ResponseEntity<List<User>> findUsersByRole(@RequestParam RoleName role) {
-//            List<User> users = adminService.findByRole(role);
-//            return ResponseEntity.ok(users);
-//        }
+    @GetMapping("/getUsersByRole")
+    public ResponseEntity<List<UserDTO>> findUsersByRole(@RequestParam RoleName role) {
+        List<UserDTO> users = adminService.findByRole(role);
+        return ResponseEntity.ok(users);
+    }
 
 }
