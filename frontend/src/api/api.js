@@ -30,6 +30,33 @@ export async function getDiamonds() {
   }
 }
 
+export async function getDiamondCasings() {
+  try {
+    const response = await axiosInstance.get("/api/diamond-casings"); 
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching diamond casings:", error);
+  }
+}
+
+export async function getPromotions() {
+  try {
+    const response = await axiosInstance.get("/api/promotions");
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching promotions:", error);
+  }
+}
+
+export async function getWarranties() {
+  try {
+    const response = await axiosInstance.get("/api/warranties");
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching warranties:", error);
+  }
+}
+
 export async function createProduct(productData) {
   try {
     const response = await axiosInstance.post("/api/products", productData);
@@ -45,6 +72,15 @@ export async function getProducts() {
     return response.data;
   } catch (error) {
     handleError("Error fetching products:", error);
+  }
+}
+
+export async function updateProduct(productId, productData) {
+  try {
+    const response = await axiosInstance.put(`/api/products/${productId}`, productData);
+    return response.data;
+  } catch (error) {
+    handleError("Error updating product:", error);
   }
 }
 
