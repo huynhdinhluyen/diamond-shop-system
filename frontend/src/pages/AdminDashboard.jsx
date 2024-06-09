@@ -19,6 +19,22 @@ export default function AdminDashboard() {
   const [dashboardData, setDashboardData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState();
+  const monthlySalesData =
+    dashboardData && dashboardData.monthlySales
+      ? Object.entries(dashboardData.monthlySales)
+          .sort(([monthYearA], [monthYearB]) => {
+            // Parse the month and year values as integers
+            const [monthA, yearA] = monthYearA.split("/").map(Number);
+            const [monthB, yearB] = monthYearB.split("/").map(Number);
+
+            // Combine month and year into a single numeric value for comparison
+            const dateA = yearA * 12 + monthA;
+            const dateB = yearB * 12 + monthB;
+
+            return dateA - dateB; // Sort based on combined numeric value
+          })
+          .map(([month, sales]) => ({ month, sales }))
+      : [];
 
   useEffect(() => {
     getDashboardData()
@@ -42,54 +58,42 @@ export default function AdminDashboard() {
             Tổng quan
           </Typography>
 
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper elevation={3} className="p-4 rounded-lg">
-                <Typography variant="h6">Tổng số đơn hàng</Typography>
-                <Typography variant="h4">
-                  {dashboardData.totalOrders}
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper elevation={3} className="p-4 rounded-lg">
-                <Typography variant="h6">Tổng số khách hàng</Typography>
-                <Typography variant="h4">
-                  {dashboardData.totalCustomers}
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper elevation={3} className="p-4 rounded-lg">
-                <Typography variant="h6">Tổng doanh thu</Typography>
-                <Typography variant="h4">
-                  {dashboardData.totalRevenue.toLocaleString("vi-VN")} VNĐ
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Paper elevation={3} className="p-4 rounded-lg">
-                <Typography variant="h6">Số lượng sản phẩm</Typography>
-                <Typography variant="h4">
-                  {dashboardData.numberOfProducts}
-                </Typography>
-              </Paper>
-            </Grid>
-          </Grid>
+          <div className="flex flex-col md:flex-row flex-wrap gap-3">
+            {" "}
+            <Paper elevation={3} className="p-4 rounded-lg basis-0 flex-grow">
+              <Typography variant="h6">Tổng số đơn hàng</Typography>
+              <Typography variant="h4">{dashboardData.totalOrders}</Typography>
+            </Paper>
+            <Paper elevation={3} className="p-4 rounded-lg basis-0 flex-grow">
+              <Typography variant="h6">Tổng số khách hàng</Typography>
+              <Typography variant="h4">
+                {dashboardData.totalCustomers}
+              </Typography>
+            </Paper>
+            <Paper elevation={3} className="p-4 rounded-lg basis-0 flex-grow">
+              <Typography variant="h6">Tổng doanh thu</Typography>
+              <Typography variant="h4">
+                {" "}
+                {dashboardData.totalRevenue.toLocaleString("vi-VN")} VNĐ
+              </Typography>
+            </Paper>
+            <Paper elevation={3} className="p-4 rounded-lg basis-0 flex-grow">
+              <Typography variant="h6">Số lượng sản phẩm</Typography>
+              <Typography variant="h4">
+                {dashboardData.numberOfProducts}
+              </Typography>
+            </Paper>
+          </div>
 
-          <div className="mt-8">
+          <div className="mt-8 w-full">
             <Typography variant="h6" className="mb-2">
               Doanh số bán hàng theo tháng
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart
-                data={Object.entries(dashboardData.monthlySales).map(
-                  ([month, sales]) => ({ month, sales })
-                )}
-              >
+              <LineChart data={monthlySalesData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" allowDuplicatedCategory={false} />
-                <YAxis />
+                <YAxis/>
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="sales" stroke="#8884d8" />
@@ -97,7 +101,7 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 w-full">
             <Typography variant="h6" className="mb-2">
               Tỉ lệ đóng góp doanh thu theo danh mục
             </Typography>
@@ -124,6 +128,7 @@ export default function AdminDashboard() {
                     )
                   )}
                 </Pie>
+                <Legend />
               </PieChart>
             </ResponsiveContainer>
           </div>

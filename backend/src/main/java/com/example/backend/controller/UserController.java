@@ -1,6 +1,5 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.repository.UserRepository;
@@ -28,6 +27,7 @@ public class UserController {
     private final AuthenticationService authService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
+
 
     public UserController(AuthenticationService authService, UserService userService, UserRepository userRepository) {
         this.authService=authService;

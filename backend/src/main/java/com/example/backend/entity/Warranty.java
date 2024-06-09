@@ -47,6 +47,6 @@ public class Warranty {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category category = new Category();
 
 }

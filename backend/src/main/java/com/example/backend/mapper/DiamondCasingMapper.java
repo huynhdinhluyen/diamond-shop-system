@@ -9,7 +9,10 @@ import com.example.backend.repository.CategoryRepository;
 import com.example.backend.repository.SizeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class DiamondCasingMapper {
@@ -52,5 +55,9 @@ public class DiamondCasingMapper {
                 : null;
         diamondCasing.setSize(size);
         return diamondCasing;
+    }
+
+    public List<DiamondCasingDTO> toDtoList(List<DiamondCasing> diamondCasings) {
+        return diamondCasings.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

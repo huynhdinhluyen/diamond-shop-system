@@ -7,14 +7,17 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Hàm lấy danh sách kích thước
+function handleError(message, error) {
+  console.error(message, error); 
+  throw error;
+}
+
 export async function getSizes() {
   try {
     const response = await axiosInstance.get("/api/sizes");
     return response.data;
   } catch (error) {
-    console.error("Error fetching sizes:", error);
-    throw error;
+    handleError("Error fetching sizes:", error);
   }
 }
 
@@ -23,8 +26,34 @@ export async function getDiamonds() {
     const response = await axiosInstance.get("/api/diamonds");
     return response.data;
   } catch (error) {
-    console.error("Error fetching diamonds:", error);
-    throw error;
+    handleError("Error fetching diamonds:", error);
+  }
+}
+
+export async function getDiamondCasings() {
+  try {
+    const response = await axiosInstance.get("/api/diamond-casings"); 
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching diamond casings:", error);
+  }
+}
+
+export async function getPromotions() {
+  try {
+    const response = await axiosInstance.get("/api/promotions");
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching promotions:", error);
+  }
+}
+
+export async function getWarranties() {
+  try {
+    const response = await axiosInstance.get("/api/warranties");
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching warranties:", error);
   }
 }
 
@@ -33,8 +62,7 @@ export async function createProduct(productData) {
     const response = await axiosInstance.post("/api/products", productData);
     return response.data;
   } catch (error) {
-    console.error("Error creating product:", error);
-    throw error;
+    handleError("Error creating product:", error);
   }
 }
 
@@ -43,8 +71,16 @@ export async function getProducts() {
     const response = await axiosInstance.get("/api/products");
     return response.data;
   } catch (error) {
-    console.error("Error fetching products:", error);
-    throw error;
+    handleError("Error fetching products:", error);
+  }
+}
+
+export async function updateProduct(productId, productData) {
+  try {
+    const response = await axiosInstance.put(`/api/products/${productId}`, productData);
+    return response.data;
+  } catch (error) {
+    handleError("Error updating product:", error);
   }
 }
 
@@ -53,8 +89,7 @@ export async function deleteProduct(id) {
     const response = await axiosInstance.delete(`/api/products/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Error deleting product:", error);
-    throw error;
+    handleError("Error deleting product:", error);
   }
 }
 
@@ -63,8 +98,43 @@ export async function getCategories() {
     const response = await axiosInstance.get("/api/categories");
     return response.data;
   } catch (error) {
-    console.error("Error fetching categories:", error);
-    throw error;
+    handleError("Error fetching categories:", error);
+  }
+}
+
+export async function getCategoryById(categoryId) {
+  try {
+    const response = await axiosInstance.get(`/api/categories/${categoryId}`);
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching category:", error);
+  }
+}
+
+export async function createCategory(categoryData) {
+  try {
+    const response = await axiosInstance.post("/api/categories", categoryData);
+    return response.data;
+  } catch (error) {
+    handleError("Error creating category:", error);
+  }
+}
+
+export async function updateCategory(categoryId, categoryData) {
+  try {
+    const response = await axiosInstance.put(`/api/categories/${categoryId}`, categoryData);
+    return response.data;
+  } catch (error) {
+    handleError("Error updating category:", error);
+  }
+}
+
+export async function deleteCategory(categoryId) {
+  try {
+    const response = await axiosInstance.delete(`/api/categories/${categoryId}`);
+    return response.data; 
+  } catch (error) {
+    handleError("Error deleting category:", error);
   }
 }
 
@@ -73,8 +143,7 @@ export async function getDashboardData() {
     const response = await axiosInstance.get("/api/admin/dashboard");
     return response.data;
   } catch (error) {
-    console.error("Error fetching dashboard data:", error);
-    throw error;
+    handleError("Error fetching dashboard data:", error);
   }
 }
 

@@ -8,6 +8,8 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class DiamondCasing {
     private String material;
 
     @Column(name = "price", nullable = false)
-    private Long price;
+    private Long price = 0L;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -36,4 +38,6 @@ public class DiamondCasing {
     @JoinColumn(name = "size_id")
     private Size size;
 
+    @OneToMany(mappedBy = "diamondCasing", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 }

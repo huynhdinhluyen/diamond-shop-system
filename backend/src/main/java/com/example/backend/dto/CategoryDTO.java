@@ -10,9 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO {
-
     private Integer id;
     private String name;
     private String imageUrl;
-
 }
