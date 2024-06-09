@@ -93,7 +93,7 @@ export default function AdminDashboard() {
               <LineChart data={monthlySalesData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" allowDuplicatedCategory={false} />
-                <YAxis />
+                <YAxis/>
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="sales" stroke="#8884d8" />
