@@ -124,7 +124,7 @@ export default function AdminCategoryManagement() {
         await saveCategory(data);
       }
     } catch (error) {
-      toast.error("Đã có lỗi xảy ra. Vui lòng thử lại.");
+      toast.error("Lỗi khi lưu danh mục");
     }
   };
 
