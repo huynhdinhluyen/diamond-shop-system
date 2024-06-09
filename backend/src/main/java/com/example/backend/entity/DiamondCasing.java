@@ -26,7 +26,7 @@ public class DiamondCasing {
     private String material;
 
     @Column(name = "price", nullable = false)
-    private Long price;
+    private Long price = 0L;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
