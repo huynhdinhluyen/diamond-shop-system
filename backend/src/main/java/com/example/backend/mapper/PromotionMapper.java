@@ -4,6 +4,9 @@ import com.example.backend.dto.PromotionDTO;
 import com.example.backend.entity.Promotion;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class PromotionMapper {
     public PromotionDTO toDto(Promotion promotion) {
@@ -33,5 +36,8 @@ public class PromotionMapper {
         promotion.setEndDate(promotionDTO.getEndDate());
 
         return promotion;
+    }
+    public List<PromotionDTO> toDtoList(List<Promotion> promotions) {
+        return promotions.stream().map(this::toDto).collect(Collectors.toList());
     }
 }
