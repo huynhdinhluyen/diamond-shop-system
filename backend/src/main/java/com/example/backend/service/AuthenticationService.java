@@ -137,7 +137,6 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse updateUser(Integer userId, User request) throws Exception {
-
         User user = repository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         try {
