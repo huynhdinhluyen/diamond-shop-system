@@ -39,6 +39,33 @@ export async function getDiamondCasings() {
   }
 }
 
+export async function createDiamondCasing(diamondCasingData) {
+  try {
+    const response = await axiosInstance.post("/api/diamond-casings", diamondCasingData);
+    return response.data;
+  } catch (error) {
+    handleError("Error creating diamond casing:", error);
+  }
+}
+
+export async function updateDiamondCasing(diamondCasingId, diamondCasingData) {
+  try {
+    const response = await axiosInstance.put(`/api/diamond-casings/${diamondCasingId}`, diamondCasingData);
+    return response.data;
+  } catch (error) {
+    handleError("Error updating diamond casing:", error);
+  }
+}
+
+export async function deleteDiamondCasing(diamondCasingId) {
+  try {
+    const response = await axiosInstance.delete(`/api/diamond-casings/${diamondCasingId}`);
+    return response.data;
+  } catch (error) {
+    handleError("Error deleting diamond casing:", error);
+  }
+}
+
 export async function getPromotions() {
   try {
     const response = await axiosInstance.get("/api/promotions");
@@ -187,6 +214,3 @@ export async function deleteUser(userId) {
     handleError("Error deleting user:", error);
   }
 }
-
-
-
