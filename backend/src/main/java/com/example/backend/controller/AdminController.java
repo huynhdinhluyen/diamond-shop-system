@@ -82,5 +82,4 @@ public class AdminController {
         List<UserDTO> users = adminService.findByRole(role);
         return ResponseEntity.ok(users);
     }
-
 }
