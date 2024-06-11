@@ -9,7 +9,10 @@ import com.example.backend.repository.CategoryRepository;
 import com.example.backend.repository.SizeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class DiamondCasingMapper {
@@ -26,13 +29,13 @@ public class DiamondCasingMapper {
         if (diamondCasing == null) {
             return null;
         }
-        return new DiamondCasingDTO(
-                diamondCasing.getId(),
-                diamondCasing.getMaterial(),
-                diamondCasing.getPrice(),
-                Optional.ofNullable(diamondCasing.getCategory()).map(categoryMapper::toDto).orElse(null),
-                Optional.ofNullable(diamondCasing.getSize()).map(sizeMapper::toDto).orElse(null)
-        );
+        DiamondCasingDTO diamondCasingDTO = new DiamondCasingDTO();
+        diamondCasingDTO.setId(diamondCasing.getId());
+        diamondCasingDTO.setMaterial(diamondCasing.getMaterial());
+        diamondCasingDTO.setPrice(diamondCasing.getPrice());
+        diamondCasingDTO.setCategory(categoryMapper.toDto(diamondCasing.getCategory()));
+        diamondCasingDTO.setSize(sizeMapper.toDto(diamondCasing.getSize()));
+        return diamondCasingDTO;
     }
 
     public DiamondCasing toEntity(DiamondCasingDTO diamondCasingDTO) {
@@ -43,14 +46,12 @@ public class DiamondCasingMapper {
         diamondCasing.setId(diamondCasingDTO.getId());
         diamondCasing.setMaterial(diamondCasingDTO.getMaterial());
         diamondCasing.setPrice(diamondCasingDTO.getPrice());
-        Category category = diamondCasingDTO.getCategory() != null ? categoryRepository.findById(diamondCasingDTO.getCategory().getId())
-                .orElseThrow(() -> new CategoryNotFoundException(diamondCasingDTO.getCategory().getId()))
-                : null;
-        diamondCasing.setCategory(category);
-        Size size = diamondCasingDTO.getSize() != null ? sizeRepository.findById(diamondCasingDTO.getSize().getId())
-                .orElseThrow(() -> new SizeNotFoundException(diamondCasingDTO.getSize().getId()))
-                : null;
-        diamondCasing.setSize(size);
+        diamondCasing.setCategory(categoryMapper.toEntity(diamondCasingDTO.getCategory()));
+        diamondCasing.setSize(sizeMapper.toEntity(diamondCasingDTO.getSize()));
         return diamondCasing;
+    }
+
+    public List<DiamondCasingDTO> toDtoList(List<DiamondCasing> diamondCasings) {
+        return diamondCasings.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

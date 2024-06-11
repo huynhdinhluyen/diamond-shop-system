@@ -1,6 +1,5 @@
 package com.example.backend.dto;
 
-import com.example.backend.entity.User;
 import com.example.backend.enums.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +20,10 @@ public class UserDTO {
     private String lastName;
     private String city;
     private String address;
-    private RoleName role_id;
+    private RoleName role;
     private String verificationCode;
+    private String accessToken;
+    private String refreshToken;
 //    private boolean enabled;
 
     public UserDTO(Integer id, String username) {

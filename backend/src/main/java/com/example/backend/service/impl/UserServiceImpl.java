@@ -1,21 +1,17 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.dto.UserDTO;
-import com.example.backend.entity.Product;
 import com.example.backend.entity.User;
 import com.example.backend.enums.RoleName;
-import com.example.backend.exception.ProductNotFoundException;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +25,6 @@ public class UserServiceImpl implements UserService {
     public Long getTotalCustomers() {
         return userRepository.countByRoleName(RoleName.CUSTOMER);
     }
-
 
     @Override
     public List<UserDTO> getAllUsers() {
@@ -57,5 +52,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public void deleteUser(Integer id) throws UserNotFoundException {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException(id);
+        }
+        userRepository.deleteById(id);
+    }
 
 }

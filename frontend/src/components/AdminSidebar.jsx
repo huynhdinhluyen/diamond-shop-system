@@ -8,6 +8,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import DiamondOutlinedIcon from '@mui/icons-material/DiamondOutlined';
 import { Link } from 'react-router-dom';
 
 function AdminSidebar({ open, onClose }) {
@@ -33,6 +34,14 @@ function AdminSidebar({ open, onClose }) {
               <StoreIcon />
             </ListItemIcon>
             <ListItemText primary="Sản phẩm" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/admin/diamond-casings">
+            <ListItemIcon>
+              <DiamondOutlinedIcon /> {/* hoặc một icon khác phù hợp */}
+            </ListItemIcon>
+            <ListItemText primary="Vỏ kim cương" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>

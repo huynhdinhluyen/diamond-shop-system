@@ -5,7 +5,7 @@ import com.example.backend.entity.Diamond;
 import com.example.backend.mapper.DiamondMapper;
 import com.example.backend.repository.DiamondRepository;
 import com.example.backend.service.DiamondService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class DiamondServiceImpl implements DiamondService {
-    @Autowired
-    private DiamondRepository diamondRepository;
-    @Autowired
-    private DiamondMapper diamondMapper;
+    private final DiamondRepository diamondRepository;
+    private final DiamondMapper diamondMapper;
 
     @Override
     @Transactional(readOnly = true)

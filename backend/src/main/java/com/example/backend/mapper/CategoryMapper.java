@@ -3,7 +3,6 @@ import com.example.backend.dto.CategoryDTO;
 import com.example.backend.entity.Category;
 import org.springframework.stereotype.Component;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -29,10 +28,5 @@ public class CategoryMapper {
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
-    public List<Category> toEntityList(List<CategoryDTO> categoryDTOs) {
-        return categoryDTOs.stream()
-                .filter(Objects::nonNull) // Loại bỏ các phần tử null trong danh sách
-                .map(this::toEntity)
-                .collect(Collectors.toList());
-    }
+
 }

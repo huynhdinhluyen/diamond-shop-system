@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.DiamondDTO;
-import com.example.backend.service.DiamondService;
+import com.example.backend.dto.PromotionDTO;
+import com.example.backend.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/diamonds")
+@RequestMapping("/api/promotions")
 @RequiredArgsConstructor
-public class DiamondController {
-    private final DiamondService diamondService;
+public class PromotionController {
+    private final PromotionService promotionService;
 
     @GetMapping
-    public ResponseEntity<List<DiamondDTO>> getAllDiamonds() {
-        List<DiamondDTO> diamonds = diamondService.getAllDiamonds();
-        return ResponseEntity.ok(diamonds);
+    public ResponseEntity<List<PromotionDTO>> getAllPromotions(){
+        return ResponseEntity.ok(promotionService.getAllPromotions());
     }
 }

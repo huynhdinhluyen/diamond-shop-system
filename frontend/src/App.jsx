@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
-
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NewsDetails from "./pages/NewsDetails";
@@ -14,8 +13,10 @@ import ProfileLayout from "./layouts/ProfileLayout";
 import TablePricesDiamond from "./pages/TablePricesDiamond";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
-// import AdminProductManagement from "./pages/AdminProductManagement";
-
+import AdminProductManagement from "./pages/AdminProductManagement";
+import AdminCategoryManagement from "./pages/AdminCategoryManagement";
+import AdminUserManagement from "./pages/AdminUserManagement";
+import AdminDiamondCasingManagement from "./pages/AdminDiamondCasingManagement";
 function App() {
   return (
     <Routes>
@@ -102,7 +103,10 @@ function App() {
 
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
-        {/* <Route path="products" element={<AdminProductManagement />} /> */}
+        <Route path="products" element={<AdminProductManagement />} />
+        <Route path="categories" element={<AdminCategoryManagement />} />
+        <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
+        <Route path="users" element={<AdminUserManagement />} />
       </Route>
       <Route path="/admin/*" element={<Navigate to="/admin" />} />
       <Route path="*" element={<Navigate to="/" />} />

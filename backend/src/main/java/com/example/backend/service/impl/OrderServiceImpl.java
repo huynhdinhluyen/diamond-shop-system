@@ -59,20 +59,20 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public Map<String, Long> getMonthlySales() {
         LocalDate currentDate = LocalDate.now();
-        LocalDateTime startDateTime = currentDate.minusMonths(11).atStartOfDay(); // Chuyển đổi sang LocalDateTime
-        LocalDateTime endDateTime = currentDate.plusDays(1).atStartOfDay(); // Chuyển đổi và cộng thêm 1 ngày
+        LocalDateTime startDateTime = currentDate.minusMonths(11).atStartOfDay();
+        LocalDateTime endDateTime = currentDate.plusDays(1).atStartOfDay();
         List<Object[]> results = orderRepository.getMonthlySales(startDateTime, endDateTime);
-
         Map<String, Long> monthlySales = results.stream()
                 .collect(Collectors.toMap(
                         result -> (String) result[0],
                         result -> ((Number) result[1]).longValue(),
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new
                 ));
-
-        // Điền các tháng còn thiếu bằng 0
-        for (LocalDate date = startDateTime.toLocalDate(); date.isBefore(currentDate); date = date.plusMonths(1)) { // Thay đổi startDate thành startDateTime.toLocalDate()
-            String monthYear = date.getMonthValue() + "/" + date.getYear();
+        // Điền các tháng còn thiếu bằng 0 (trừ tháng hiện tại)
+        LocalDate endDateWithoutTime = endDateTime.toLocalDate().minusDays(1); // Trừ 1 ngày để loại trừ ngày hiện tại
+        for (LocalDate date = startDateTime.toLocalDate(); date.isBefore(endDateWithoutTime); date = date.plusMonths(1)) {
+            String monthYear = String.format("%02d/%d", date.getMonthValue(), date.getYear());
             monthlySales.putIfAbsent(monthYear, 0L);
         }
         return monthlySales;
@@ -104,5 +104,5 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
         return orderRepository.findByCustomerId(userId);
     }
-}
 
+}

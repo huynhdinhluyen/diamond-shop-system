@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -25,16 +23,7 @@ public class ProductDTO {
     private Long costPrice;
     private Long salePrice;
     private DiamondDTO mainDiamond;
-    private List<DiamondDTO> auxiliaryDiamonds;
-
-    public List<DiamondDTO> getDiamonds() {
-        List<DiamondDTO> allDiamonds = new ArrayList<>();
-        if (mainDiamond != null) {
-            allDiamonds.add(mainDiamond);
-        }
-        allDiamonds.addAll(auxiliaryDiamonds);
-        return allDiamonds;
-    }
+    private DiamondDTO auxiliaryDiamond;
 }
 
 

@@ -7,7 +7,10 @@ import com.example.backend.exception.CategoryNotFoundException;
 import com.example.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class WarrantyMapper {
@@ -50,5 +53,9 @@ public class WarrantyMapper {
             warranty.setCategory(category);
         }
         return warranty;
+    }
+
+    public List<WarrantyDTO> toDtoList(List<Warranty> warranties) {
+        return warranties.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

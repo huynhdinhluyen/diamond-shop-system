@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByPhoneNumber(String phoneNumber);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
-//    @Query(value = "SELECT * FROM [user] WHERE role = :roleName", nativeQuery = true)
-//    List<User> findByRole(@Param("roleName") String roleName);
+    @Query(value = "SELECT * FROM [user] WHERE role = :roleName", nativeQuery = true)
+    List<User> findByRole(@Param("roleName") String roleName);
 
 }
