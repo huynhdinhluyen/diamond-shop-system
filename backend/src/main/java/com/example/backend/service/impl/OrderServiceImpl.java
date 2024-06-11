@@ -17,6 +17,7 @@ import com.example.backend.repository.OrderStatusRepository;
 import com.example.backend.repository.TransactionRepository;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

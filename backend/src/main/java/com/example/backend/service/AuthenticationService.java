@@ -105,10 +105,11 @@ public class AuthenticationService {
                     new UsernameNotFoundException("User not found: " + request.getUsername()));
 
             logger.info("User found: {}", user.getUsername());
-
             String token = jwtService.generateToken(user);
             logger.info("Token generated for user: {}", user.getUsername());
-
+            user.setAccessToken(token);
+            repository.save(user);
+            logger.info("ACToken generated for user: {}", user.getAccessToken());
             return new AuthenticationResponse(token, user);
         } catch (Exception e) {
             logger.error("Error during authentication", e);

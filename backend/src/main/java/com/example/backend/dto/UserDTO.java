@@ -22,6 +22,8 @@ public class UserDTO {
     private String address;
     private RoleName role_id;
     private String verificationCode;
+    private String accessToken;
+    private String refreshToken;
 //    private boolean enabled;
 
     public UserDTO(Integer id, String username) {
