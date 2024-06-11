@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.controller.UserController;
+import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.entity.User;
@@ -134,5 +135,28 @@ public class AuthenticationService {
     public UserDetails getUserDetailsFromToken(String token) {
         String username = jwtService.extractUsername(token);
         return userDetailsService.loadUserByUsername(username);
+    }
+
+    public AuthenticationResponse updateUser(Integer userId, User request) throws Exception {
+
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        try {
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setUsername(request.getUsername());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setRoleName(request.getRoleName());
+            user.setPhoneNumber(request.getPhoneNumber());
+            user.setEmail(request.getEmail());
+            user.setAddress(request.getAddress());
+            user.setCity(request.getCity());
+            user = repository.save(user);
+
+            String token = jwtService.generateToken(user);
+            return new AuthenticationResponse(token, user);
+        } catch (DataIntegrityViolationException e) {
+            throw new Exception("Cập nhật nguời dùng thất bại, vui lòng thử lại!");
+        }
     }
 }

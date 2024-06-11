@@ -33,11 +33,10 @@ public class UserMapper {
                 dto.getLastName(),
                 dto.getCity(),
                 dto.getAddress(),
-                dto.getRole_id(),
+                dto.getRole(),
                 dto.getVerificationCode(),
                 dto.getAccessToken(),
                 dto.getRefreshToken()
-
         );
     }
 }
