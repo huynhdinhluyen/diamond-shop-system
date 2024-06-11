@@ -20,7 +20,7 @@ public class UserDTO {
     private String lastName;
     private String city;
     private String address;
-    private RoleName role_id;
+    private RoleName role;
     private String verificationCode;
 //    private boolean enabled;
 

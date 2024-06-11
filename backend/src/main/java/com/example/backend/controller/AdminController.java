@@ -4,17 +4,13 @@ import com.example.backend.dto.DashboardDataDTO;
 import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
 import com.example.backend.enums.RoleName;
-import com.example.backend.service.AdminService;
-import com.example.backend.service.OrderService;
-import com.example.backend.service.ProductService;
-import com.example.backend.service.UserService;
+import com.example.backend.exception.UserNotFoundException;
+import com.example.backend.response.AuthenticationResponse;
+import com.example.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +24,7 @@ public class AdminController {
     private final UserService userService;
     private final ProductService productService;
     private final AdminService adminService;
+    private final AuthenticationService authService;
 
     @Transactional(readOnly = true)
     @GetMapping("/dashboard")
@@ -46,8 +43,38 @@ public class AdminController {
     //Get all users REST API
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> employees = userService.getAllUsers();
-        return ResponseEntity.ok(employees);
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<AuthenticationResponse> createUser(
+            @RequestBody User request
+    ) throws Exception {
+        return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<AuthenticationResponse> updateUser(@PathVariable Integer id,
+                                                             @RequestBody User request){
+        try{
+            AuthenticationResponse user = authService.updateUser(id, request);
+            return ResponseEntity.ok(user);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/getUsersByRole")
