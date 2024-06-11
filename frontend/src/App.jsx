@@ -14,9 +14,8 @@ import TablePricesDiamond from "./pages/TablePricesDiamond";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import AdminProductManagement from "./pages/AdminProductManagement";
-// import AddProductForm from "./forms/AddProductForm";
-// import EditProductForm from "./forms/EditProductForm";
 import AdminCategoryManagement from "./pages/AdminCategoryManagement";
+import AdminUserManagement from "./pages/AdminUserManagement";
 function App() {
   return (
     <Routes>
@@ -104,9 +103,8 @@ function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
         <Route path="products" element={<AdminProductManagement />} />
-        {/* <Route path="products/add" element={<AddProductForm />} />
-        <Route path="products/:id/edit" element={<EditProductForm />} /> */}
         <Route path="categories" element={<AdminCategoryManagement />} />
+        <Route path="users" element={<AdminUserManagement />} />
       </Route>
       <Route path="/admin/*" element={<Navigate to="/admin" />} />
       <Route path="*" element={<Navigate to="/" />} />

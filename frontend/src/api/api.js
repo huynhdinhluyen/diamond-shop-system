@@ -152,3 +152,41 @@ export async function getProductById(productId) {
   return data;
 }
 
+export async function getUsers() {
+  try {
+    const response = await axiosInstance.get("/api/admin/users");
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching users:", error);
+  }
+}
+
+export async function createUser(userData) {
+  try {
+    const response = await axiosInstance.post("/api/admin/users", userData);
+    return response.data;
+  } catch (error) {
+    handleError("Error creating user:", error);
+  }
+}
+
+export async function updateUser(userId, userData) {
+  try {
+    const response = await axiosInstance.put(`/api/admin/users/${userId}`, userData);
+    return response.data;
+  } catch (error) {
+    handleError("Error updating user:", error);
+  }
+}
+
+export async function deleteUser(userId) {
+  try {
+    const response = await axiosInstance.delete(`/api/admin/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    handleError("Error deleting user:", error);
+  }
+}
+
+
+
