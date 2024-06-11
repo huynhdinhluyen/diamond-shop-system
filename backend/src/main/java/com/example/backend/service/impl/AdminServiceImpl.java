@@ -24,7 +24,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<UserDTO> findByRole(RoleName roleName) {
         logger.info("findByRole {}", roleName);
-        List<User> users = userRepository.findByRoleName(roleName.name());
+        List<User> users = userRepository.findByRole(roleName.name());
         logger.info("after {}", users);
         return users.stream().map(UserMapper::maptoUserDTO)
                 .collect(Collectors.toList());

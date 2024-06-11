@@ -62,6 +62,12 @@ public class User implements UserDetails {
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
 
+    @Column(name = "access_token", length = 1000)
+    private String accessToken;
+
+    @Column(name = "refresh_token", length = 64)
+    private String refreshToken;
+
     //private boolean enabled;
 
     @Override

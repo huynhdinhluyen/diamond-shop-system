@@ -20,6 +20,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     @Query(value = "SELECT * FROM [user] WHERE role = :roleName", nativeQuery = true)
-    List<User> findByRoleName(@Param("roleName") String roleName);
+    List<User> findByRole(@Param("roleName") String roleName);
 
 }
