@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  getCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-} from "../api/api";
-import {
   Typography,
   Table,
   TableBody,
@@ -32,11 +26,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebaseConfig";
+import { createCategory, deleteCategory, getCategories, updateCategory } from "../service/categoryService";
 
 const categorySchema = yup.object({
   name: yup.string().required("Vui lòng nhập tên danh mục"),
   imageUrl: yup.string().optional(),
 });
+
 export default function AdminCategoryManagement() {
   const [categories, setCategories] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);

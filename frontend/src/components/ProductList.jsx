@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CircularProgress, Button } from "@mui/material";
-import { getProducts } from "../api/api";
 import ProductCard from "./ProductCard";
+import { getProducts } from "../service/productService";
 
 function ProductList() {
   const [products, setProducts] = useState([]);

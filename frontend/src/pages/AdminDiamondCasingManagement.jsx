@@ -27,19 +27,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
-
-import {
-  getDiamondCasings,
-  createDiamondCasing,
-  updateDiamondCasing,
-  deleteDiamondCasing,
-  getCategories,
-  getSizes,
-} from "../api/api"; // Replace with your actual API calls
 import { toast } from "react-toastify";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {
+  createDiamondCasing,
+  deleteDiamondCasing,
+  getDiamondCasings,
+  updateDiamondCasing,
+} from "../service/diamondCasingService";
+import { getSizes } from "../service/sizeService";
+import { getCategories } from "../service/categoryService";
 
 const diamondCasingSchema = yup.object({
   material: yup.string().required("Chất liệu không được để trống"),
@@ -139,9 +138,11 @@ export default function AdminDiamondCasingManagement() {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
   const filteredDiamondCasings = diamondCasings.filter((diamondCasing) =>
     diamondCasing.material.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
@@ -259,11 +260,7 @@ export default function AdminDiamondCasingManagement() {
                 control={control}
                 defaultValue={selectedCasing?.category?.id || ""}
                 render={({ field }) => (
-                  <Select
-                    {...field}
-                    label="Danh mục"
-                    error={!!errors.category}
-                  >
+                  <Select {...field} label="Danh mục" error={!!errors.category}>
                     {categories.map((category) => (
                       <MenuItem key={category.id} value={category.id}>
                         {category.name}

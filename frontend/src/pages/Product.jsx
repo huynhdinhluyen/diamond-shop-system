@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductById, getSizes } from "../api/api";
 import NotFound from "../components/NotFound";
 import {
   Button,
@@ -15,6 +14,8 @@ import {
 import { useCart } from "../hooks/useCart";
 import Price from "../components/Price";
 import { useAuth } from "../hooks/useAuth";
+import { getProductById } from "../service/productService";
+import { getSizes } from "../service/sizeService";
 
 export default function Product() {
   const { user } = useAuth();

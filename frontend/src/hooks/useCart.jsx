@@ -5,7 +5,7 @@ import * as cartService from "../service/cartService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "./useAuth";
-import { getProductById } from "../api/api";
+import { getProductById } from "../service/productService";
 
 const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
