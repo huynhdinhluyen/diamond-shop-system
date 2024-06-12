@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -18,6 +18,7 @@ import AdminCategoryManagement from "./pages/AdminCategoryManagement";
 import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminDiamondCasingManagement from "./pages/AdminDiamondCasingManagement";
 import AdminDiamondManagement from "./pages/AdminDiamondManagement";
+import NotFoundPage from "./pages/NotFoundPage";
 function App() {
   return (
     <Routes>
@@ -110,8 +111,7 @@ function App() {
         <Route path="diamonds" element={<AdminDiamondManagement />} />
         <Route path="users" element={<AdminUserManagement />} />
       </Route>
-      <Route path="/admin/*" element={<Navigate to="/admin" />} />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<NotFoundPage />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
     </Routes>
