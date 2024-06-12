@@ -2,7 +2,6 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.DiamondDTO;
 import com.example.backend.entity.Diamond;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
