@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { getDashboardData } from "../api/api";
 import {
   PieChart,
   Pie,
@@ -15,6 +14,7 @@ import {
   Legend,
 } from "recharts";
 import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import { getDashboardData } from "../service/adminDashboardService";
 export default function AdminDashboard() {
   const [dashboardData, setDashboardData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
               <LineChart data={monthlySalesData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" allowDuplicatedCategory={false} />
-                <YAxis/>
+                <YAxis />
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="sales" stroke="#8884d8" />

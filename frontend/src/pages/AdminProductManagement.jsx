@@ -27,22 +27,22 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import {
-  getProducts,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  getDiamonds,
-  getDiamondCasings,
-  getWarranties,
-  getPromotions,
-} from "../api/api";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebaseConfig";
 import { toast } from "react-toastify";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {
+  createProduct,
+  deleteProduct,
+  getProducts,
+  updateProduct,
+} from "../service/productService";
+import { getDiamonds } from "../service/diamondService";
+import { getDiamondCasings } from "../service/diamondCasingService";
+import { getWarranties } from "../service/warrantyService";
+import { getPromotions } from "../service/promotionService";
 
 const productSchema = yup.object({
   name: yup.string().required("Tên sản phẩm không được để trống"),

@@ -17,6 +17,7 @@ import AdminProductManagement from "./pages/AdminProductManagement";
 import AdminCategoryManagement from "./pages/AdminCategoryManagement";
 import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminDiamondCasingManagement from "./pages/AdminDiamondCasingManagement";
+import AdminDiamondManagement from "./pages/AdminDiamondManagement";
 function App() {
   return (
     <Routes>
@@ -106,6 +107,7 @@ function App() {
         <Route path="products" element={<AdminProductManagement />} />
         <Route path="categories" element={<AdminCategoryManagement />} />
         <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
+        <Route path="diamonds" element={<AdminDiamondManagement />} />
         <Route path="users" element={<AdminUserManagement />} />
       </Route>
       <Route path="/admin/*" element={<Navigate to="/admin" />} />
