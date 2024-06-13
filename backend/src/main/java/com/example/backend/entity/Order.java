@@ -1,14 +1,14 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,15 +22,12 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "customer_id")
     private Integer customerId;
 
-    //@OneToOne(fetch = FetchType.LAZY)
-    //@OnDelete(action = OnDeleteAction.CASCADE)
-    @Column(name = "transaction_id")
-    private Integer transactionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transaction_id")
+    private Transaction transaction;
 
     @ColumnDefault("0")
     @Column(name = "delivery_fee")
@@ -45,4 +42,24 @@ public class Order {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "customer_name", nullable = false, columnDefinition = "NVARCHAR(255)")
+    private String customerName;
+
+    @Column(name = "shipping_address", nullable = false, columnDefinition = "NVARCHAR(255)")
+    private String shippingAddress;
+
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
+
+    @Column(name = "note")
+    private String note;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id")
+    private OrderStatus status;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<OrderDetail> orderDetails;
 }

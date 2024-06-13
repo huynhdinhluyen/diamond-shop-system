@@ -16,7 +16,7 @@ export default function BraceletSize() {
             <ul className="list-item mt-3 ml-4">
                 <li className="list-disc list-inside">Bước 1: Sử dụng thước dây hoặc thước kẻ để đo chiều dài lắc tay.</li>
                 <li className="list-disc list-inside">Bước 2: Lấy kết quả vừa đo được đối chiếu với thông số lắc tay trong bảng dưới đây. Kích thước đo lắc tay tính theo cm.</li>
-                <li className="list-disc list-inside">Bước 3: Size số ghi dưới đường thẳng chính là kích thước lắc tay của bạn. Sau khi làm theo các hướng dẫn đo size lắc tay, bạn có thể liên hệ với Cao Hùng Diamond để được nhân viên tư vấn, xác nhận số size và giao cho bạn mẫu lắc tay đúng số size bạn muốn.</li>
+                <li className="list-disc list-inside">Bước 3: Size số ghi dưới đường thẳng chính là kích thước lắc tay của bạn. Sau khi làm theo các hướng dẫn đo size lắc tay, bạn có thể liên hệ với DHL Diamond để được nhân viên tư vấn, xác nhận số size và giao cho bạn mẫu lắc tay đúng số size bạn muốn.</li>
             </ul>
             <img
                 src="https://caohungdiamond.com/wp-content/uploads/2022/06/do-size-trang-suc-vong-lac-tay.jpg"
@@ -29,7 +29,7 @@ export default function BraceletSize() {
             <ul className="list-item mt-3 ml-4">
                 <li className="list-disc list-inside">Bước 1: Sử dụng thước dây hoặc thước kẻ để đo đường kính của vòng tay có sẵn.</li>
                 <li className="list-disc list-inside">Bước 2: Lấy kết quả vừa đo được đối chiếu với thông số vòng tay trong bảng dưới đây. Kích thước đo vòng tay tính theo mm.</li>
-                <li className="list-disc list-inside">Bước 3: Size số ghi dưới vòng tròn chính là kích thước vòng tay của bạn. Giờ bạn có thể liên hệ với Cao Hùng Diamond để được nhân viên tư vấn, xác nhận số size và giao cho bạn mẫu vòng tay đúng số size bạn muốn.</li>
+                <li className="list-disc list-inside">Bước 3: Size số ghi dưới vòng tròn chính là kích thước vòng tay của bạn. Giờ bạn có thể liên hệ với DHL Diamond để được nhân viên tư vấn, xác nhận số size và giao cho bạn mẫu vòng tay đúng số size bạn muốn.</li>
             </ul>
             <img
                 src="https://caohungdiamond.com/wp-content/uploads/2022/06/bang-do-kich-thuoc-vong-tay.jpg"

@@ -21,15 +21,15 @@ public class OrderMapper {
 //        );
 //    }
 
-    public static Order maptoOrderEntity(OrderDTO dto) {
-        return new Order(
-                dto.getId(),
-                dto.getCustomer_id(),
-                dto.getTransaction_id(),
-                dto.getDeliveryFee(),
-                dto.getDiscountPrice(),
-                dto.getTotalPrice(),
-                dto.getCreatedAt()
-        );
-    }
+//    public static Order maptoOrderEntity(OrderDTO dto) {
+//        return new Order(
+//                dto.getId(),
+//                dto.getCustomer_id(),
+//                dto.getTransaction_id(),
+//                dto.getDeliveryFee(),
+//                dto.getDiscountPrice(),
+//                dto.getTotalPrice(),
+//                dto.getCreatedAt()
+//        );
+//    }
 }

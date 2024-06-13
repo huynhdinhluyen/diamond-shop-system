@@ -9,7 +9,8 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth.jsx";
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "./hooks/useCart.jsx";
-import { OrderProvider } from "./hooks/userOrder.jsx";
+import { OrderProvider } from "./hooks/useOrder.jsx";
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // {/* <React.StrictMode> */}

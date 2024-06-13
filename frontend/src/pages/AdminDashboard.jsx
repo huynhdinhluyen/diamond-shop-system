@@ -14,6 +14,7 @@ import {
   Legend,
 } from "recharts";
 import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import Price from "../components/Price";
 import { getDashboardData } from "../service/adminDashboardService";
 export default function AdminDashboard() {
   const [dashboardData, setDashboardData] = useState({});
@@ -22,18 +23,18 @@ export default function AdminDashboard() {
   const monthlySalesData =
     dashboardData && dashboardData.monthlySales
       ? Object.entries(dashboardData.monthlySales)
-          .sort(([monthYearA], [monthYearB]) => {
-            // Parse the month and year values as integers
-            const [monthA, yearA] = monthYearA.split("/").map(Number);
-            const [monthB, yearB] = monthYearB.split("/").map(Number);
+        .sort(([monthYearA], [monthYearB]) => {
+          // Parse the month and year values as integers
+          const [monthA, yearA] = monthYearA.split("/").map(Number);
+          const [monthB, yearB] = monthYearB.split("/").map(Number);
 
-            // Combine month and year into a single numeric value for comparison
-            const dateA = yearA * 12 + monthA;
-            const dateB = yearB * 12 + monthB;
+          // Combine month and year into a single numeric value for comparison
+          const dateA = yearA * 12 + monthA;
+          const dateB = yearB * 12 + monthB;
 
-            return dateA - dateB; // Sort based on combined numeric value
-          })
-          .map(([month, sales]) => ({ month, sales }))
+          return dateA - dateB; // Sort based on combined numeric value
+        })
+        .map(([month, sales]) => ({ month, sales }))
       : [];
 
   useEffect(() => {
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
               <Typography variant="h6">Tổng doanh thu</Typography>
               <Typography variant="h4">
                 {" "}
-                {dashboardData.totalRevenue.toLocaleString("vi-VN")} VNĐ
+                <Price price={dashboardData.totalRevenue} />
               </Typography>
             </Paper>
             <Paper elevation={3} className="p-4 rounded-lg basis-0 flex-grow">
