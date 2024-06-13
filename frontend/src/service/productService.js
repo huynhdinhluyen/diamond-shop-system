@@ -44,3 +44,12 @@ export async function deleteProduct(id) {
     handleError("Error deleting product:", error);
   }
 }
+
+export async function getBestSellingProducts() {
+  try {
+    const response = await axiosInstance.get(`/api/dashboard/best-sellers`);
+    return response.data;
+  } catch (error) {
+    handleError("Error get best sellers: ", error);
+  }
+}
