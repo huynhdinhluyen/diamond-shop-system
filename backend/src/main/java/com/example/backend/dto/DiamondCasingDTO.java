@@ -13,6 +13,4 @@ public class DiamondCasingDTO {
     private Integer id;
     private String material;
     private Long price;
-    private CategoryDTO category;
-    private SizeDTO size;
 }

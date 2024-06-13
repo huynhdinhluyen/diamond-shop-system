@@ -24,6 +24,7 @@ public class ProductDTO {
     private Long salePrice;
     private DiamondDTO mainDiamond;
     private DiamondDTO auxiliaryDiamond;
+    private CategoryDTO category;
 }
 
 

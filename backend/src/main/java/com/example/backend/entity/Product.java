@@ -1,7 +1,7 @@
 package com.example.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+        import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -59,4 +59,8 @@ public class Product {
     @Getter
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ProductDiamond> productDiamonds = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

@@ -16,4 +16,5 @@ public class CartDTO {
     private Integer user_id;
     private Integer product_id;
     private int quantity;
+    private String size;
 }

@@ -17,6 +17,9 @@ public interface OrderService {
     Long getTotalRevenue();
     Map<String, Long> getMonthlySales();
     Map<String, Long> getCategoryRevenue();
-    void addOrder(OrderDTO orderDTO);
-    List<Order> getOrdersByUserId(Integer userId);
+    OrderDTO addOrder(OrderDTO orderDTO);
+    List<OrderDTO> getOrdersByUserId(Integer userId);
+    OrderDTO getOrderById(Integer orderId);
+    void updateTransactionId(Integer orderId, Integer transactionId);
+    void updateOrderNote(Integer orderId, String note);
 }

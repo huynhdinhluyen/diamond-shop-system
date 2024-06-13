@@ -31,4 +31,5 @@ public class Cart {
     private Integer productId;
 
     private int quantity;
+    private String size;
 }
