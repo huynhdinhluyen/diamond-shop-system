@@ -37,7 +37,7 @@ import {
   getDiamondCasings,
   updateDiamondCasing,
 } from "../service/diamondCasingService";
-import { getSizes } from "../service/sizeService";
+// import { getSizes } from "../service/sizeService";
 import { getCategories } from "../service/categoryService";
 
 const diamondCasingSchema = yup.object({
@@ -58,7 +58,7 @@ const diamondCasingSchema = yup.object({
 export default function AdminDiamondCasingManagement() {
   const [diamondCasings, setDiamondCasings] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [sizes, setSizes] = useState([]);
+  // const [sizes, setSizes] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCasing, setSelectedCasing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,8 +86,8 @@ export default function AdminDiamondCasingManagement() {
       setDiamondCasings(diamondCasingsData);
       const categoriesData = await getCategories();
       setCategories(categoriesData);
-      const sizesData = await getSizes();
-      setSizes(sizesData);
+      // const sizesData = await getSizes();
+      // setSizes(sizesData);
     } catch (error) {
       setError(error);
       toast.error("Lỗi khi tải dữ liệu vỏ kim cương");
@@ -142,7 +142,7 @@ export default function AdminDiamondCasingManagement() {
   const filteredDiamondCasings = diamondCasings.filter((diamondCasing) =>
     diamondCasing.material.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
@@ -281,11 +281,11 @@ export default function AdminDiamondCasingManagement() {
                 defaultValue={selectedCasing?.size?.id || ""}
                 render={({ field }) => (
                   <Select {...field} label="Kích thước" error={!!errors.size}>
-                    {sizes.map((size) => (
+                    {/* {sizes.map((size) => (
                       <MenuItem key={size.id} value={size.id}>
                         {size.diameter} mm
                       </MenuItem>
-                    ))}
+                    ))} */}
                   </Select>
                 )}
               />

@@ -39,9 +39,6 @@ ProductCard.propTypes = {
     salePrice: PropTypes.number.isRequired,
     diamondCasing: PropTypes.shape({
       material: PropTypes.string.isRequired,
-      size: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-      }).isRequired,
     }),
   }).isRequired,
 };
