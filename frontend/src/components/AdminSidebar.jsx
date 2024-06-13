@@ -39,9 +39,17 @@ function AdminSidebar({ open, onClose }) {
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/admin/diamond-casings">
             <ListItemIcon>
-              <DiamondOutlinedIcon /> {/* hoặc một icon khác phù hợp */}
+              <DiamondOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Vỏ kim cương" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/admin/diamonds">
+            <ListItemIcon>
+              <DiamondOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Kim cương" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
