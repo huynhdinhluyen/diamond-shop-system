@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.repository.UserRepository;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -65,6 +68,42 @@ public class UserController {
             return ResponseEntity.ok(user);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(null);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthenticationResponse> createUser(
+            @RequestBody User request
+    ) throws Exception {
+        return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthenticationResponse> updateUserByAdmin(@PathVariable Integer id,
+                                                             @RequestBody User request){
+        try{
+            AuthenticationResponse user = authService.updateUser(id, request);
+            return ResponseEntity.ok(user);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }
