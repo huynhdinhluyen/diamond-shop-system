@@ -1,28 +1,29 @@
 package com.example.backend.mapper;
 import com.example.backend.dto.DiamondDTO;
 import com.example.backend.dto.ProductDTO;
-import com.example.backend.entity.Diamond;
-import com.example.backend.entity.DiamondCasing;
-import com.example.backend.entity.Product;
-import com.example.backend.entity.ProductDiamond;
+import com.example.backend.entity.*;
 import com.example.backend.repository.DiamondRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
 public class ProductMapper {
-
-    private final DiamondCasingMapper diamondCasingMapper;
-    private final PromotionMapper promotionMapper;
-    private final WarrantyMapper warrantyMapper;
-    private final DiamondMapper diamondMapper;
-    private final DiamondRepository diamondRepository;
+    @Autowired
+    private DiamondCasingMapper diamondCasingMapper;
+    @Autowired
+    private PromotionMapper promotionMapper;
+    @Autowired
+    private WarrantyMapper warrantyMapper;
+    @Autowired
+    private DiamondMapper diamondMapper;
+    @Autowired
+    private DiamondRepository diamondRepository;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     public ProductDTO toDto(Product product) {
         if (product == null) {
@@ -38,6 +39,8 @@ public class ProductMapper {
         productDTO.setPromotion(promotionMapper.toDto(product.getPromotion()));
         productDTO.setWarranty(warrantyMapper.toDto(product.getWarranty()));
         productDTO.setDiamondCasing(diamondCasingMapper.toDto(product.getDiamondCasing()));
+        productDTO.setCategory(categoryMapper.toDto(product.getCategory()));
+
         for (ProductDiamond pd : product.getProductDiamonds()) {
             DiamondDTO diamondDTO = diamondMapper.toDto(pd.getDiamond());
             if (pd.getIsMain()) {
@@ -46,11 +49,13 @@ public class ProductMapper {
                 productDTO.setAuxiliaryDiamond(diamondDTO);
             }
         }
+
         productDTO.setCostPrice(calculateCostPrice(product));
         productDTO.setSalePrice(calculateSalePrice(product, productDTO.getCostPrice()));
-        return productDTO;
-    }
 
+        return productDTO;
+
+    }
     public Product toEntity(ProductDTO productDTO) {
         if (productDTO == null) {
             throw new IllegalArgumentException("ProductDTO cannot be null");
@@ -66,6 +71,7 @@ public class ProductMapper {
         product.setDiamondCasing(diamondCasingMapper.toEntity(productDTO.getDiamondCasing()));
         product.setPromotion(promotionMapper.toEntity(productDTO.getPromotion()));
         product.setWarranty(warrantyMapper.toEntity(productDTO.getWarranty()));
+        product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
 
         List<ProductDiamond> productDiamonds = new ArrayList<>();
         if (productDTO.getMainDiamond() != null) {
@@ -79,6 +85,7 @@ public class ProductMapper {
             productDiamonds.add(new ProductDiamond(product, auxiliaryDiamond, false));
         }
         product.setProductDiamonds(productDiamonds);
+
         return product;
     }
 
@@ -98,6 +105,9 @@ public class ProductMapper {
         if (productDTO.getWarranty() != null) {
             product.setWarranty(warrantyMapper.toEntity(productDTO.getWarranty()));
         }
+        if (productDTO.getCategory() != null) {
+            product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
+        }
     }
 
     private Long calculateCostPrice(Product product) {
@@ -115,4 +125,5 @@ public class ProductMapper {
                 .multiply(BigDecimal.ONE.add(product.getProfitMargin()));
         return salePriceDecimal.longValue();
     }
+
 }
