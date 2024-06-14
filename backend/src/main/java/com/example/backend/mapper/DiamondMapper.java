@@ -2,7 +2,6 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.DiamondDTO;
 import com.example.backend.entity.Diamond;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,18 +10,29 @@ public class DiamondMapper {
         if (diamond == null) {
             return null;
         }
-        DiamondDTO diamondDTO = new DiamondDTO();
-        BeanUtils.copyProperties(diamond, diamondDTO);
-        return diamondDTO;
+        return new DiamondDTO(diamond.getId(),
+                diamond.getColor(),
+                diamond.getOrigin(),
+                diamond.getCaratWeight(),
+                diamond.getCutType(),
+                diamond.getClarity(),
+                diamond.getGiaCertificate(),
+                diamond.getPrice());
     }
 
     public Diamond toEntity(DiamondDTO diamondDTO) {
         if (diamondDTO == null) {
             return null;
         }
-
-        Diamond diamond = new Diamond();
-        BeanUtils.copyProperties(diamondDTO, diamond);
-        return diamond;
+        return new Diamond(
+                diamondDTO.getId(),
+                diamondDTO.getColor(),
+                diamondDTO.getOrigin(),
+                diamondDTO.getCaratWeight(),
+                diamondDTO.getCutType(),
+                diamondDTO.getClarity(),
+                diamondDTO.getGiaCertificate(),
+                diamondDTO.getPrice()
+        );
     }
 }

@@ -39,6 +39,10 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new UserNotFoundException(cartDTO.getUser_id()));
         Product product = productRepository.findById(cartDTO.getProduct_id())
                 .orElseThrow(() -> new ProductNotFoundException(cartDTO.getProduct_id()));
+        if (cartDTO.getSize() == null || cartDTO.getSize().isEmpty()) {
+            throw new IllegalArgumentException("Size must be selected before adding to cart");
+        }
+
         // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng của người dùng chưa
         Cart existingCart = cartRepository.findByUserAndProductId(user, cartDTO.getProduct_id()).orElse(null);
 
@@ -48,7 +52,7 @@ public class CartServiceImpl implements CartService {
             cartRepository.save(existingCart);
         } else {
             // Nếu sản phẩm chưa tồn tại trong giỏ hàng, tạo mới bản ghi
-            Cart cart = new Cart(cartDTO.getId(), user, cartDTO.getProduct_id(), cartDTO.getQuantity());
+            Cart cart = new Cart(cartDTO.getId(), user, cartDTO.getProduct_id(), cartDTO.getQuantity(), cartDTO.getSize());
             cartRepository.save(cart);
         }
 //        cartRepository.save(CartMapper.maptoCartEntity(cartDTO));

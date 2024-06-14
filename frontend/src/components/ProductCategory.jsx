@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CircularProgress, Box, Typography, Grow } from "@mui/material";
-import { getCategories } from "../api/api";
 import { Link } from "react-router-dom";
+import { getCategories } from "../service/categoryService";
 
 export default function ProductCategory() {
   const [categories, setCategories] = useState([]);

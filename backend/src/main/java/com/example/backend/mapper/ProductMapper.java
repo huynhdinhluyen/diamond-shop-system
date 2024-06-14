@@ -22,6 +22,8 @@ public class ProductMapper {
     private DiamondMapper diamondMapper;
     @Autowired
     private DiamondRepository diamondRepository;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     public ProductDTO toDto(Product product) {
         if (product == null) {
@@ -37,6 +39,7 @@ public class ProductMapper {
         productDTO.setPromotion(promotionMapper.toDto(product.getPromotion()));
         productDTO.setWarranty(warrantyMapper.toDto(product.getWarranty()));
         productDTO.setDiamondCasing(diamondCasingMapper.toDto(product.getDiamondCasing()));
+        productDTO.setCategory(categoryMapper.toDto(product.getCategory()));
 
         for (ProductDiamond pd : product.getProductDiamonds()) {
             DiamondDTO diamondDTO = diamondMapper.toDto(pd.getDiamond());
@@ -68,6 +71,7 @@ public class ProductMapper {
         product.setDiamondCasing(diamondCasingMapper.toEntity(productDTO.getDiamondCasing()));
         product.setPromotion(promotionMapper.toEntity(productDTO.getPromotion()));
         product.setWarranty(warrantyMapper.toEntity(productDTO.getWarranty()));
+        product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
 
         List<ProductDiamond> productDiamonds = new ArrayList<>();
         if (productDTO.getMainDiamond() != null) {
@@ -100,6 +104,9 @@ public class ProductMapper {
         }
         if (productDTO.getWarranty() != null) {
             product.setWarranty(warrantyMapper.toEntity(productDTO.getWarranty()));
+        }
+        if (productDTO.getCategory() != null) {
+            product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
         }
     }
 

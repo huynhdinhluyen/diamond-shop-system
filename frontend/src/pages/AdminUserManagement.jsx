@@ -30,11 +30,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
-import { getUsers, createUser, updateUser, deleteUser } from "../api/api";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { createUser, deleteUser, getUsers, updateUser } from "../service/userService";
 
 const roleOptions = [
   { value: "ADMIN", label: "Quản trị viên" },

@@ -5,7 +5,7 @@ import * as cartService from "../service/cartService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "./useAuth";
-import { getProductById } from "../api/api";
+import { getProductById } from "../service/productService";
 
 const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
@@ -79,7 +79,6 @@ export const CartProvider = ({ children }) => {
                 const totalPrice = newCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
                 return { items: newCartItems, totalCount, totalPrice };
             });
-            toast.success("Đã xóa sản phẩm khỏi giỏ hàng!");
         } catch (err) {
             console.error("Error removing from cart:", err);
             toast.error("Xóa sản phẩm khỏi giỏ hàng không thành công!");

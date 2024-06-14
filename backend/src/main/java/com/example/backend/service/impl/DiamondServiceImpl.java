@@ -2,6 +2,7 @@ package com.example.backend.service.impl;
 
 import com.example.backend.dto.DiamondDTO;
 import com.example.backend.entity.Diamond;
+import com.example.backend.exception.DiamondNotFoundException;
 import com.example.backend.mapper.DiamondMapper;
 import com.example.backend.repository.DiamondRepository;
 import com.example.backend.service.DiamondService;
@@ -25,5 +26,32 @@ public class DiamondServiceImpl implements DiamondService {
         return diamonds.stream()
                 .map(diamondMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public DiamondDTO createDiamond(DiamondDTO diamondDTO) {
+        Diamond diamond = diamondMapper.toEntity(diamondDTO);
+        return diamondMapper.toDto(diamondRepository.save(diamond));
+    }
+
+    @Override
+    public DiamondDTO updateDiamond(Integer id, DiamondDTO diamondDTO) {
+        Diamond existingDiamond = diamondRepository.findById(id).orElseThrow(() -> new DiamondNotFoundException(id));
+        existingDiamond.setColor(diamondDTO.getColor());
+        existingDiamond.setOrigin(diamondDTO.getOrigin());
+        existingDiamond.setCaratWeight(diamondDTO.getCaratWeight());
+        existingDiamond.setCutType(diamondDTO.getCutType());
+        existingDiamond.setClarity(diamondDTO.getClarity());
+        existingDiamond.setGiaCertificate(diamondDTO.getGiaCertificate());
+        existingDiamond.setPrice(diamondDTO.getPrice());
+        return diamondMapper.toDto(diamondRepository.save(existingDiamond));
+    }
+
+    @Override
+    public void deleteDiamond(Integer id) {
+        if (!diamondRepository.existsById(id)) {
+            throw new DiamondNotFoundException(id);
+        }
+        diamondRepository.deleteById(id);
     }
 }
