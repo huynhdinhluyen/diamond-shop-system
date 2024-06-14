@@ -20,7 +20,8 @@ import AdminDiamondManagement from "./pages/AdminDiamondManagement";
 import NotFoundPage from "./pages/NotFoundPage";
 import ManagerLayout from "./layouts/ManagerLayout";
 import Dashboard from "./pages/Dashboard";
-import ManagerCustomerManagement from "./pages/ManagerCustomerManagement";
+import CustomerManagement from "./pages/CustomerManagement";
+import SaleStaffManagement from "./pages/SaleStaffManagement";
 
 function App() {
   return (
@@ -108,7 +109,8 @@ function App() {
 
       <Route path="/manager" element={<ManagerLayout />}>
         <Route index element={<Dashboard />} />
-        <Route path="customers-management" element={<ManagerCustomerManagement />} />
+        <Route path="customers-management" element={<CustomerManagement />} />
+        <Route path="sales-staffs-management" element={<SaleStaffManagement />} />
       </Route>
 
       <Route path="/admin" element={<AdminLayout />}>
