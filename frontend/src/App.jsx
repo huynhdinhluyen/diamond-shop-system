@@ -8,7 +8,6 @@ import NewsDetails from "./pages/NewsDetails";
 import Contact from "./pages/Contact";
 import Knowledge from "./pages/Knowledge";
 import AdminLayout from "./layouts/AdminLayout";
-import AdminDashboard from "./pages/AdminDashboard";
 import ProfileLayout from "./layouts/ProfileLayout";
 import TablePricesDiamond from "./pages/TablePricesDiamond";
 import Cart from "./pages/Cart";
@@ -19,6 +18,12 @@ import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminDiamondCasingManagement from "./pages/AdminDiamondCasingManagement";
 import AdminDiamondManagement from "./pages/AdminDiamondManagement";
 import NotFoundPage from "./pages/NotFoundPage";
+import ManagerLayout from "./layouts/ManagerLayout";
+import Dashboard from "./pages/Dashboard";
+import CustomerManagement from "./pages/CustomerManagement";
+import SaleStaffManagement from "./pages/SaleStaffManagement";
+import DeliveryStaffManagement from "./pages/DeliveryStaffManagement";
+
 function App() {
   return (
     <Routes>
@@ -103,17 +108,25 @@ function App() {
         }
       />
 
+      <Route path="/manager" element={<ManagerLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="customers-management" element={<CustomerManagement />} />
+        <Route path="sales-staffs-management" element={<SaleStaffManagement />} />
+        <Route path="delivery-staffs-management" element={<DeliveryStaffManagement />} />
+      </Route>
+
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AdminDashboard />} />
+        <Route index element={<Dashboard />} />
         <Route path="products" element={<AdminProductManagement />} />
         <Route path="categories" element={<AdminCategoryManagement />} />
         <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
         <Route path="diamonds" element={<AdminDiamondManagement />} />
         <Route path="users" element={<AdminUserManagement />} />
       </Route>
-      <Route path="*" element={<NotFoundPage />} />
+
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

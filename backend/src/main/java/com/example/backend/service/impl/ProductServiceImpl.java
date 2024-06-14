@@ -2,14 +2,21 @@ package com.example.backend.service.impl;
 
 import com.example.backend.dto.DiamondDTO;
 import com.example.backend.dto.ProductDTO;
-import com.example.backend.entity.*;
+import com.example.backend.entity.Diamond;
+import com.example.backend.entity.Product;
+import com.example.backend.entity.ProductDiamond;
+import com.example.backend.entity.DiamondCasing;
 import com.example.backend.exception.ProductNotFoundException;
 import com.example.backend.mapper.ProductMapper;
-import com.example.backend.repository.*;
+import com.example.backend.repository.DiamondRepository;
+import com.example.backend.repository.ProductDiamondRepository;
+import com.example.backend.repository.ProductRepository;
 import com.example.backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -141,4 +148,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByIdWithDetails(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
+
+    @Override
+    public Long countLowStockProducts(int threshold) {
+        return productRepository.countByStockQuantityLessThan(threshold);
+    }
+
 }
