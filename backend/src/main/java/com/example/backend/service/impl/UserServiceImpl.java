@@ -60,4 +60,10 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Override
+    public List<UserDTO> findByRole(RoleName roleName) {
+        List<User> users = userRepository.findByRole(roleName.name());
+        return users.stream().map(UserMapper::maptoUserDTO)
+                .collect(Collectors.toList());
+    }
 }
