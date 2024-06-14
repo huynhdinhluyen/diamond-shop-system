@@ -22,6 +22,7 @@ import ManagerLayout from "./layouts/ManagerLayout";
 import Dashboard from "./pages/Dashboard";
 import CustomerManagement from "./pages/CustomerManagement";
 import SaleStaffManagement from "./pages/SaleStaffManagement";
+import DeliveryStaffManagement from "./pages/DeliveryStaffManagement";
 
 function App() {
   return (
@@ -111,6 +112,7 @@ function App() {
         <Route index element={<Dashboard />} />
         <Route path="customers-management" element={<CustomerManagement />} />
         <Route path="sales-staffs-management" element={<SaleStaffManagement />} />
+        <Route path="delivery-staffs-management" element={<DeliveryStaffManagement />} />
       </Route>
 
       <Route path="/admin" element={<AdminLayout />}>
