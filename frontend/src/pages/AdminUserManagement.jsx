@@ -88,6 +88,7 @@ export default function AdminUserManagement() {
       user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.role.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   const {
     register,
     handleSubmit,
@@ -104,7 +105,7 @@ export default function AdminUserManagement() {
       setUsers(userData);
     } catch (error) {
       setError(error);
-      toast.error("Lỗi khi tải dữ liệu");
+      toast.error("Lỗi khi tải dữ liệu người dùng");
     } finally {
       setIsLoading(false);
     }
@@ -155,6 +156,7 @@ export default function AdminUserManagement() {
       }
     }
   };
+  
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
