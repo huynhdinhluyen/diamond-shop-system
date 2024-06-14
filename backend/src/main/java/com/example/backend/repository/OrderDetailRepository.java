@@ -9,11 +9,10 @@ import java.util.List;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
-    @Query("SELECT dc.category, SUM(od.quantity * od.unitPrice) AS totalRevenue " +
+    @Query("SELECT p.category, SUM(od.quantity * od.unitPrice) AS totalRevenue " +
             "FROM OrderDetail od " +
-            "JOIN od.product p " +
-            "JOIN p.diamondCasing dc " +
-            "GROUP BY dc.category")
+            "JOIN Product p ON od.productId = p.id " +
+            "GROUP BY p.category")
     List<Object[]> getCategoryRevenue();
     @Query("SELECT od.product.id, od.product.name, od.product.imageUrl," +
             " SUM(od.quantity) AS totalQuantity, SUM(od.quantity * od.unitPrice) AS totalRevenue " +

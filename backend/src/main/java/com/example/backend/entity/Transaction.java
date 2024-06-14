@@ -32,5 +32,4 @@ public class Transaction {
     @Nationalized
     @Column(name = "status", nullable = false, length = 25)
     private String status;
-
 }

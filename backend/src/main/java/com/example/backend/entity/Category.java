@@ -27,6 +27,13 @@ public class Category {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DiamondCasing> diamondCasings;
+    @OneToMany(mappedBy = "category")
+    private List<RingSize> ringSizes;
+
+    @OneToMany(mappedBy = "category")
+    private List<NecklaceSize> necklaceSizes;
+
+    @OneToMany(mappedBy = "category")
+    private List<BraceletSize> braceletSizes;
+
 }

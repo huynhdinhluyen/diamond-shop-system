@@ -79,7 +79,6 @@ export const CartProvider = ({ children }) => {
                 const totalPrice = newCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
                 return { items: newCartItems, totalCount, totalPrice };
             });
-            toast.success("Đã xóa sản phẩm khỏi giỏ hàng!");
         } catch (err) {
             console.error("Error removing from cart:", err);
             toast.error("Xóa sản phẩm khỏi giỏ hàng không thành công!");

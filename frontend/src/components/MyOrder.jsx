@@ -1,5 +1,7 @@
-import { useOrder } from "../hooks/userOrder";
+import { useOrder } from "../hooks/useOrder";
 import NotFound from "./NotFound";
+import Price from "../components/Price"
+import { Link } from "react-router-dom";
 
 export default function MyOrder() {
     const { orders } = useOrder();
@@ -18,15 +20,22 @@ export default function MyOrder() {
                 <div className="container mx-auto px-4">
                     <ul className="flex flex-col gap-4 mt-10">
                         {orders.map((order) => (
-                            <li key={order.id} className="flex flex-col p-4 border rounded-lg shadow-md">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-lg">Đơn hàng #{order.id}</span>
-                                    <span className="text-gray-500">Ngày: {new Date(order.createdAt).toLocaleDateString()}</span>
-                                </div>
-                                <div className="flex justify-end mt-2">
-                                    <span className="font-semibold">Tổng tiền: {order.totalPrice}</span>
-                                </div>
-                            </li>
+                            <Link key={order.id} to={`/order-detail/${order.id}`}>
+                                <li className="flex flex-col p-4 border rounded-lg cursor-pointer hover:shadow-lg shadow-md">
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-semibold text-lg">Đơn hàng #{order.id}</span>
+                                        <div className="flex justify-end mt-2">
+                                            Ngày đặt hàng:<span className="font-semibold ml-2"> {new Date(order.createdAt).toLocaleDateString()}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-end mt-2">
+                                        Tổng tiền: <span className="font-semibold ml-2"> <Price price={order.totalPrice} /> </span>
+                                    </div>
+                                    <div className="flex justify-end mt-2">
+                                        Trạng thái đơn hàng: <span className="ml-2 font-semibold"> {order.status.name}</span>
+                                    </div>
+                                </li>
+                            </Link>
                         ))}
                     </ul>
                 </div>

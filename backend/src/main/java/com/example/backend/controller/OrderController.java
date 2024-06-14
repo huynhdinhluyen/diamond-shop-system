@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.dto.OrderDTO;
 import com.example.backend.entity.Order;
 import com.example.backend.exception.UserNotFoundException;
+import com.example.backend.request.NoteRequest;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/order")
@@ -18,20 +20,31 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addOrder(@RequestBody OrderDTO orderDTO) {
-        orderService.addOrder(orderDTO);
-        return ResponseEntity.ok("mua hang thanh cong");
+    public ResponseEntity<OrderDTO> addOrder(@RequestBody OrderDTO orderDTO) {
+        OrderDTO newOrder = orderService.addOrder(orderDTO);
+        return ResponseEntity.ok(newOrder);
     }
 
-    @GetMapping("/details")
-    public ResponseEntity<List<Order>> getUserOrders(@RequestParam Integer userId) {
-        try {
-            List<Order> orders = orderService.getOrdersByUserId(userId);
-            return ResponseEntity.ok(orders);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    @GetMapping("/get/user/{userId}")
+    public List<OrderDTO> getOrdersByUserId(@PathVariable Integer userId) {
+        return orderService.getOrdersByUserId(userId);
+    }
+
+    @GetMapping("/get/{orderId}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Integer orderId) {
+        OrderDTO order = orderService.getOrderById(orderId);
+        return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("/update-transaction/{orderId}")
+    public ResponseEntity<String> updateTransactionId(@PathVariable Integer orderId, @RequestParam Integer transactionId) {
+        orderService.updateTransactionId(orderId, transactionId);
+        return ResponseEntity.ok("Transaction method updated successfully");
+    }
+
+    @PostMapping("/{orderId}/note")
+    public ResponseEntity<String> updateOrderNote(@PathVariable Integer orderId, @RequestBody NoteRequest noteRequest) {
+        orderService.updateOrderNote(orderId, noteRequest.getNote());
+        return ResponseEntity.ok("Đã thêm ghi chú!");
     }
 }

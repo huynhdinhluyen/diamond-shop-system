@@ -8,7 +8,7 @@ export default function RingSize() {
                 Để biết rõ hơn về cách chọn nhẫn sao cho phù hợp nhất, bạn cần phải biết chu vi ngón tay của mình. So sánh thông số dưới bảng để biết được kích thước của nhẫn so với ngón tay. Dưới đây là bảng size nhẫn (đường kính trong mm) phổ biến để bạn dễ dàng tham khảo.
             </p>
             <img
-                src="https://caohungdiamond.com/wp-content/uploads/2022/09/bang-do-size-nhan.jpg"
+                src="http://bizweb.dktcdn.net/thumb/1024x1024/100/071/641/files/duong-kinh-1.jpg?v=1497007309627"
                 alt="Bảng đo size nhẫn"
                 className="mx-auto my-4"
             />

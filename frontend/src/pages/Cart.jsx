@@ -1,15 +1,18 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NotFound from "../components/NotFound";
 import { useCart } from "../hooks/useCart";
 import Price from "../components/Price";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { addOrder } from '../service/orderService';
 
 export default function Cart() {
     const { cart, getProductFromCart, changeQuantity, removeFromCart } = useCart();
     const { user } = useAuth();
+    const [selectedItems, setSelectedItems] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
@@ -54,6 +57,54 @@ export default function Cart() {
         });
     }
 
+    const handleCheckboxChange = (productId) => {
+        setSelectedItems((prevSelectedItems) => {
+            if (prevSelectedItems.includes(productId)) {
+                return prevSelectedItems.filter((id) => id !== productId);
+            } else {
+                return [...prevSelectedItems, productId];
+            }
+        });
+    };
+
+    const handleCheckout = async () => {
+        if (selectedItems.length === 0) {
+            toast.error("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
+            return;
+        }
+
+        const orderItems = cart.items.filter((item) => selectedItems.includes(item.productId));
+        console.log(orderItems)
+        const order = {
+            customer_id: user.id,
+            transaction_id: null, // Transaction ID sẽ được cập nhật sau khi chọn phương thức thanh toán
+            deliveryFee: 50000, // Ví dụ phí giao hàng
+            discountPrice: 0, // Ví dụ giá giảm
+            totalPrice: orderItems.reduce((total, item) => total + item.price * item.quantity, 0),
+            createdAt: new Date().toISOString(),
+            customerName: user.lastName + " " + user.firstName, // Giả sử user object có field name
+            shippingAddress: user.address, // Giả sử user object có field address
+            phoneNumber: user.phoneNumber, // Giả sử user object có field phone
+            orderDetails: orderItems.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+                unitPrice: item.price,
+                size: item.size
+            }))
+        };
+
+        try {
+            const newOrder = await addOrder(order);
+            if (newOrder) {
+                orderItems.forEach(item => removeFromCart(item.productId));
+                navigate(`/payment/${newOrder.id}`);
+            }
+        } catch (error) {
+            console.error("Failed to place order:", error);
+            toast.error("Đặt hàng không thành công, vui lòng thử lại.");
+        }
+    };
+
     return (
         <div className="lg:mt-10">
             {!cart.items || cart.items.length === 0
@@ -63,10 +114,18 @@ export default function Cart() {
                         <ul className="flex flex-col gap-4">
                             {cart.items.map((item) => (
                                 <li key={item.productId} className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 border rounded-lg shadow-md">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.includes(item.productId)}
+                                        onChange={() => handleCheckboxChange(item.productId)}
+                                    />
                                     <img src={item.image} className="w-[100px] md:w-32 h-32 object-cover" alt={item.productName} />
                                     <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4">
                                         <span className="text-lg text-center">
                                             {item.productName}
+                                        </span>
+                                        <span className="text-lg text-center">
+                                            Kích cỡ: {item.size}
                                         </span>
                                         <div className="flex">
                                             <span className="md:flex mr-2">Giá:</span>
@@ -99,9 +158,12 @@ export default function Cart() {
                                     </span>
                                 </div>
                             </div>
-                            <Link to="/checkout" className="btn-accent p-3 rounded-lg text-white bg-primary hover:bg-primary-dark transition">
-                                Tiến hành thanh toán
-                            </Link>
+                            <button
+                                onClick={handleCheckout}
+                                className="btn-accent p-3 rounded-lg text-white bg-primary hover:bg-primary-dark transition"
+                            >
+                                Tiến hành đặt hàng
+                            </button>
                         </div>
                     </div>
                 )

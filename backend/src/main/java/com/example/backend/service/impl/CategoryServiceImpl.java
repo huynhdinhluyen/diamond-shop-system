@@ -1,7 +1,10 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.dto.CategoryDTO;
+import com.example.backend.entity.BraceletSize;
 import com.example.backend.entity.Category;
+import com.example.backend.entity.NecklaceSize;
+import com.example.backend.entity.RingSize;
 import com.example.backend.exception.CategoryNotFoundException;
 import com.example.backend.mapper.CategoryMapper;
 import com.example.backend.repository.CategoryRepository;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

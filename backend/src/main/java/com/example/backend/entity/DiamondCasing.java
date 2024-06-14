@@ -30,16 +30,6 @@ public class DiamondCasing {
     @Column(name = "price", nullable = false)
     private Long price = 0L;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "size_id")
-    private Size size;
-
     @OneToMany(mappedBy = "diamondCasing", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }
