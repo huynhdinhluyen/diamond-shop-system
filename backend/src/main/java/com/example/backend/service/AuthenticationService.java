@@ -1,6 +1,5 @@
 package com.example.backend.service;
 
-import com.example.backend.controller.UserController;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
@@ -33,16 +32,20 @@ public class AuthenticationService {
 
     private UserDetailsService userDetailsService;
 
+    private final EmailSenderService mailservice;
+
     public AuthenticationService(UserRepository repository,
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
                                  AuthenticationManager authenticationManager,
-                                 UserDetailsService userDetailsService) {
+                                 UserDetailsService userDetailsService,
+                                 EmailSenderService mailservice) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.mailservice = mailservice;
     }
 
 
@@ -69,7 +72,9 @@ public class AuthenticationService {
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
             user = repository.save(user);
-
+            mailservice.sendSimpleMail(user.getEmail(),
+                    "sub",
+                    "123");
             String token = jwtService.generateToken(user);
             return new AuthenticationResponse(token, user);
         } catch (DataIntegrityViolationException e) {
