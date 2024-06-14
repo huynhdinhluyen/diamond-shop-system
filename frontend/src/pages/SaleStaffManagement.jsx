@@ -137,7 +137,7 @@ export default function SaleStaffManagement() {
     try {
       if (selectedSalesStaff) {
         await updateUser(selectedSalesStaff.id, data);
-        toast.success("Cập nhật thông tin nhân viên thành công");
+        toast.success("Cập nhật thành công");
       } else {
         await createUser(data);
         toast.success("Tạo tài khoản nhân viên bán hàng thành công");
@@ -145,7 +145,7 @@ export default function SaleStaffManagement() {
       fetchData();
       handleCloseDialog();
     } catch (error) {
-      toast.error("Lỗi khi lưu thông tin nhân viên");
+      toast.error("Lỗi khi lưu thông tin");
     }
   };
 
@@ -179,7 +179,7 @@ export default function SaleStaffManagement() {
             </InputAdornment>
           ),
         }}
-        className="w-full"
+        className="w-full !my-4"
       />
 
       <Button
@@ -188,7 +188,7 @@ export default function SaleStaffManagement() {
         onClick={() => handleOpenDialog()}
         className="!mt-4"
       >
-        Thêm nhân viên bán hàng
+        Thêm nhân viên
       </Button>
 
       {isLoading ? (
@@ -214,7 +214,9 @@ export default function SaleStaffManagement() {
             <TableBody>
               {filteredSalesStaffs.map((salesStaff) => (
                 <TableRow key={salesStaff.id}>
-                  <TableCell className="!text-center">{salesStaff.id}</TableCell>
+                  <TableCell className="!text-center">
+                    {salesStaff.id}
+                  </TableCell>
                   <TableCell className="!text-center">
                     {salesStaff.username}
                   </TableCell>

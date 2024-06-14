@@ -138,7 +138,7 @@ export default function CustomerManagement() {
     try {
       if (selectedCustomer) {
         await updateUser(selectedCustomer.id, data);
-        toast.success("Cập nhật thông tin khách hàng thành công");
+        toast.success("Cập nhật thành công");
       } else {
         await createUser(data);
         toast.success("Tạo tài khoản khách hàng thành công");
@@ -146,7 +146,7 @@ export default function CustomerManagement() {
       fetchData();
       handleCloseDialog();
     } catch (error) {
-      toast.error("Lỗi khi lưu thông tin khách hàng");
+      toast.error("Lỗi khi lưu thông tin");
     }
   };
 
@@ -180,7 +180,7 @@ export default function CustomerManagement() {
             </InputAdornment>
           ),
         }}
-        className="w-full"
+        className="w-full !my-4"
       />
 
       <Button
