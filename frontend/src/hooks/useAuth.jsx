@@ -13,6 +13,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const user = await userService.login(username, password);
       setUser(user);
+      if (user.role === 'ADMIN') {
+        window.location.href = '/admin';
+      } else {
+        window.location.href = '/';
+      }
       toast.success("Đăng nhập thành công!");
       return true;
     } catch (err) {
