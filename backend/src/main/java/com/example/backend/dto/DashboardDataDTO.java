@@ -15,7 +15,8 @@ public class DashboardDataDTO {
     private Long totalOrders;
     private Long totalCustomers;
     private Long totalRevenue;
-    private Long numberOfProducts;
+    private Long totalProducts;
     private Map<String, Long> monthlySales;
     private Map<String, Long> categoryRevenue;
+    private Long lowStockProducts;
 }

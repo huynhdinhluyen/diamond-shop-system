@@ -64,3 +64,4 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 }
+

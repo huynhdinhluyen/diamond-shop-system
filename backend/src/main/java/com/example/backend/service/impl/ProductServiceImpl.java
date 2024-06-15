@@ -137,8 +137,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductId(Integer id) throws ProductNotFoundException {
-        return productRepository.findByIdWithDetails(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
+    public Long countLowStockProducts(int threshold) {
+        return productRepository.countByStockQuantityLessThan(threshold);
     }
 }

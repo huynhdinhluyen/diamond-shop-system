@@ -27,8 +27,9 @@ public class Cart {
     @JsonIgnore
     private User user;
 
-    @Column(name = "product_id", nullable = false)
-    private Integer productId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     private int quantity;
     private String size;

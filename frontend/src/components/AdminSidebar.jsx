@@ -21,7 +21,7 @@ function AdminSidebar({ open, onClose }) {
       </div>
       <List className='!w-64'>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/admin/*">
+          <ListItemButton component={Link} to="/admin/">
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>

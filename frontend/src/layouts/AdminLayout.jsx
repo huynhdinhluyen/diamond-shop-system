@@ -24,7 +24,7 @@ function AdminLayout() {
         </div>
       </div>
     ) : (
-      <div className="text-center mt-8">Bạn không có quyền truy cập!</div>
+      <div className="text-center mt-8 text-red-500 font-bold text-4xl">Bạn không có quyền truy cập trang này!</div>
     )
   );
 }
