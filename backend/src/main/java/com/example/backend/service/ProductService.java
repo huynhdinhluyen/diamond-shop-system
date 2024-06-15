@@ -1,5 +1,5 @@
 package com.example.backend.service;
-import com.example.backend.dto.*;
+import com.example.backend.dto.ProductDTO;
 import com.example.backend.entity.Product;
 import com.example.backend.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,4 +15,5 @@ public interface ProductService {
     void deleteProduct(Integer id);
     Long countProducts();
     Product getProductId(Integer id) throws ProductNotFoundException;
+    Long countLowStockProducts(int threshold);
 }

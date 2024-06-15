@@ -19,4 +19,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "JOIN FETCH pd.diamond " +
             "WHERE p.id = :id")
     Optional<Product> findByIdWithDetails(Integer id);
+    Long countByStockQuantityLessThan(Integer threshold);
 }
