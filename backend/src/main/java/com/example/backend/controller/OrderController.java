@@ -1,17 +1,13 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.OrderDTO;
-import com.example.backend.entity.Order;
-import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.request.NoteRequest;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/order")
