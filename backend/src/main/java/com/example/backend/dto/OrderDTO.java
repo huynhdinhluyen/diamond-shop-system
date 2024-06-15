@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
     private Integer id;
-    private Integer customer_id;
+    private Integer userId;
     private TransactionDTO transaction;
     private Long deliveryFee;
     private Long discountPrice;

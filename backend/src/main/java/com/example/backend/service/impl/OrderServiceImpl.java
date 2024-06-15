@@ -88,10 +88,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO addOrder(OrderDTO orderDTO) {
-        User user = userRepository.findById(orderDTO.getCustomer_id())
+        User user = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Order order = new Order();
-        order.setCustomerId(orderDTO.getCustomer_id());
+        order.setUser(user);
         order.setTransaction(null);
         order.setDeliveryFee(orderDTO.getDeliveryFee());
         order.setDiscountPrice(orderDTO.getDiscountPrice());
@@ -126,9 +126,12 @@ public class OrderServiceImpl implements OrderService {
         return convertToDto(savedOrder);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<OrderDTO> getOrdersByUserId(Integer userId) {
-        List<Order> orders = orderRepository.findByCustomerId(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        List<Order> orders = orderRepository.findByUser(user);
         return orders.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
@@ -164,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderDTO convertToDto(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
-        orderDTO.setCustomer_id(order.getCustomerId());
+        orderDTO.setUserId(order.getUser().getId());
         orderDTO.setTransaction(convertToTransactionDTO(order.getTransaction()));
         orderDTO.setDeliveryFee(order.getDeliveryFee());
         orderDTO.setDiscountPrice(order.getDiscountPrice());
