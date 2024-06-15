@@ -43,13 +43,13 @@ public class Order {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "customer_name", nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(name = "customer_name", columnDefinition = "NVARCHAR(255)")
     private String customerName;
 
-    @Column(name = "shipping_address", nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(name = "shipping_address", columnDefinition = "NVARCHAR(255)")
     private String shippingAddress;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", columnDefinition = "NVARCHAR(20)")
     private String phoneNumber;
 
     @Column(name = "note")
