@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface CartService {
     void addToCart(CartDTO cartDTO);
-    List<Cart> getCartDetails(Integer userId);
+    List<CartDTO> getCartDetails(Integer userId);
     void changeQuantity(ChangeQuantityRequest request, int Quantity);
     void removeFromCart(RemoveFromCartRequest request);
 }
