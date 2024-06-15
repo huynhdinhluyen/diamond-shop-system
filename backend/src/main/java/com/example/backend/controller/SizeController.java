@@ -41,7 +41,7 @@ public class SizeController {
         return switch (categoryId) {
             case 1 -> ringSizeMapper.toDtoList(ringSizeRepository.findAll());
             case 2 -> necklaceSizeMapper.toDtoList(necklaceSizeRepository.findAll());
-            case 3 -> braceletSizeMapper.toDtoList(braceletSizeRepository.findAll());
+            case 5 -> braceletSizeMapper.toDtoList(braceletSizeRepository.findAll());
             default -> throw new IllegalArgumentException("Invalid category ID");
         };
     }

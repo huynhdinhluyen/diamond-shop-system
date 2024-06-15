@@ -36,8 +36,8 @@ public class CartController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<List<Cart>> getCartByUser(@RequestParam Integer userId) {
-        List<Cart> cartDetails = cartService.getCartDetails(userId);
+    public ResponseEntity<List<CartDTO>> getCartByUser(@RequestParam Integer userId) {
+        List<CartDTO> cartDetails = cartService.getCartDetails(userId);
         return ResponseEntity.ok(cartDetails);
     }
 
