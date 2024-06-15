@@ -7,7 +7,7 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleProducts, setVisibleProducts] = useState(8); // Số lượng sản phẩm hiển thị ban đầu
+  const [visibleProducts, setVisibleProducts] = useState(4); // Số lượng sản phẩm hiển thị ban đầu
 
   useEffect(() => {
     getProducts()

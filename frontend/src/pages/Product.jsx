@@ -27,8 +27,8 @@ export default function Product() {
         }
 
         addToCart({
-            user_id: user.id,
-            product_id: productId,
+            userId: user.id,
+            productId: productId,
             quantity: 1,
             size: selectedSize.name,
         });
@@ -120,7 +120,7 @@ export default function Product() {
                 <div className="container">
                     <div className="flex justify-center">
                         <div className="w-1/2">
-                            <img src={product.imageUrl} alt={product.name} className="h-96 object-cover rounded-md" />
+                            <img src={product.imageUrl} alt={product.name} className="h-full object-cover rounded-md" />
                         </div>
                         <div className="flex flex-col gap-y-3 ml-4">
                             <h3 className="h3">{product.name}</h3>
@@ -133,13 +133,13 @@ export default function Product() {
                             {product.mainDiamond && (
                                 <div>
                                     <h5 className="h5">Viên chính:</h5>
-                                    <ul className="">
-                                        <li>Màu: {product.mainDiamond.color}</li>
-                                        <li>Xuất xứ: {product.mainDiamond.origin}</li>
-                                        <li>Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
-                                        <li>Kiểu cắt: {product.mainDiamond.cutType}</li>
-                                        <li>Độ trong: {product.mainDiamond.clarity}</li>
-                                        <li>Chứng chỉ GIA: {product.mainDiamond.giaCertificate}</li>
+                                    <ul className="ml-10">
+                                        <li className="list-disc list-inside">Màu: {product.mainDiamond.color}</li>
+                                        <li className="list-disc list-inside">Xuất xứ: {product.mainDiamond.origin}</li>
+                                        <li className="list-disc list-inside">Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
+                                        <li className="list-disc list-inside">Kiểu cắt: {product.mainDiamond.cutType}</li>
+                                        <li className="list-disc list-inside">Độ trong: {product.mainDiamond.clarity}</li>
+                                        <li className="list-disc list-inside">Chứng chỉ GIA: {product.mainDiamond.giaCertificate}</li>
                                     </ul>
                                 </div>
                             )}
@@ -160,6 +160,7 @@ export default function Product() {
                                     </ul>
                                 </div>
                             )}
+                            <h5 className="h5">Số lượng tồn kho: {product.stockQuantity}</h5>
                             <Button variant="outlined" onClick={handleClickOpen}>
                                 Chọn Kích Thước (Size)
                             </Button>

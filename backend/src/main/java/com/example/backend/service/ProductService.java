@@ -14,6 +14,5 @@ public interface ProductService {
     ProductDTO updateProduct(Integer id, ProductDTO productDTO) throws ProductNotFoundException;
     void deleteProduct(Integer id);
     Long countProducts();
-    Product getProductId(Integer id) throws ProductNotFoundException;
     Long countLowStockProducts(int threshold);
 }
