@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getOrderById, updateTransactionId, updateOrderNote, updateOrderDetailQuantity } from '../service/orderService';
+import { getOrderById, updateTransactionId, updateOrderNote } from '../service/orderService';
 import Input from "../components/Input";
 import Price from '../components/Price';
 import { useOrder } from '../hooks/useOrder';
@@ -51,19 +51,6 @@ const PaymentPage = () => {
         }
     };
 
-    const handleQuantityChange = async (productId, quantity) => {
-        try {
-            await updateOrderDetailQuantity(orderId, productId, quantity);
-            setOrderDetails((prevOrderDetails) =>
-                prevOrderDetails.map((product) =>
-                    product.productId === productId ? { ...product, quantity } : product
-                )
-            );
-        } catch (error) {
-            console.error('Failed to update quantity:', error);
-        }
-    };
-
     if (!order) {
         return <div>Loading...</div>;
     }
@@ -105,7 +92,9 @@ const PaymentPage = () => {
                         {orderDetails.map((product, index) => (
                             <tr key={index} className="hover:bg-gray-100">
                                 <td className="py-3 px-4 border-b border-gray-300 text-[15px]">{product.name}</td>
-                                <td className="py-3 px-4 border-b border-gray-300 text-[15px]">{product.size}</td>
+                                <td className="py-3 px-4 border-b border-gray-300 text-[15px]">
+                                    {product.category.name == "Dây chuyền" ? product.size + "cm" : product.size + "mm"}
+                                </td>
                                 <td className="py-3 px-4 border-b border-gray-300"><Price price={product.unitPrice} /></td>
                                 <td className="py-3 px-4 border-b border-gray-300">{product.quantity}</td>
                                 <td className="py-3 px-4 border-b border-gray-300"><Price price={product.unitPrice * product.quantity} /></td>

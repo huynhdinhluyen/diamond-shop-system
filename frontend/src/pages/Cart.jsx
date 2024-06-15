@@ -12,6 +12,8 @@ export default function Cart() {
     const { cart, getProductFromCart, changeQuantity, removeFromCart } = useCart();
     const { user } = useAuth();
     const [selectedItems, setSelectedItems] = useState([]);
+    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,6 +21,14 @@ export default function Cart() {
             getProductFromCart();
         }
     }, [user]);
+
+    useEffect(() => {
+        const selectedProducts = cart.items.filter((item) => selectedItems.includes(item.productId));
+        const newTotalQuantity = selectedProducts.reduce((total, item) => total + item.quantity, 0);
+        const newTotalPrice = selectedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
+        setTotalQuantity(newTotalQuantity);
+        setTotalPrice(newTotalPrice);
+    }, [selectedItems, cart.items]);
 
     const handleQuantityChange = (productId, newQuantity) => {
         if (newQuantity < 1) {
@@ -76,7 +86,7 @@ export default function Cart() {
         const orderItems = cart.items.filter((item) => selectedItems.includes(item.productId));
         console.log(orderItems)
         const order = {
-            customer_id: user.id,
+            userId: user.id,
             transaction_id: null, // Transaction ID sẽ được cập nhật sau khi chọn phương thức thanh toán
             deliveryFee: 50000, // Ví dụ phí giao hàng
             discountPrice: 0, // Ví dụ giá giảm
@@ -149,12 +159,12 @@ export default function Cart() {
                             <div className="text-center">
                                 <div className="text-lg font-semibold">
                                     Tổng số lượng sản phẩm:
-                                    <span className="ml-2">{cart.totalCount}</span>
+                                    <span className="ml-2">{totalQuantity}</span>
                                 </div>
                                 <div className="text-lg font-semibold">
                                     Tổng thanh toán:
                                     <span className="ml-2">
-                                        <Price price={cart.totalPrice} />
+                                        <Price price={totalPrice} />
                                     </span>
                                 </div>
                             </div>

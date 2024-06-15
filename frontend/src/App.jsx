@@ -42,6 +42,7 @@ import CommitDiamond from "./pages/CommitDiamond";
 import Preserved from "./pages/Preserved";
 import Payment from "./pages/Payment";
 import OrderDetail from "./pages/OrderDetail";
+import MyOrder from "./components/MyOrder";
 // import AdminProductManagement from "./pages/AdminProductManagement";
 
 function App() {
@@ -108,6 +109,15 @@ function App() {
           element={
             <Layout>
               <ProfileLayout />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/my-order"
+          element={
+            <Layout>
+              <MyOrder />
             </Layout>
           }
         />
