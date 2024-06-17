@@ -20,4 +20,5 @@ public class DiamondDTO {
     private String clarity;
     private String giaCertificate;
     private Long price;
+    private BigDecimal size;
 }
