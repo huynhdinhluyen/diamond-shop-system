@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,10 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transaction_id")
@@ -43,13 +46,13 @@ public class Order {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "customer_name", nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(name = "customer_name", columnDefinition = "NVARCHAR(255)")
     private String customerName;
 
-    @Column(name = "shipping_address", nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(name = "shipping_address", columnDefinition = "NVARCHAR(255)")
     private String shippingAddress;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", columnDefinition = "NVARCHAR(20)")
     private String phoneNumber;
 
     @Column(name = "note")
