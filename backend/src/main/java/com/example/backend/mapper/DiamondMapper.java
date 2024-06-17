@@ -17,7 +17,8 @@ public class DiamondMapper {
                 diamond.getCutType(),
                 diamond.getClarity(),
                 diamond.getGiaCertificate(),
-                diamond.getPrice());
+                diamond.getPrice(),
+                diamond.getSize());
     }
 
     public Diamond toEntity(DiamondDTO diamondDTO) {
@@ -32,7 +33,8 @@ public class DiamondMapper {
                 diamondDTO.getCutType(),
                 diamondDTO.getClarity(),
                 diamondDTO.getGiaCertificate(),
-                diamondDTO.getPrice()
+                diamondDTO.getPrice(),
+                diamondDTO.getSize()
         );
     }
 }

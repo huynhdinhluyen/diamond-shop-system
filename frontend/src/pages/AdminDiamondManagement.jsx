@@ -15,6 +15,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   IconButton,
   InputAdornment,
@@ -50,6 +51,11 @@ const diamondSchema = yup.object({
     .typeError("Giá phải là số")
     .required("Giá không được để trống")
     .min(0, "Giá phải là số dương"),
+  size: yup
+    .number()
+    .typeError("Kích thước phải là số")
+    .required("Kích thước không được để trống")
+    .min(0, "Kích thước phải là số dương"),
 });
 
 export default function AdminDiamondManagement() {
@@ -59,6 +65,20 @@ export default function AdminDiamondManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [diamondIdToDelete, setDiamondIdToDelete] = useState(null);
+
+  const [defaultValues, setDefaultValues] = useState({
+    color: "",
+    origin: "",
+    caratWeight: 0,
+    size: 0,
+    cutType: "",
+    clarity: "",
+    giaCertificate: "",
+    price: 0,
+  });
 
   const {
     register,
@@ -88,7 +108,7 @@ export default function AdminDiamondManagement() {
 
   const handleOpenDialog = (diamond = null) => {
     setSelectedDiamond(diamond);
-    reset(diamond || {});
+    reset(diamond || defaultValues);
     setOpenDialog(true);
   };
 
@@ -96,9 +116,20 @@ export default function AdminDiamondManagement() {
     setOpenDialog(false);
     setSelectedDiamond(null);
     reset();
+    setDefaultValues({
+      color: "",
+      origin: "",
+      caratWeight: 0,
+      size: 0,
+      cutType: "",
+      clarity: "",
+      giaCertificate: "",
+      price: 0,
+    });
   };
 
   const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       if (selectedDiamond) {
         await updateDiamond(selectedDiamond.id, data);
@@ -111,18 +142,26 @@ export default function AdminDiamondManagement() {
       handleCloseDialog();
     } catch (error) {
       toast.error("Lỗi khi lưu kim cương");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleDeleteDiamond = async (diamondId) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa kim cương này?")) {
-      try {
-        await deleteDiamond(diamondId);
-        toast.success("Xóa kim cương thành công");
-        fetchDiamonds();
-      } catch (error) {
-        toast.error("Lỗi khi xóa kim cương");
-      }
+    setDiamondIdToDelete(diamondId);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteDiamond(diamondIdToDelete);
+      fetchDiamonds();
+      toast.success("Xóa kim cương thành công");
+    } catch (error) {
+      toast.error("Lỗi khi xóa kim cương");
+    } finally {
+      setOpenConfirmDialog(false);
+      setDiamondIdToDelete(null);
     }
   };
 
@@ -134,9 +173,10 @@ export default function AdminDiamondManagement() {
     (diamond) =>
       diamond.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
       diamond.origin.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      diamond.cutType.toLowerCase().includes(searchTerm.toLowerCase()) ||
       diamond.clarity.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      diamond.caratWeight.toString().includes(searchTerm)
+      diamond.caratWeight.toString().includes(searchTerm) ||
+      diamond.price.toString().includes(searchTerm) ||
+      diamond.size.toString().includes(searchTerm)
   );
 
   return (
@@ -146,7 +186,7 @@ export default function AdminDiamondManagement() {
       </Typography>
 
       <TextField
-        label="Tìm kiếm người dùng"
+        label="Tìm kiếm kim cương"
         variant="outlined"
         value={searchTerm}
         onChange={handleSearchChange}
@@ -157,7 +197,7 @@ export default function AdminDiamondManagement() {
             </InputAdornment>
           ),
         }}
-        className="w-full"
+        className="w-full !my-4"
       />
 
       <Button
@@ -180,24 +220,40 @@ export default function AdminDiamondManagement() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Màu sắc</TableCell>
-                <TableCell>Nguồn gốc</TableCell>
-                <TableCell>Trọng lượng (carat)</TableCell>
-                <TableCell>Kiểu cắt</TableCell>
-                <TableCell>Độ tinh khiết</TableCell>
-                <TableCell>Giá (VNĐ)</TableCell>
-                <TableCell>Thao tác</TableCell>
+                <TableCell className="!text-center">Cấp màu</TableCell>
+                <TableCell className="!text-center">Nguồn gốc</TableCell>
+                <TableCell className="!text-center">
+                  Trọng lượng (carat)
+                </TableCell>
+                <TableCell className="!text-center">Kích thước (mm)</TableCell>
+                <TableCell className="!text-center">Chế tác</TableCell>
+                <TableCell className="!text-center">Độ tinh khiết</TableCell>
+                <TableCell className="!text-center">Giá (VNĐ)</TableCell>
+                <TableCell className="!text-center">Thao tác</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredDiamonds.map((diamond) => (
                 <TableRow key={diamond.id}>
-                  <TableCell>{diamond.color}</TableCell>
-                  <TableCell>{diamond.origin}</TableCell>
-                  <TableCell>{diamond.caratWeight}</TableCell>
-                  <TableCell>{diamond.cutType}</TableCell>
-                  <TableCell>{diamond.clarity}</TableCell>
-                  <TableCell>{diamond.price.toLocaleString()} VNĐ</TableCell>
+                  <TableCell className="!text-center">
+                    {diamond.color}
+                  </TableCell>
+                  <TableCell className="!text-center">
+                    {diamond.origin}
+                  </TableCell>
+                  <TableCell className="!text-center">
+                    {diamond.caratWeight}
+                  </TableCell>
+                  <TableCell className="!text-center">{diamond.size}</TableCell>
+                  <TableCell className="!text-center">
+                    {diamond.cutType}
+                  </TableCell>
+                  <TableCell className="!text-center">
+                    {diamond.clarity}
+                  </TableCell>
+                  <TableCell className="!text-center">
+                    {diamond.price.toLocaleString()} VNĐ
+                  </TableCell>
                   <TableCell className="!text-center">
                     <IconButton
                       aria-label="edit"
@@ -229,7 +285,7 @@ export default function AdminDiamondManagement() {
         <DialogContent>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             <TextField
-              label="Màu sắc"
+              label="Cấp màu"
               variant="outlined"
               fullWidth
               className="!my-4"
@@ -259,7 +315,17 @@ export default function AdminDiamondManagement() {
             />
 
             <TextField
-              label="Kiểu cắt"
+              label="Size (mm)"
+              variant="outlined"
+              fullWidth
+              className="!my-4"
+              {...register("size")}
+              error={!!errors.size}
+              helperText={errors.size?.message}
+            />
+
+            <TextField
+              label="Chế tác"
               variant="outlined"
               fullWidth
               className="!my-4"
@@ -279,7 +345,7 @@ export default function AdminDiamondManagement() {
             />
 
             <TextField
-              label="Giấy chứng nhận GIA"
+              label="Mã chứng nhận GIA"
               variant="outlined"
               fullWidth
               className="!my-4"
@@ -300,12 +366,33 @@ export default function AdminDiamondManagement() {
 
             <DialogActions>
               <Button onClick={handleCloseDialog}>Hủy</Button>
-              <Button type="submit" variant="contained" color="primary">
-                {selectedDiamond ? "Lưu" : "Thêm"}
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? <CircularProgress size={24} /> : "Lưu"}
               </Button>
             </DialogActions>
           </form>
         </DialogContent>
+      </Dialog>
+      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận xóa</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn xóa kim cương này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Xóa
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

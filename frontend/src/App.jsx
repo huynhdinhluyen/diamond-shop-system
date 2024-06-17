@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -42,7 +42,6 @@ import CommitDiamond from "./pages/CommitDiamond";
 import Preserved from "./pages/Preserved";
 import Payment from "./pages/Payment";
 import OrderDetail from "./pages/OrderDetail";
-// import AdminProductManagement from "./pages/AdminProductManagement";
 
 function App() {
   return (
@@ -120,17 +119,6 @@ function App() {
             </Layout>
           }
         />
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="products" element={<AdminProductManagement />} />
-          <Route path="categories" element={<AdminCategoryManagement />} />
-          <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
-          <Route path="users" element={<AdminUserManagement />} />
-        </Route>
-        <Route path="/admin/*" element={<Navigate to="/admin" />} />
-        <Route path="*" element={<Navigate to="/" />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
 
         <Route
           path="/cart"
@@ -156,14 +144,6 @@ function App() {
           <Route path="sales-staffs-management" element={<SaleStaffManagement />} />
           <Route path="delivery-staffs-management" element={<DeliveryStaffManagement />} />
         </Route>
-        <Route
-          path="/product/:productId"
-          element={
-            <Layout>
-              <Product />
-            </Layout>
-          }
-        />
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
@@ -173,10 +153,6 @@ function App() {
           <Route path="diamonds" element={<AdminDiamondManagement />} />
           <Route path="users" element={<AdminUserManagement />} />
         </Route>
-
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<NotFoundPage />} />
 
         <Route
           path="/recruitment"
@@ -330,15 +306,7 @@ function App() {
             </Layout>
           }
         />
-        <Route path="/admin" element={<AdminLayout />}>
-          {/* <Route index element={<AdminDashboard />} /> */}
-          <Route path="products" element={<AdminProductManagement />} />
-          <Route path="categories" element={<AdminCategoryManagement />} />
-          <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
-          <Route path="diamonds" element={<AdminDiamondManagement />} />
-          <Route path="users" element={<AdminUserManagement />} />
-          {/* <Route path="products" element={<AdminProductManagement />} /> */}
-        </Route>
+
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
