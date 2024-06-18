@@ -9,7 +9,6 @@ import MobileNav from "./MobileNav";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useCart } from "../hooks/useCart";
-import Swal from "sweetalert2";
 
 export const pages = [
   { title: "Trang chủ", href: "/" },
@@ -33,32 +32,7 @@ export default function Header() {
   }, [cart]);
 
   const handleLogout = () => {
-    Swal.fire({
-      title: "Bạn có chắc chắn muốn đăng xuất không?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Xác nhận",
-      cancelButtonText: "Hủy",
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#3085d6",
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout();
-        Swal.fire({
-          title: "Thành công!",
-          text: "Bạn đã đăng xuất",
-          icon: "success",
-        });
-        window.location.reload();
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          title: "Đã hủy",
-          text: "Bạn vẫn đang đăng nhập",
-          icon: "error",
-        });
-      }
-    });
+    logout();
   };
 
   return (
