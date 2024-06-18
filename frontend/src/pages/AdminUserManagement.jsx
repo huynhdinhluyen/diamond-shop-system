@@ -23,6 +23,7 @@ import {
   FormControl,
   InputAdornment,
   OutlinedInput,
+  DialogContentText,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -34,7 +35,12 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { createUser, deleteUser, getUsers, updateUser } from "../service/userService";
+import {
+  createUser,
+  deleteUser,
+  getUsers,
+  updateUser,
+} from "../service/userService";
 
 const roleOptions = [
   { value: "ADMIN", label: "Quản trị viên" },
@@ -70,6 +76,9 @@ export default function AdminUserManagement() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -129,6 +138,7 @@ export default function AdminUserManagement() {
   };
 
   const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       if (selectedUser) {
         await updateUser(selectedUser.id, data);
@@ -142,21 +152,29 @@ export default function AdminUserManagement() {
     } catch (error) {
       console.error(error);
       toast.error("Lỗi khi lưu người dùng");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleDeleteUser = async (userId) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này?")) {
-      try {
-        await deleteUser(userId);
-        fetchData();
-        toast.success("Xóa người dùng thành công");
-      } catch (error) {
-        toast.error("Lỗi khi xóa người dùng");
-      }
+    setUserIdToDelete(userId);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteUser(userIdToDelete);
+      fetchData();
+      toast.success("Xóa người dùng thành công");
+    } catch (error) {
+      toast.error("Lỗi khi xóa người dùng");
+    } finally {
+      setOpenConfirmDialog(false);
+      setUserIdToDelete(null);
     }
   };
-  
+
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
@@ -168,6 +186,7 @@ export default function AdminUserManagement() {
         variant="outlined"
         value={searchTerm}
         onChange={handleSearchChange}
+        placeholder="Nhập tên người dùng, email, số điện thoại..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -175,14 +194,14 @@ export default function AdminUserManagement() {
             </InputAdornment>
           ),
         }}
-        className="w-full"
+        className="w-full !my-4"
       />
 
       <Button
         variant="contained"
         startIcon={<AddIcon />}
         onClick={() => handleOpenDialog()}
-        className="!mt-4"
+        className="!my-4"
       >
         Thêm người dùng
       </Button>
@@ -360,12 +379,33 @@ export default function AdminUserManagement() {
             </FormControl>
             <DialogActions>
               <Button onClick={handleCloseDialog}>Hủy</Button>
-              <Button type="submit" variant="contained" color="primary">
-                {selectedUser ? "Lưu" : "Thêm"}
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? <CircularProgress size={24} /> : "Lưu"}
               </Button>
             </DialogActions>
           </form>
         </DialogContent>
+      </Dialog>
+      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận xóa</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn xóa người dùng này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Xóa
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

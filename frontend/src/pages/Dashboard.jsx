@@ -101,7 +101,7 @@ export default function Dashboard() {
             <Paper elevation={3} className="p-4 rounded-lg basis-0 flex-grow">
               <Typography variant="h6">Tổng doanh thu</Typography>
               <Typography variant="h4">
-                {dashboardData.totalRevenue.toLocaleString("vi-VN")} VNĐ
+                {dashboardData.totalRevenue?.toLocaleString("vi-VN") || "0"} VNĐ
               </Typography>
             </Paper>
             <Paper elevation={3} className="p-4 rounded-lg basis-0 flex-grow">
@@ -127,14 +127,14 @@ export default function Dashboard() {
                 label="Từ ngày"
                 value={startDate}
                 onChange={(newValue) => setStartDate(newValue)}
-                renderInput={(params) => <TextField {...params} />}
+                slotProps={{ textField: { size: "small" } }} // Use slots for textField properties
                 className="!m-4"
               />
               <DatePicker
                 label="Đến ngày"
                 value={endDate}
                 onChange={(newValue) => setEndDate(newValue)}
-                renderInput={(params) => <TextField {...params} />}
+                slotProps={{ textField: { size: "small" } }}
                 className="!m-4"
               />
             </LocalizationProvider>
@@ -147,7 +147,11 @@ export default function Dashboard() {
                     new Intl.NumberFormat("vi-VN").format(value)
                   }
                 />
-                <Tooltip formatter={(value) => new Intl.NumberFormat("vi-VN").format(value)} />
+                <Tooltip
+                  formatter={(value) =>
+                    new Intl.NumberFormat("vi-VN").format(value)
+                  }
+                />
                 <Legend />
                 <Line type="monotone" dataKey="sales" stroke="#8884d8" />
               </LineChart>

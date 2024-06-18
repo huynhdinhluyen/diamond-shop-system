@@ -45,4 +45,6 @@ public class Diamond {
     @Column(name = "price", nullable = false)
     private Long price;
 
+    @Column(name = "size", nullable = false)
+    private BigDecimal size;
 }

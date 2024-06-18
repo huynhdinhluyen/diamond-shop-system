@@ -34,7 +34,7 @@ export default function BestSellingProducts() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className="!text-center">Sản phẩm</TableCell>
+              <TableCell>Sản phẩm</TableCell>
               <TableCell align="right">Số lượng đã bán</TableCell>
               <TableCell align="right">Doanh thu</TableCell>
             </TableRow>
@@ -43,18 +43,18 @@ export default function BestSellingProducts() {
             {bestSellingProducts.map((item) => (
               <TableRow key={item.productDTO.id}>
                 <TableCell component="th" scope="row">
-                  <div className="flex justify-center items-center">
+                  <div className="flex items-center">
                     <img
                       src={item.productDTO.imageUrl}
                       alt={item.productDTO.name}
                       className="w-12 h-12 object-cover rounded-full mr-2"
                     />
-                    <span className="text-center">{item.productDTO.name}</span>
+                    <span className="">{item.productDTO.name}</span>
                   </div>
                 </TableCell>
                 <TableCell align="right">{item.totalQuantity}</TableCell>
                 <TableCell align="right">
-                  {item.totalRevenue.toLocaleString("vi-VN")} VNĐ
+                  {item.totalRevenue?.toLocaleString("vi-VN") || "0"} VNĐ
                 </TableCell>
               </TableRow>
             ))}

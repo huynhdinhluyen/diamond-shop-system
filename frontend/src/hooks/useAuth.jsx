@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       if (user.role === 'ADMIN') {
         window.location.href = '/admin';
+      } else if (user.role === 'MANAGER') {
+        window.location.href = '/manager';
       } else {
         window.location.href = '/';
       }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -21,15 +22,15 @@ public class Warranty {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Lob
+    @Nationalized
     @Column(name = "warranty_free", nullable = false)
     private String warrantyFree;
 
-    @Lob
+    @Nationalized
     @Column(name = "warranty_paid", nullable = false)
     private String warrantyPaid;
 
-    @Lob
+    @Nationalized
     @Column(name = "warranty_excluded", nullable = false)
     private String warrantyExcluded;
 

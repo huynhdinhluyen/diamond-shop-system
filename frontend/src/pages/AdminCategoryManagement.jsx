@@ -17,6 +17,7 @@ import {
   CircularProgress,
   IconButton,
   Box,
+  DialogContentText,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,7 +27,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebaseConfig";
-import { createCategory, deleteCategory, getCategories, updateCategory } from "../service/categoryService";
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from "../service/categoryService";
 
 const categorySchema = yup.object({
   name: yup.string().required("Vui lòng nhập tên danh mục"),
@@ -42,6 +48,14 @@ export default function AdminCategoryManagement() {
   const [imageFile, setImageFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [imageName, setImageName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [categoryIdToDelete, setCategoryIdToDelete] = useState(null);
+
+  const [defaultValues, setDefaultValues] = useState({
+    name: "",
+    imageUrl: "",
+  });
 
   const {
     register,
@@ -71,8 +85,7 @@ export default function AdminCategoryManagement() {
 
   const handleOpenDialog = (category = null) => {
     setSelectedCategory(category);
-    reset(category || {});
-    setImageName(category?.imageUrl || "");
+    reset(category || defaultValues);
     setOpenDialog(true);
   };
 
@@ -80,9 +93,7 @@ export default function AdminCategoryManagement() {
     setOpenDialog(false);
     setSelectedCategory(null);
     reset();
-    setImageFile(null);
-    setUploadProgress(0);
-    setImageName("");
+    setDefaultValues({ name: "", imageUrl: "" });
   };
 
   const handleFileChange = (event) => {
@@ -92,6 +103,7 @@ export default function AdminCategoryManagement() {
   };
 
   const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       if (imageFile) {
         const storageRef = ref(storage, `category_images/${imageFile.name}`);
@@ -113,6 +125,9 @@ export default function AdminCategoryManagement() {
             const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
             data.imageUrl = imageUrl;
             await saveCategory(data);
+            setImageFile(null);
+            setUploadProgress(0);
+            setImageName("");
           }
         );
       } else {
@@ -121,6 +136,8 @@ export default function AdminCategoryManagement() {
       }
     } catch (error) {
       toast.error("Lỗi khi lưu danh mục");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -140,13 +157,21 @@ export default function AdminCategoryManagement() {
     }
   };
 
-  const handleDelete = async (categoryId) => {
+  const handleDeleteCategory = async (categoryId) => {
+    setCategoryIdToDelete(categoryId);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      await deleteCategory(categoryId);
-      toast.success("Xóa danh mục thành công");
+      await deleteCategory(categoryIdToDelete);
       fetchCategories();
+      toast.success("Xóa danh mục thành công");
     } catch (error) {
-      toast.error("Đã có lỗi xảy ra. Vui lòng thử lại.");
+      toast.error("Lỗi khi xóa danh mục");
+    } finally {
+      setOpenConfirmDialog(false);
+      setCategoryIdToDelete(null);
     }
   };
 
@@ -207,7 +232,7 @@ export default function AdminCategoryManagement() {
                     <IconButton
                       aria-label="delete"
                       color="error"
-                      onClick={() => handleDelete(category.id)}
+                      onClick={() => handleDeleteCategory(category.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -265,11 +290,32 @@ export default function AdminCategoryManagement() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog}>Hủy</Button>
-            <Button type="submit" variant="contained" color="primary">
-              {selectedCategory ? "Lưu" : "Thêm"}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? <CircularProgress size={24} /> : "Lưu"}
             </Button>
           </DialogActions>
         </form>
+      </Dialog>
+      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận xóa</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn xóa danh mục này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Xóa
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

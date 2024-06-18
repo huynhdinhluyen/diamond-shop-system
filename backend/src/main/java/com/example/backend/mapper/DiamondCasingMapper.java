@@ -1,8 +1,6 @@
 package com.example.backend.mapper;
 import com.example.backend.dto.DiamondCasingDTO;
 import com.example.backend.entity.DiamondCasing;
-import com.example.backend.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,10 +8,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class DiamondCasingMapper {
-    @Autowired
-    private CategoryMapper categoryMapper;
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     public DiamondCasingDTO toDto(DiamondCasing diamondCasing) {
         if (diamondCasing == null) {

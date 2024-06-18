@@ -78,7 +78,7 @@ export default function Header() {
                     Hồ sơ
                   </Link>
                   <Link
-                    to="/"
+                    to="/my-order"
                     className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
                   >
                     Đơn hàng của bạn

@@ -43,6 +43,7 @@ import { getDiamonds } from "../service/diamondService";
 import { getDiamondCasings } from "../service/diamondCasingService";
 import { getWarranties } from "../service/warrantyService";
 import { getPromotions } from "../service/promotionService";
+import { getCategories } from "../service/categoryService";
 
 const productSchema = yup.object({
   name: yup.string().required("Tên sản phẩm không được để trống"),
@@ -73,8 +74,14 @@ const productSchema = yup.object({
   warranty: yup.object().shape({
     id: yup.number().required("Bảo hành không được để trống"),
   }),
-  mainDiamond: yup.number().nullable(), // Thay đổi thành number().nullable()
+  mainDiamond: yup.number().nullable(),
   auxiliaryDiamond: yup.number().nullable(),
+  category: yup
+    .object()
+    .nullable()
+    .shape({
+      id: yup.number().required("Danh mục không được để trống"),
+    }),
 });
 
 export default function AdminProductManagement() {
@@ -83,6 +90,7 @@ export default function AdminProductManagement() {
   const [diamondCasings, setDiamondCasings] = useState([]);
   const [warranties, setWarranties] = useState([]);
   const [promotions, setPromotions] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -126,17 +134,24 @@ export default function AdminProductManagement() {
     try {
       const productData = await getProducts();
       setProducts(productData);
-      const [diamondsData, diamondCasingsData, warrantiesData, promotionsData] =
-        await Promise.all([
-          getDiamonds(),
-          getDiamondCasings(),
-          getWarranties(),
-          getPromotions(),
-        ]);
+      const [
+        diamondsData,
+        diamondCasingsData,
+        warrantiesData,
+        promotionsData,
+        categoriesData,
+      ] = await Promise.all([
+        getDiamonds(),
+        getDiamondCasings(),
+        getWarranties(),
+        getPromotions(),
+        getCategories(),
+      ]);
       setDiamonds(diamondsData);
       setDiamondCasings(diamondCasingsData);
       setWarranties(warrantiesData);
       setPromotions(promotionsData);
+      setCategories(categoriesData);
     } catch (error) {
       setError(error);
       toast.error("Lỗi khi tải dữ liệu");
@@ -158,6 +173,7 @@ export default function AdminProductManagement() {
       warranty: { id: product?.warranty?.id || "" },
       mainDiamond: product?.mainDiamond?.id || "",
       auxiliaryDiamond: product?.auxiliaryDiamond?.id || "",
+      category: { id: product?.category?.id || "" },
     });
     setImageName(product?.imageUrl || "");
     setOpenDialog(true);
@@ -188,6 +204,9 @@ export default function AdminProductManagement() {
         ...data,
         mainDiamond,
         auxiliaryDiamond,
+        categoryId: data.category?.id,
+        promotion: data.promotion,
+        warranty: data.warranty,
       };
       if (imageFile) {
         const storageRef = ref(storage, `product_images/${imageFile.name}`);
@@ -254,7 +273,7 @@ export default function AdminProductManagement() {
         Quản lý sản phẩm
       </Typography>
 
-      <div className="my-8">
+      <div className="my-4">
         <TextField
           label="Tìm kiếm sản phẩm"
           variant="outlined"
@@ -268,6 +287,7 @@ export default function AdminProductManagement() {
         variant="contained"
         startIcon={<AddIcon />}
         onClick={() => handleOpenDialog()}
+        className="!my-4"
       >
         Thêm sản phẩm
       </Button>
@@ -332,7 +352,7 @@ export default function AdminProductManagement() {
                       {product.stockQuantity}
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell className="!text-center">
                       <IconButton
                         color="primary"
                         onClick={() => handleOpenDialog(product)}
@@ -406,8 +426,7 @@ export default function AdminProductManagement() {
                   >
                     {diamondCasings.map((diamondCasing) => (
                       <MenuItem key={diamondCasing.id} value={diamondCasing.id}>
-                        {diamondCasing.material} (Size:{" "}
-                        {diamondCasing.size.name})
+                        {diamondCasing.material}
                       </MenuItem>
                     ))}
                   </Select>
@@ -436,15 +455,14 @@ export default function AdminProductManagement() {
                     renderValue={(selected) => {
                       const diamond = diamonds.find((d) => d.id === selected);
                       return diamond
-                        ? `${diamond.color} - ${diamond.caratWeight} carat - ${diamond.clarity} - ${diamond.cutType}`
+                        ? `${diamond.color} - ${diamond.size} mm - ${diamond.caratWeight} carat - ${diamond.clarity} - ${diamond.cutType}`
                         : "";
                     }}
                   >
                     <MenuItem value="">None</MenuItem>
                     {diamonds.map((diamond) => (
                       <MenuItem key={diamond.id} value={diamond.id}>
-                        {diamond.color} - {diamond.caratWeight} carat -{" "}
-                        {diamond.clarity} - {diamond.cutType}
+                        {`${diamond.color} - ${diamond.size} mm- ${diamond.caratWeight} Carat - ${diamond.clarity} - ${diamond.cutType}`}
                       </MenuItem>
                     ))}
                   </Select>
@@ -471,14 +489,14 @@ export default function AdminProductManagement() {
                     renderValue={(selected) => {
                       const diamond = diamonds.find((d) => d.id === selected);
                       return diamond
-                        ? `${diamond.color} - ${diamond.caratWeight} carat - ${diamond.clarity} - ${diamond.cutType}`
+                        ? `${diamond.color} - ${diamond.size} mm - ${diamond.caratWeight} carat - ${diamond.clarity} - ${diamond.cutType}`
                         : "";
                     }}
                   >
                     <MenuItem value="">None</MenuItem>
                     {diamonds.map((diamond) => (
                       <MenuItem key={diamond.id} value={diamond.id}>
-                        {`${diamond.color} - ${diamond.caratWeight} Carat`}
+                        {`${diamond.color} - ${diamond.size} mm - ${diamond.caratWeight} Carat - ${diamond.clarity} - ${diamond.cutType}`}
                       </MenuItem>
                     ))}
                   </Select>
@@ -498,6 +516,7 @@ export default function AdminProductManagement() {
                     label="Khuyến mãi"
                     error={!!errors.promotion}
                   >
+                    <MenuItem value="">None</MenuItem>
                     {promotions.map((promotion) => (
                       <MenuItem key={promotion.id} value={promotion.id}>
                         {promotion.name}
@@ -517,6 +536,7 @@ export default function AdminProductManagement() {
                 control={control}
                 render={({ field }) => (
                   <Select {...field} label="Bảo hành" error={!!errors.warranty}>
+                    <MenuItem value="">None</MenuItem>
                     {warranties.map((warranty) => (
                       <MenuItem key={warranty.id} value={warranty.id}>
                         {warranty.warrantyFree}
@@ -527,6 +547,25 @@ export default function AdminProductManagement() {
               />
               <FormHelperText error={!!errors.warranty}>
                 {errors?.warranty?.message}
+              </FormHelperText>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Danh mục</InputLabel>
+              <Controller
+                name="category.id"
+                control={control}
+                render={({ field }) => (
+                  <Select {...field} label="Danh mục" error={!!errors.category}>
+                    {categories.map((category) => (
+                      <MenuItem key={category.id} value={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              />
+              <FormHelperText error={!!errors.category}>
+                {errors?.category?.id?.message}
               </FormHelperText>
             </FormControl>
             <Box mt={2}>
