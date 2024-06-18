@@ -20,7 +20,7 @@ h6 {
 }
 
 .h2 {
-  @apply text-[30px] xl:text-[44px] font-semibold capitalize tracking-[0.44px];
+  @apply text-[30px] xl:text-[44px] font-semibold  tracking-[0.44px];
 }
 
 .h3 {
@@ -28,7 +28,7 @@ h6 {
 }
 
 .h4 {
-  @apply text-[20px] xl:text-[20px] capitalize font-semibold;
+  @apply text-[20px] xl:text-[20px]  font-semibold;
 }
 
 .btn {
@@ -66,4 +66,14 @@ h6 {
 
 .section {
   @apply py-12 xl:py-[150px];
+}
+
+.slick-prev, .slick-next {
+  color: white;
+  position: absolute;
+  top: 35%;
+}
+
+.slick-next:before, .slick-prev:before{
+  color: #f55f1e;
 }
