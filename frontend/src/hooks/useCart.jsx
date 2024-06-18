@@ -33,6 +33,7 @@ export const CartProvider = ({ children }) => {
                 productName: product?.name,
                 image: product?.imageUrl,
                 price: product?.costPrice,
+                stockQuantity: product?.stockQuantity
             };
         });
 
@@ -64,7 +65,6 @@ export const CartProvider = ({ children }) => {
                 const totalPrice = newCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
                 return { items: newCartItems, totalCount, totalPrice };
             });
-            toast.success("Đã cập nhật số lượng sản phẩm!");
         } catch (err) {
             console.error("Error changing quantity:", err);
             toast.error("Cập nhật số lượng sản phẩm không thành công!");
