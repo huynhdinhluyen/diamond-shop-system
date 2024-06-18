@@ -7,9 +7,9 @@ export default function MyOrder() {
     const { orders } = useOrder();
 
     return (
-        <div className="w-full ml-5">
+        <div className="w-full ml-5 mt-10">
             <div>
-                <h3 className="h3">Đơn hàng của tôi</h3>
+                <h3 className="h3 mb-3">Đơn hàng của tôi</h3>
             </div>
             <hr className="w-full text-gray-300" />
             {!orders || orders.length === 0 ? (

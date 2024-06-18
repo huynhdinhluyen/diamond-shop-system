@@ -13,7 +13,6 @@ export default function ProfileLayout() {
         setMainComponent(component);
     };
 
-    // Sử dụng useEffect để điều hướng nếu người dùng không tồn tại
     useEffect(() => {
         if (!user) {
             navigate("/");
