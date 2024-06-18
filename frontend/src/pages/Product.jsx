@@ -7,6 +7,7 @@ import Price from "../components/Price";
 import { useAuth } from "../hooks/useAuth";
 import { getProductById } from "../service/productService";
 import { getSizesByCategory } from "../service/sizeService";
+import SimilarProduct from "../components/SimilarProduct";
 
 export default function Product() {
     const { user } = useAuth();
@@ -38,7 +39,7 @@ export default function Product() {
     useEffect(() => {
         getProductById(productId).then(product => {
             setProduct(product);
-            if (product && product.category && product.category.id) {
+            if (product && product.category && product.category.id && !isSizeNotRequiredCategory) {
                 getSizesByCategory(product.category.id).then(setSizes);
             }
         }).catch(error => {
@@ -240,6 +241,10 @@ export default function Product() {
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div>
+                        <h3 className="h3 text-accent text-center uppercase mt-10">Sản phẩm tương tự</h3>
+                        <SimilarProduct category={product.category.name} />
                     </div>
                 </div>
             )}

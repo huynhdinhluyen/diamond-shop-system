@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     await userService.logout();
     setUser(null);
+    toast.success("Đăng xuất thành công!")
   };
 
   const updateProfile = async (userUpdate) => {
