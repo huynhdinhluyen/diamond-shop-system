@@ -89,10 +89,10 @@ export default function Product() {
     };
 
     const renderSizeText = (size) => {
-        if (product.category.id === 2) {
-            return `Size ${size.name} - Chiều dài: ${size.length} cm`;
+        if (product.category.id === 3) {
+            return `Size ${size.name} - Chiều dài: ${size.length}cm`;
         } else {
-            return `Size ${size.name} - Đường kính: ${size.diameter} mm`;
+            return `Size ${size.name} - Đường kính: ${size.diameter}mm`;
         }
     };
 

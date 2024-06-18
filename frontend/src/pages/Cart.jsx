@@ -33,8 +33,13 @@ export default function Cart() {
     }, [selectedItems, cart.items]);
 
     const handleQuantityChange = (productId, newQuantity) => {
+        const product = cart.items.find(item => item.productId === productId);
         if (newQuantity < 1) {
             toast.error("Số lượng sản phẩm phải lớn hơn 0");
+            return;
+        }
+        if (newQuantity > product.stockQuantity) {
+            toast.error("Số lượng sản phẩm không được vượt quá tồn kho");
             return;
         }
         changeQuantity(productId, newQuantity);
