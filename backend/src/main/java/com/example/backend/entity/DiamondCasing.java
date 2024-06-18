@@ -6,9 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Getter
@@ -27,6 +26,7 @@ public class DiamondCasing {
     @Column(name = "material", nullable = false, length = 50)
     private String material;
 
+    @Min(value = 0, message = "Price must be a positive number")
     @Column(name = "price", nullable = false)
     private Long price = 0L;
 

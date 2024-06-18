@@ -1,13 +1,26 @@
 import { AppBar, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Outlet } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Outlet, useNavigate } from "react-router-dom";
 import ManagerSidebar from "../components/ManagerSidebar";
 import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function ManagerLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+      toast.success("Đăng xuất thành công");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error("Đăng xuất thất bại. Vui lòng thử lại.");
+    }
+  };
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -32,6 +45,9 @@ export default function ManagerLayout() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Quản lý cửa hàng
           </Typography>
+          <IconButton color="inherit" onClick={handleLogout}>
+            <LogoutIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -44,6 +60,8 @@ export default function ManagerLayout() {
       </main>
     </div>
   ) : (
-    <div className="text-center mt-8 text-red-500 font-bold text-4xl">Bạn không có quyền truy cập trang này!</div>
+    <div className="text-center mt-8 text-red-500 font-bold text-4xl">
+      Bạn không có quyền truy cập trang này!
+    </div>
   );
 }

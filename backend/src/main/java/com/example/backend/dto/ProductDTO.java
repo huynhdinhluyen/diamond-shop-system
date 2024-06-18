@@ -26,5 +26,3 @@ public class ProductDTO {
     private DiamondDTO auxiliaryDiamond;
     private CategoryDTO category;
 }
-
-

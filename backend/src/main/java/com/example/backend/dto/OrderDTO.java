@@ -30,4 +30,3 @@ public class OrderDTO {
     private OrderStatusDTO status;
     private List<OrderDetailDTO> orderDetails;
 }
-

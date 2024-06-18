@@ -25,7 +25,7 @@ public class Promotion {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Lob
+    @Nationalized
     @Column(name = "description", nullable = false)
     private String description;
 

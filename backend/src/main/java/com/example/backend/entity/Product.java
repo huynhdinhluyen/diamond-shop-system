@@ -33,7 +33,7 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url", nullable = false, columnDefinition = "VARCHAR(MAX)")
     private String imageUrl;
 
     @Column(name = "labor_cost", nullable = false)
