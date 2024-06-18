@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import NotFound from "../components/NotFound";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, ListItemText } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
 import { useCart } from "../hooks/useCart";
 import Price from "../components/Price";
 import { useAuth } from "../hooks/useAuth";
-import { useOrder } from "../hooks/useOrder";
 import { getProductById } from "../service/productService";
 import { getSizesByCategory } from "../service/sizeService";
 
 export default function Product() {
     const { user } = useAuth();
-    const { addOrder } = useOrder();
     const [product, setProduct] = useState(null);
     const [sizes, setSizes] = useState([]);
     const [selectedSize, setSelectedSize] = useState(null);
     const [open, setOpen] = useState(false);
+    const [quantity, setQuantity] = useState(1);
     const { productId } = useParams();
     const { addToCart } = useCart();
     const navigate = useNavigate();
 
+    const isSizeNotRequiredCategory = ["kim cương viên", "bông tai"].includes(product?.category?.name.toLowerCase());
+
     const handleAddToCart = () => {
-        if (!selectedSize) {
+        if (!isSizeNotRequiredCategory && !selectedSize) {
             alert("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng");
             return;
         }
@@ -29,8 +30,8 @@ export default function Product() {
         addToCart({
             userId: user.id,
             productId: productId,
-            quantity: 1,
-            size: selectedSize.name,
+            quantity: quantity,
+            size: selectedSize?.name || "N/A",
         });
     };
 
@@ -58,46 +59,38 @@ export default function Product() {
         setOpen(false);
     };
 
-    const handleBuyNow = async () => {
-        if (!selectedSize) {
+    const handleBuyNow = () => {
+        if (!isSizeNotRequiredCategory && !selectedSize) {
             alert("Vui lòng chọn kích thước trước khi mua hàng");
             return;
         }
-        try {
-            const order = {
-                userId: user.id,
-                transaction_id: null,
-                deliveryFee: 50000,
-                discountPrice: 0,
-                totalPrice: product.costPrice,
-                createdAt: new Date().toISOString(),
-                customerName: user.lastName + " " + user.firstName,
-                shippingAddress: user.address,
-                phoneNumber: user.phoneNumber,
-                orderDetails: [
-                    {
-                        productId: product.id,
-                        quantity: 1,
-                        unitPrice: product.costPrice,
-                        size: selectedSize.name,
-                    }
-                ]
-            };
-            const newOrder = await addOrder(order);
-            if (newOrder && newOrder.id) {
-                navigate(`/payment/${newOrder.id}`);
-            }
-        } catch (error) {
-            console.error('Failed to place order:', error);
-        }
+
+        const order = {
+            userId: user.id,
+            deliveryFee: 50000,
+            discountPrice: 0,
+            totalPrice: product.costPrice * quantity,
+            createdAt: new Date().toISOString(),
+            customerName: `${user.lastName} ${user.firstName}`,
+            shippingAddress: user.address,
+            phoneNumber: user.phoneNumber,
+            orderDetails: [
+                {
+                    productId: product.id,
+                    quantity: quantity,
+                    unitPrice: product.costPrice,
+                    size: selectedSize?.name || "N/A",
+                }
+            ]
+        };
+
+        navigate('/payment', { state: { order } });
     };
 
     const renderSizeText = (size) => {
         if (product.category.id === 2) {
-            // Dây chuyền
             return `Size ${size.name} - Chiều dài: ${size.length} cm`;
         } else {
-            // Các loại khác
             return `Size ${size.name} - Đường kính: ${size.diameter} mm`;
         }
     };
@@ -106,7 +99,7 @@ export default function Product() {
         const sizeGuides = {
             'nhẫn': '/ring-size',
             'dây chuyền': '/necklace-size',
-            'vòng tay': 'bracelet-size',
+            'vòng tay': '/bracelet-size',
         };
 
         return sizeGuides[category.toLowerCase()] || null;
@@ -118,52 +111,42 @@ export default function Product() {
                 <NotFound message="Không tìm thấy sản phẩm!" linkText="Quay lại trang chính" />
             ) : (
                 <div className="container">
-                    <div className="flex justify-center">
-                        <div className="w-1/2">
+                    <div className="flex justify-center gap-x-5">
+                        <div className="">
                             <img src={product.imageUrl} alt={product.name} className="h-full object-cover rounded-md" />
                         </div>
                         <div className="flex flex-col gap-y-3 ml-4">
                             <h3 className="h3">{product.name}</h3>
-                            <h4 className="h4 text-accent">
+                            <h3 className="h3 text-accent">
                                 <Price price={product.costPrice} />
-                            </h4>
-                            {product.diamondCasing && (
-                                <h5 className="h5">Chất liệu: {product.diamondCasing.material}</h5>
+                            </h3>
+                            <div className="flex">
+                                <p className="">Vận chuyển:</p>
+                                <i className="ri-truck-fill text-accent ml-8 mr-2"></i>
+                                <span className="text-black">Miễn phí vận chuyển</span>
+                            </div>
+                            <div className="flex">
+                                <p className="">Vận chuyển tới:</p>
+                                <i className="ri-flag-fill ml-8 mr-2 text-accent"></i>
+                                <span className="text-black text-wrap">{user?.address}</span>
+                            </div>
+                            <div className="flex gap-x-3">
+                                <p className="">Số lượng: </p>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max={product.stockQuantity}
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(Number(e.target.value))}
+                                    className="w-16 text-center border rounded"
+                                />
+                                <span>(Số lượng có sẵn: {product.stockQuantity})</span>
+                            </div>
+                            {!isSizeNotRequiredCategory && (
+                                <button className="border border-accent rounded-md uppercase font-semibold text-accent-secondary" onClick={handleClickOpen}>
+                                    Chọn Kích Thước (Size)
+                                </button>
                             )}
-                            {product.mainDiamond && (
-                                <div>
-                                    <h5 className="h5">Viên chính:</h5>
-                                    <ul className="ml-10">
-                                        <li className="list-disc list-inside">Màu: {product.mainDiamond.color}</li>
-                                        <li className="list-disc list-inside">Xuất xứ: {product.mainDiamond.origin}</li>
-                                        <li className="list-disc list-inside">Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
-                                        <li className="list-disc list-inside">Kiểu cắt: {product.mainDiamond.cutType}</li>
-                                        <li className="list-disc list-inside">Độ trong: {product.mainDiamond.clarity}</li>
-                                        <li className="list-disc list-inside">Chứng chỉ GIA: {product.mainDiamond.giaCertificate}</li>
-                                    </ul>
-                                </div>
-                            )}
-                            {product.auxiliaryDiamonds != null && (
-                                <div>
-                                    <h5 className="h5">Viên phụ:</h5>
-                                    <ul>
-                                        {product.auxiliaryDiamonds.map((diamond, index) => (
-                                            <li key={index}>
-                                                Màu: {diamond.color},
-                                                Xuất xứ: {diamond.origin},
-                                                Trọng lượng carat: {diamond.caratWeight},
-                                                Kiểu cắt: {diamond.cutType},
-                                                Độ trong: {diamond.clarity},
-                                                Chứng chỉ GIA: {diamond.giaCertificate}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                            <h5 className="h5">Số lượng tồn kho: {product.stockQuantity}</h5>
-                            <Button variant="outlined" onClick={handleClickOpen}>
-                                Chọn Kích Thước (Size)
-                            </Button>
                             {selectedSize && (
                                 <div className="mt-2">
                                     <strong>Kích thước đã chọn:</strong> {renderSizeText(selectedSize)}
@@ -177,25 +160,86 @@ export default function Product() {
                                 </div>
                             )}
                             <Dialog open={open} onClose={handleClose}>
-                                <DialogTitle>Chọn kích thước</DialogTitle>
+                                <DialogTitle className="text-accent uppercase">Chọn kích thước</DialogTitle>
                                 <DialogContent>
-                                    <List>
+                                    <Grid container spacing={2}>
                                         {sizes.map((size) => (
-                                            <ListItem button key={size.id} onClick={() => handleSizeSelect(size)}>
-                                                <ListItemText primary={renderSizeText(size)} />
-                                            </ListItem>
+                                            <Grid item xs={6} key={size.id}>
+                                                <button
+                                                    onClick={() => handleSizeSelect(size)}
+                                                    className="w-full rounded-md flex justify-center items-center py-2 border border-accent"
+                                                >
+                                                    {renderSizeText(size)}
+                                                </button>
+                                            </Grid>
                                         ))}
-                                    </List>
+                                    </Grid>
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button onClick={handleClose} color="primary">
+                                    <button onClick={handleClose} className="px-3 text-accent text-md">
                                         Đóng
-                                    </Button>
+                                    </button>
                                 </DialogActions>
                             </Dialog>
-                            <button onClick={handleAddToCart} className="btn-accent btn-sm rounded-lg">Thêm vào giỏ hàng</button>
-                            <button onClick={handleBuyNow} className="btn-accent btn-sm rounded-lg">Mua ngay</button>
+                            <div className="flex justify-start gap-x-4">
+                                <button onClick={handleAddToCart} className=" bg-accent p-2 text-white hover:bg-accent-secondary w-56 text-[16px] rounded-lg"><i className="ri-shopping-cart-line mr-2"></i>Thêm vào giỏ hàng</button>
+                                <button onClick={handleBuyNow} className=" bg-accent p-2 text-white hover:bg-accent-secondary w-56 rounded-lg text-[16px]">Mua ngay</button>
+                            </div>
                         </div>
+                    </div>
+                    <div className="mt-10">
+                        <h4 className="h4 text-accent mb-4 uppercase">Chi tiết sản phẩm</h4>
+                        <table className="min-w-full bg-white">
+                            <thead>
+                                <tr>
+                                    <th className="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Thuộc tính</th>
+                                    <th className="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Chi tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="py-2 px-4 border-b border-gray-200">Phân loại</td>
+                                    <td className="py-2 px-4 border-b border-gray-200">{product.category?.name || "Không có"}</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-4 border-b border-gray-200">Chất liệu</td>
+                                    <td className="py-2 px-4 border-b border-gray-200">{product.diamondCasing?.material || "Không có"}</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-4 border-b border-gray-200">Viên chính</td>
+                                    <td className="py-2 px-4 border-b border-gray-200">
+                                        {product.mainDiamond ? (
+                                            <ul className="ml-4 list-disc">
+                                                <li>Màu: {product.mainDiamond.color}</li>
+                                                <li>Xuất xứ: {product.mainDiamond.origin}</li>
+                                                <li>Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
+                                                <li>Kiểu cắt: {product.mainDiamond.cutType}</li>
+                                                <li>Độ trong: {product.mainDiamond.clarity}</li>
+                                                <li>Chứng chỉ GIA: {product.mainDiamond.giaCertificate}</li>
+                                            </ul>
+                                        ) : (
+                                            "Không có"
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="py-2 px-4 border-b border-gray-200">Viên phụ</td>
+                                    <td className="py-2 px-4 border-b border-gray-200">
+                                        {product.auxiliaryDiamonds ? (
+                                            <ul className="ml-4 list-disc">
+                                                {product.auxiliaryDiamonds.map((diamond, index) => (
+                                                    <li key={index}>
+                                                        Màu: {diamond.color}, Xuất xứ: {diamond.origin}, Trọng lượng carat: {diamond.caratWeight}, Kiểu cắt: {diamond.cutType}, Độ trong: {diamond.clarity}, Chứng chỉ GIA: {diamond.giaCertificate}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            "Không có"
+                                        )}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             )}

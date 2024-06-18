@@ -53,3 +53,13 @@ export async function getBestSellingProducts() {
     handleError("Error get best sellers: ", error);
   }
 }
+
+export const getProductsByCategory = async (categoryId) => {
+  try {
+    const response = await axiosInstance.get(`/api/products/by-category?categoryId=${categoryId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch products by category:', error);
+    throw error;
+  }
+};

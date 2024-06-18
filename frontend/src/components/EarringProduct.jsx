@@ -3,12 +3,52 @@ import { useState, useEffect } from "react";
 import { CircularProgress, Button, TextField } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { getProducts } from "../service/productService";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
-function EarringProduct() {
+const settings = {
+    infinite: true,
+    speed: 800,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                infinite: true,
+                dots: false,
+            }
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                initialSlide: 2
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+        }
+    ]
+};
+
+function RingProduct() {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [visibleProducts, setVisibleProducts] = useState(4); // Số lượng sản phẩm hiển thị ban đầu
 
     useEffect(() => {
         getProducts()
@@ -21,23 +61,21 @@ function EarringProduct() {
             .finally(() => setIsLoading(false));
     }, []);
 
-    const loadMoreProducts = () => {
-        setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 4); // Tăng số lượng sản phẩm hiển thị
-    };
-
-    // Lọc sản phẩm dựa trên từ khóa
+    // Filter products based on the keyword
     const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes('Bông tai'.toLowerCase())
+        product.name.toLowerCase().includes("bông tai".toLowerCase())
     );
+
+    const categoryId = filteredProducts.length > 0 ? filteredProducts[0].category.id : null;
+
 
     return (
         <div className="container mx-auto mt-8">
-            <div className="flex items-center justify-center mb-4">
-                <div className="w-96 border-t border-gray-300"></div>
-                <h1 className="text-2xl text-center font-bold mb-4 mx-8 text-nowrap text-accent">
+            <div className="flex items-center justify-between mb-4 mx-2">
+                <h1 className="text-xl text-center font-bold text-nowrap text-accent">
                     BÔNG TAI
                 </h1>
-                <div className="w-96 border-t border-gray-300"></div>
+                <Link to={`/products?category=${categoryId}`} className="underline hover:text-accent transition-all duration-200">Xem thêm</Link>
             </div>
 
             {isLoading ? (
@@ -47,27 +85,18 @@ function EarringProduct() {
             ) : error ? (
                 <div>Error: {error.message}</div>
             ) : (
-                <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {filteredProducts.slice(0, visibleProducts).map((product) => (
-                            <ProductCard key={product.id} product={product} />
+                <div className="slider-container">
+                    <Slider {...settings}>
+                        {filteredProducts.map((product) => (
+                            <div key={product.id} className="p-2">
+                                <ProductCard product={product} />
+                            </div>
                         ))}
-                    </div>
-                    {visibleProducts < filteredProducts.length && (
-                        <div className="flex justify-center mt-8">
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={loadMoreProducts}
-                            >
-                                Xem thêm
-                            </Button>
-                        </div>
-                    )}
-                </>
+                    </Slider>
+                </div>
             )}
         </div>
     );
 }
 
-export default EarringProduct;
+export default RingProduct;

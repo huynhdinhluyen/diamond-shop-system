@@ -46,7 +46,8 @@ export const CartProvider = ({ children }) => {
     const addToCart = async (data) => {
         try {
             await cartService.addToCart(data);
-            toast.success("Đã thêm vào giỏ hàng!")
+            toast.success("Đã thêm vào giỏ hàng!");
+            await getProductFromCart();
         } catch (err) {
             toast.error("Thêm vào giỏ hàng không thành công!");
         }

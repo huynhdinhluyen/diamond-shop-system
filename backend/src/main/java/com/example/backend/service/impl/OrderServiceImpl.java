@@ -102,9 +102,14 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO addOrder(OrderDTO orderDTO) {
         User user = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         Order order = new Order();
         order.setUser(user);
-        order.setTransaction(null);
+        if (orderDTO.getTransaction() != null) {
+            Transaction transaction = transactionRepository.findById(orderDTO.getTransaction())
+                    .orElseThrow(() -> new RuntimeException("Transaction not found"));
+            order.setTransaction(transaction);
+        }
         order.setDeliveryFee(orderDTO.getDeliveryFee());
         order.setDiscountPrice(orderDTO.getDiscountPrice());
         order.setTotalPrice(orderDTO.getTotalPrice());
@@ -120,10 +125,14 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderDetail> orderDetails = new ArrayList<>();
 
-
         for (OrderDetailDTO detailDTO : orderDTO.getOrderDetails()) {
             Product product = productRepository.findById(detailDTO.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
+            if (product.getStockQuantity() < detailDTO.getQuantity()) {
+                throw new RuntimeException("Not enough stock for product: " + product.getName());
+            }
+            product.setStockQuantity(product.getStockQuantity() - detailDTO.getQuantity());
+            productRepository.save(product);
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
             orderDetail.setProductId(product.getId());
@@ -199,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
         orderDTO.setUserId(order.getUser().getId());
-        orderDTO.setTransaction(convertToTransactionDTO(order.getTransaction()));
+        orderDTO.setTransaction(order.getTransaction() != null ? order.getTransaction().getId() : null);
         orderDTO.setDeliveryFee(order.getDeliveryFee());
         orderDTO.setDiscountPrice(order.getDiscountPrice());
         orderDTO.setTotalPrice(order.getTotalPrice());

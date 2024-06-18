@@ -43,6 +43,7 @@ import Preserved from "./pages/Preserved";
 import Payment from "./pages/Payment";
 import OrderDetail from "./pages/OrderDetail";
 import MyOrder from "./components/MyOrder";
+import Products from "./pages/Products";
 // import AdminProductManagement from "./pages/AdminProductManagement";
 
 
@@ -302,7 +303,7 @@ function App() {
         />
 
         <Route
-          path="/payment/:orderId"
+          path="/payment"
           element={
             <Layout>
               <Payment />
@@ -319,6 +320,23 @@ function App() {
           }
         />
 
+        <Route
+          path="products"
+          element={
+            <Layout>
+              <Products />
+            </Layout>
+          }
+        />
+        <Route path="/admin" element={<AdminLayout />}>
+          {/* <Route index element={<AdminDashboard />} /> */}
+          <Route path="products" element={<AdminProductManagement />} />
+          <Route path="categories" element={<AdminCategoryManagement />} />
+          <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
+          <Route path="diamonds" element={<AdminDiamondManagement />} />
+          <Route path="users" element={<AdminUserManagement />} />
+          {/* <Route path="products" element={<AdminProductManagement />} /> */}
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

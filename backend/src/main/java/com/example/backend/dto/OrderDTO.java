@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderDTO {
     private Integer id;
     private Integer userId;
-    private TransactionDTO transaction;
+    private Integer transaction;
     private Long deliveryFee;
     private Long discountPrice;
     private Long totalPrice;
