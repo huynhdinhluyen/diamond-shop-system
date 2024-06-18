@@ -65,7 +65,7 @@ export default function Product() {
         }
         try {
             const order = {
-                customer_id: user.id,
+                userId: user.id,
                 transaction_id: null,
                 deliveryFee: 50000,
                 discountPrice: 0,
