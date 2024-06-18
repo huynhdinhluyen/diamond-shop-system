@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Slider() {
   const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate("/product");
+    navigate("/products");
   };
   const sliderData = [
     { image: "/src/assets/img/slider/swipe-1.jpg" },

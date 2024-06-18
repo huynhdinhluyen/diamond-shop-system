@@ -15,7 +15,6 @@ const OrderDetail = () => {
         const fetchOrder = async () => {
             try {
                 const fetchedOrder = await getOrderById(orderId);
-                console.log(order)
                 setOrder(fetchedOrder);
                 const products = await getProductFromOrder(orderId);
                 setOrderDetails(products);
@@ -34,7 +33,7 @@ const OrderDetail = () => {
     const totalAmount = orderDetails.reduce((total, product) => total + product.unitPrice * product.quantity, 0);
     const shippingFee = order.deliveryFee || 0;
     const totalPayment = totalAmount + shippingFee - order.discountPrice;
-    const transactionId = order.transaction?.id;
+    const transactionId = order.transaction;
     const orderStatus = order.status.name;
 
     return (

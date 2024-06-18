@@ -2,10 +2,18 @@ import { useOrder } from "../hooks/useOrder";
 import NotFound from "./NotFound";
 import Price from "../components/Price"
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function MyOrder() {
+    const { user } = useAuth();
     const { orders } = useOrder();
-
+    const { getUserOrders } = useOrder();
+    useEffect(() => {
+        if (user) {
+            getUserOrders();
+        }
+    }, [user]);
     return (
         <div className="w-full ml-5 mt-10">
             <div>

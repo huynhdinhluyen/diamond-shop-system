@@ -140,4 +140,11 @@ public class ProductServiceImpl implements ProductService {
     public Long countLowStockProducts(int threshold) {
         return productRepository.countByStockQuantityLessThan(threshold);
     }
+
+    @Override
+    @Transactional
+    public List<ProductDTO> getProductsByCategory(Integer categoryId) {
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+        return products.stream().map(productMapper::toDto).collect(Collectors.toList());
+    }
 }
