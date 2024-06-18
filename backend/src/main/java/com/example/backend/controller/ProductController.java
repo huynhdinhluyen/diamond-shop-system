@@ -55,4 +55,10 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/by-category")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@RequestParam Integer categoryId) {
+        List<ProductDTO> products = productService.getProductsByCategory(categoryId);
+        return ResponseEntity.ok(products);
+    }
 }

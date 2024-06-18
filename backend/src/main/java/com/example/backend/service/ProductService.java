@@ -15,4 +15,5 @@ public interface ProductService {
     void deleteProduct(Integer id);
     Long countProducts();
     Long countLowStockProducts(int threshold);
+    List<ProductDTO> getProductsByCategory(Integer categoryId);
 }
