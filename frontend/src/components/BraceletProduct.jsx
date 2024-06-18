@@ -66,13 +66,15 @@ function RingProduct() {
         product.name.toLowerCase().includes("vòng tay".toLowerCase())
     );
 
+    const categoryId = filteredProducts.length > 0 ? filteredProducts[0].category.id : null;
+
     return (
         <div className="container mx-auto mt-8">
             <div className="flex items-center justify-between mb-4 mx-2">
                 <h1 className="text-xl text-center font-bold text-nowrap text-accent">
                     VÒNG TAY
                 </h1>
-                <Link className="underline hover:text-accent transition-all duration-200">Xem thêm</Link>
+                <Link to={`/products?category=${categoryId}`} className="underline hover:text-accent transition-all duration-200">Xem thêm</Link>
             </div>
 
             {isLoading ? (
