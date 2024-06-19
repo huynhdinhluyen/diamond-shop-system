@@ -4,8 +4,8 @@ import { CircularProgress, Button, TextField } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { getProducts } from "../service/productService";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 
 const settings = {
@@ -49,7 +49,6 @@ function RingProduct() {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
         getProducts()
             .then((data) => {
@@ -61,11 +60,12 @@ function RingProduct() {
             .finally(() => setIsLoading(false));
     }, []);
 
-    // Filter products based on the keyword
     const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes("nhẫn".toLowerCase())
+        product.category.name.toLowerCase().includes("Nhẫn".toLowerCase())
     );
+
     const categoryId = filteredProducts.length > 0 ? filteredProducts[0].category.id : null;
+
     return (
         <div className="container mx-auto mt-8">
             <div className="flex items-center justify-between mb-4 mx-2">

@@ -62,9 +62,8 @@ function RingProduct() {
             .finally(() => setIsLoading(false));
     }, []);
 
-    // Filter products based on the keyword
     const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes("dây chuyền".toLowerCase())
+        product.category.name.toLowerCase().includes("dây chuyền".toLowerCase())
     );
 
     const categoryId = filteredProducts.length > 0 ? filteredProducts[0].category.id : null;

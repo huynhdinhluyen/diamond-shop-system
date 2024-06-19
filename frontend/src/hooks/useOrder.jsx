@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useState } from "react";
@@ -26,7 +27,7 @@ export const OrderProvider = ({ children }) => {
 
     const addOrder = async (order) => {
         const newOrder = await orderService.addOrder(order);
-        setOrders(newOrder);
+        setOrders(prevOrders => [...prevOrders, newOrder]);
         return newOrder;
     }
 
