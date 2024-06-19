@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -8,7 +8,8 @@ import MainNav from "./MainNav";
 import MobileNav from "./MobileNav";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import Swal from "sweetalert2";
+import { useCart } from "../hooks/useCart";
+
 export const pages = [
   { title: "Trang chủ", href: "/" },
   { title: "Giới thiệu", href: "/about" },
@@ -20,34 +21,20 @@ export const pages = [
 
 export default function Header() {
   const { user, logout } = useAuth();
+  const { cart } = useCart();
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    if (cart.items) {
+      const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+      setCartCount(totalItems);
+    }
+  }, [cart]);
+
   const handleLogout = () => {
-    Swal.fire({
-      title: "Bạn có chắc chắn muốn đăng xuất không?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Xác nhận",
-      cancelButtonText: "Hủy",
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#3085d6",
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout();
-        Swal.fire({
-          title: "Thành công!",
-          text: "Bạn đã đăng xuất",
-          icon: "success",
-        });
-        window.location.reload();
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          title: "Đã hủy",
-          text: "Bạn vẫn đang đăng nhập",
-          icon: "error",
-        });
-      }
-    });
+    logout();
   };
+
   return (
     <header className="py-8 lg:pt-6 ">
       <div className="container px-[15px] mx-auto relative flex flex-col lg:flex-row lg:justify-between gap-y-4 lg:gap-y-0 ">
@@ -83,12 +70,14 @@ export default function Header() {
                   >
                     Đơn hàng của bạn
                   </Link>
-                  {user.role === "ADMIN" && (<Link
-                    to="/admin"
-                    className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
-                  >
-                    Dashboard
-                  </Link>)}
+                  {user.role === "ADMIN" && (
+                    <Link
+                      to="/admin"
+                      className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
                   <div
                     onClick={handleLogout}
                     className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
@@ -112,10 +101,18 @@ export default function Header() {
 
           <Link
             to="/cart"
-            className="text-secondary hover:text-accent cursor-pointer transition-all duration-300 flex items-center gap-x-2 text-nowrap"
+            className="text-secondary hover:text-accent cursor-pointer transition-all duration-300 flex items-center gap-x-2 text-nowrap relative"
           >
             <ShoppingCartIcon />
             Giỏ hàng
+            {cartCount <= 0 ?
+              <span className="bg-accent text-white rounded-full text-xs absolute bottom-[-7px] left-3 w-5 h-5 flex items-center justify-center">
+                0
+              </span> : (
+                <span className="bg-accent text-white rounded-full text-xs absolute bottom-[-7px] left-3 w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
           </Link>
         </div>
 

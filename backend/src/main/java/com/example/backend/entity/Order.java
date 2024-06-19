@@ -58,7 +58,7 @@ public class Order {
     @Column(name = "note")
     private String note;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)  
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 

@@ -23,16 +23,23 @@ export default function Cart() {
     }, [user]);
 
     useEffect(() => {
-        const selectedProducts = cart.items.filter((item) => selectedItems.includes(item.productId));
-        const newTotalQuantity = selectedProducts.reduce((total, item) => total + item.quantity, 0);
-        const newTotalPrice = selectedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
-        setTotalQuantity(newTotalQuantity);
-        setTotalPrice(newTotalPrice);
+        if (cart.items != null) {
+            const selectedProducts = cart.items.filter((item) => selectedItems.includes(item.productId));
+            const newTotalQuantity = selectedProducts.reduce((total, item) => total + item.quantity, 0);
+            const newTotalPrice = selectedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
+            setTotalQuantity(newTotalQuantity);
+            setTotalPrice(newTotalPrice);
+        }
     }, [selectedItems, cart.items]);
 
     const handleQuantityChange = (productId, newQuantity) => {
+        const product = cart.items.find(item => item.productId === productId);
         if (newQuantity < 1) {
             toast.error("Số lượng sản phẩm phải lớn hơn 0");
+            return;
+        }
+        if (newQuantity > product.stockQuantity) {
+            toast.error("Số lượng sản phẩm không được vượt quá tồn kho");
             return;
         }
         changeQuantity(productId, newQuantity);
@@ -84,7 +91,6 @@ export default function Cart() {
         }
 
         const orderItems = cart.items.filter((item) => selectedItems.includes(item.productId));
-        console.log(orderItems)
         const order = {
             userId: user.id,
             transaction_id: null, // Transaction ID sẽ được cập nhật sau khi chọn phương thức thanh toán
@@ -107,7 +113,7 @@ export default function Cart() {
             const newOrder = await addOrder(order);
             if (newOrder) {
                 orderItems.forEach(item => removeFromCart(item.productId));
-                navigate(`/payment/${newOrder.id}`);
+                navigate("/payment", { state: { order } });
             }
         } catch (error) {
             console.error("Failed to place order:", error);

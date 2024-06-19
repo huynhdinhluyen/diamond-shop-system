@@ -45,7 +45,7 @@ export default function Login() {
           <h2 className="font-bold text-2xl text-accent text-center">
             Đăng nhập
           </h2>
-          <p className="text-sm mt-4 text-center uppercase tracking-[1px]">
+          <p className="text-sm my-4 text-center uppercase tracking-[1px]">
             Chào mừng bạn đến với cửa hàng kim cương DHL
           </p>
           <form

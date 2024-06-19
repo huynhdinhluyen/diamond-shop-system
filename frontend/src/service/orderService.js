@@ -44,3 +44,13 @@ export const updateTransactionId = async (orderId, transactionId) => {
 export const updateOrderNote = async (orderId, note) => {
     await axiosInstance.post(`/api/order/${orderId}/note`, { note });
 };
+
+export const updateOrderDetailQuantity = async (orderId, productId, quantity) => {
+    try {
+        const response = await axiosInstance.put(`/api/order/${orderId}/order-detail/${productId}/quantity`, { quantity });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to update order detail quantity:', error);
+        throw error;
+    }
+};

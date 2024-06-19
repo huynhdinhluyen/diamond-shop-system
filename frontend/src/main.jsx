@@ -20,15 +20,16 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <OrderProvider>
           <ToastContainer
             position="bottom-right"
-            autoClose={5000}
+            autoClose={1500}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            pauseOnFocusLoss
             draggable
+            stacked
             pauseOnHover
             theme="light"
+            limit={1}
           />
           <App />
         </OrderProvider>

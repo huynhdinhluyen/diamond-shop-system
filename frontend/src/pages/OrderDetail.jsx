@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getOrderById } from '../service/orderService';
 import Price from '../components/Price';
 import { useOrder } from '../hooks/useOrder';
@@ -15,7 +15,6 @@ const OrderDetail = () => {
         const fetchOrder = async () => {
             try {
                 const fetchedOrder = await getOrderById(orderId);
-                console.log(order)
                 setOrder(fetchedOrder);
                 const products = await getProductFromOrder(orderId);
                 setOrderDetails(products);
@@ -34,7 +33,7 @@ const OrderDetail = () => {
     const totalAmount = orderDetails.reduce((total, product) => total + product.unitPrice * product.quantity, 0);
     const shippingFee = order.deliveryFee || 0;
     const totalPayment = totalAmount + shippingFee - order.discountPrice;
-    const transactionId = order.transaction?.id;
+    const transactionId = order.transaction;
     const orderStatus = order.status.name;
 
     return (
@@ -62,7 +61,11 @@ const OrderDetail = () => {
                             <tbody>
                                 {orderDetails.map((product, index) => (
                                     <tr key={index} className="hover:bg-gray-100">
-                                        <td className="py-3 px-4 border-b border-gray-300 text-[15px]">{product.name}</td>
+                                        <td className="py-3 px-4 border-b border-gray-300 text-[18px] hover:text-accent transition-all duration-300">
+                                            <Link to={`/product/${product.id}`}>
+                                                {product.name}
+                                            </Link>
+                                        </td>
                                         <td className="py-3 px-4 border-b border-gray-300 text-[15px]">{product.size}</td>
                                         <td className="py-3 px-4 border-b border-gray-300"><Price price={product.unitPrice} /></td>
                                         <td className="py-3 px-4 border-b border-gray-300">{product.quantity}</td>

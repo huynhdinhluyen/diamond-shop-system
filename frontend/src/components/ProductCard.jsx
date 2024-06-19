@@ -1,14 +1,15 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import Price from "../components/Price"
 
 function ProductCard({ product }) {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="w-full max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out"
+      className="w-full max-w-sm mx-auto rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out"
     >
-      <div key={product.id} className="group relative">
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+      <div key={product.id} className="group relative text-center bg-gray-50 p-3 rounded-lg">
+        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md  lg:aspect-none group-hover:opacity-75 lg:h-80">
           <img
             src={product.imageUrl}
             alt={product.name}
@@ -22,7 +23,7 @@ function ProductCard({ product }) {
               {product.name}
             </h3>
             <p className="mt-1 text-lg font-semibold text-red-500">
-              {product.salePrice.toLocaleString("vi-VN")} VNĐ
+              <Price price={product.salePrice} />
             </p>
           </div>
         </div>

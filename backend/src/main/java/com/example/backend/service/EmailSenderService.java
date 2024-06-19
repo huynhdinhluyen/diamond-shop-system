@@ -14,11 +14,10 @@ public class  EmailSenderService {
                                String subject,
                                String body) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("duytranbao16503@gmail.com");
+        message.setFrom("DHLDiamond");
         message.setTo(to);
         message.setText(body);
         message.setSubject(subject);
-
         EmailSender.send(message);
 
         System.out.println("mail sent successfully");

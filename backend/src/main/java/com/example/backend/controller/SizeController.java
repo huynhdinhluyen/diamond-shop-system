@@ -9,6 +9,7 @@ import com.example.backend.mapper.RingSizeMapper;
 import com.example.backend.repository.RingSizeRepository;
 import com.example.backend.repository.NecklaceSizeRepository;
 import com.example.backend.repository.BraceletSizeRepository;
+import com.example.backend.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +37,11 @@ public class SizeController {
     @Autowired
     private BraceletSizeMapper braceletSizeMapper;
 
+    @Autowired
+    private SizeService sizeService;
+
     @GetMapping("/{categoryId}")
     public List<?> getSizesByCategoryId(@PathVariable Integer categoryId) {
-        return switch (categoryId) {
-            case 1 -> ringSizeMapper.toDtoList(ringSizeRepository.findAll());
-            case 2 -> necklaceSizeMapper.toDtoList(necklaceSizeRepository.findAll());
-            case 5 -> braceletSizeMapper.toDtoList(braceletSizeRepository.findAll());
-            default -> throw new IllegalArgumentException("Invalid category ID");
-        };
+        return sizeService.getSizesByCategoryId(categoryId);
     }
 }
