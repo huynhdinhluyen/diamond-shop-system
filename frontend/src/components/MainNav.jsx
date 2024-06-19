@@ -1,8 +1,19 @@
 /* eslint-disable react/prop-types */
-import SearchIcon from "@mui/icons-material/Search";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Search as SearchIcon } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function MainNav({ pages }) {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    if (query.trim() !== "") {
+      navigate(`/products?query=${query}`);
+    }
+  };
+
   return (
     <nav className="bg-white absolute w-full left-0 -bottom-[86px] shadow-custom1 h-16 rounded-[10px] hidden lg:flex lg:items-center lg:justify-between lg:px-[50px] z-10">
       <ul className="flex gap-x-4">
@@ -17,7 +28,7 @@ export default function MainNav({ pages }) {
           </li>
         ))}
       </ul>
-      <form className="relative flex gap-x-[10px]">
+      <form className="relative flex gap-x-[10px]" onSubmit={handleSearch}>
         <label
           htmlFor="search-input"
           className="flex justify-center items-center group"
@@ -26,9 +37,11 @@ export default function MainNav({ pages }) {
         </label>
         <input
           type="text"
-          placeholder="Tìm kiếm..."
+          placeholder="Tìm kiếm sản phẩm..."
           id="search-input"
-          className="outline-none w-[100px] focus:w-[180px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-base transition-all duration-150"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="outline-none w-[140px] focus:w-[190px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-base transition-all duration-150"
         />
       </form>
     </nav>
