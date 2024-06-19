@@ -161,8 +161,11 @@ export default function Product() {
                             )}
                             {product.category && renderSizeGuideLink(product.category.name) && (
                                 <div className="mt-2">
-                                    <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline">
+                                    <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline block">
                                         Hướng dẫn chọn kích cỡ cho {product.category.name}
+                                    </Link>
+                                    <Link to="/privacy-warranty" className="text-blue-500 underline">
+                                        Chính sách bảo hành sản phẩm
                                     </Link>
                                 </div>
                             )}
