@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 
 const settings = {
-    infinite: true,
+    infinite: false,
     speed: 800,
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -61,13 +61,12 @@ function RingProduct() {
             .finally(() => setIsLoading(false));
     }, []);
 
-    // Filter products based on the keyword
     const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes("bông tai".toLowerCase())
+        product.category.name.toLowerCase().includes("bông tai".toLowerCase()) ||
+        product.category.name.toLowerCase().includes("hoa tai".toLowerCase())
     );
 
     const categoryId = filteredProducts.length > 0 ? filteredProducts[0].category.id : null;
-
 
     return (
         <div className="container mx-auto mt-8">

@@ -109,7 +109,11 @@ const OrderDetail = () => {
                         </div>
                         <div className='flex justify-between'>
                             <h4 className="font-semibold">Trạng thái đơn hàng:</h4>
-                            <p>{orderStatus}</p>
+                            {orderStatus == "PENDING" && (<p>Đã nhận được đơn hàng</p>)}
+                            {orderStatus == "PROCESSING" && (<p>Đang xử lý</p>)}
+                            {orderStatus == "SHIPPED" && (<p>Đã giao hàng cho đơn vị vận chuyển</p>)}
+                            {orderStatus == "DELIVERED" && (<p>Đơn hàng đã được giao thành công</p>)}
+                            {orderStatus == "CANCELLED" && (<p></p>)}
                         </div>
                     </div>
                 </div>
