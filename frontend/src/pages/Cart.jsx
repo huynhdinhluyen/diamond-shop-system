@@ -6,7 +6,6 @@ import Price from "../components/Price";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { addOrder } from '../service/orderService';
 
 export default function Cart() {
     const { cart, getProductFromCart, changeQuantity, removeFromCart } = useCart();
@@ -108,17 +107,7 @@ export default function Cart() {
                 size: item.size
             }))
         };
-
-        try {
-            const newOrder = await addOrder(order);
-            if (newOrder) {
-                orderItems.forEach(item => removeFromCart(item.productId));
-                navigate("/payment", { state: { order } });
-            }
-        } catch (error) {
-            console.error("Failed to place order:", error);
-            toast.error("Đặt hàng không thành công, vui lòng thử lại.");
-        }
+        navigate("/payment", { state: { order } });
     };
 
     return (
