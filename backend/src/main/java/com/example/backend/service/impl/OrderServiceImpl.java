@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
         order.setPhoneNumber(orderDTO.getPhoneNumber());
         order.setNote(orderDTO.getNote());
 
-        OrderStatus status = orderStatusRepository.findById(1) // Giả sử 1 là trạng thái "Mới"
+        OrderStatus status = orderStatusRepository.findByName("PENDING")
                 .orElseThrow(() -> new RuntimeException("Order status not found"));
         order.setStatus(status);
 

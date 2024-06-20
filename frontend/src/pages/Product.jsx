@@ -20,9 +20,21 @@ export default function Product() {
     const { addToCart } = useCart();
     const navigate = useNavigate();
 
-    const isSizeNotRequiredCategory = ["kim cương viên", "bông tai"].includes(product?.category?.name.toLowerCase());
+    useEffect(() => {
+        getProductById(productId).then(product => {
+            setProduct(product);
+
+            if (product && product.category && product.category.id && !["kim cương viên", "bông tai", "hoa tai"].includes(product.category.name.toLowerCase())) {
+                getSizesByCategory(product.category.id).then(setSizes);
+            }
+        }).catch(error => {
+            console.error("Error fetching product:", error);
+        });
+    }, [productId]);
 
     const handleAddToCart = () => {
+        const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
+
         if (!isSizeNotRequiredCategory && !selectedSize) {
             alert("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng");
             return;
@@ -35,17 +47,6 @@ export default function Product() {
             size: selectedSize?.name || "N/A",
         });
     };
-
-    useEffect(() => {
-        getProductById(productId).then(product => {
-            setProduct(product);
-            if (product && product.category && product.category.id && !isSizeNotRequiredCategory) {
-                getSizesByCategory(product.category.id).then(setSizes);
-            }
-        }).catch(error => {
-            console.error("Error fetching product:", error);
-        });
-    }, [productId]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -61,6 +62,8 @@ export default function Product() {
     };
 
     const handleBuyNow = () => {
+        const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
+
         if (!isSizeNotRequiredCategory && !selectedSize) {
             alert("Vui lòng chọn kích thước trước khi mua hàng");
             return;
@@ -90,11 +93,13 @@ export default function Product() {
 
     const renderSizeText = (size) => {
         if (product.category.id === 3) {
-            return `Size ${size.name} - Chiều dài: ${size.length}cm`;
+            return `Size ${size.name} - Chiều dài: ${size.length} cm`;
         } else {
-            return `Size ${size.name} - Đường kính: ${size.diameter}mm`;
+            return `Size ${size.name} - Đường kính: ${size.diameter} mm`;
         }
     };
+
+    const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
 
     const renderSizeGuideLink = (category) => {
         const sizeGuides = {
@@ -105,6 +110,7 @@ export default function Product() {
 
         return sizeGuides[category.toLowerCase()] || null;
     };
+
 
     return (
         <div className="mt-10">
@@ -155,8 +161,11 @@ export default function Product() {
                             )}
                             {product.category && renderSizeGuideLink(product.category.name) && (
                                 <div className="mt-2">
-                                    <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline">
+                                    <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline block">
                                         Hướng dẫn chọn kích cỡ cho {product.category.name}
+                                    </Link>
+                                    <Link to="/privacy-warranty" className="text-blue-500 underline">
+                                        Chính sách bảo hành sản phẩm
                                     </Link>
                                 </div>
                             )}

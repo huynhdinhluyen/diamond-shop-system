@@ -2,18 +2,10 @@ import { useOrder } from "../hooks/useOrder";
 import NotFound from "./NotFound";
 import Price from "../components/Price"
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useAuth } from "../hooks/useAuth";
 
 export default function MyOrder() {
-    const { user } = useAuth();
     const { orders } = useOrder();
-    const { getUserOrders } = useOrder();
-    useEffect(() => {
-        if (user) {
-            getUserOrders();
-        }
-    }, [user]);
+
     return (
         <div className="w-full ml-5 mt-10">
             <div>
@@ -40,7 +32,12 @@ export default function MyOrder() {
                                         Tổng tiền: <span className="font-semibold ml-2"> <Price price={order.totalPrice} /> </span>
                                     </div>
                                     <div className="flex justify-end mt-2">
-                                        Trạng thái đơn hàng: <span className="ml-2 font-semibold"> {order.status.name}</span>
+                                        Trạng thái đơn hàng:
+                                        {order.status.name == "PENDING" && <span className="ml-2 font-semibold">Đã nhận được đơn hàng</span>}
+                                        {order.status.name == "PROCESSING" && <span className="ml-2 font-semibold">Đang xử lý</span>}
+                                        {order.status.name == "SHIPPED" && <span className="ml-2 font-semibold">Đã giao hàng cho đơn vị vận chuyển</span>}
+                                        {order.status.name == "DELIVERED" && <span className="ml-2 font-semibold">Đơn hàng đã được giao thành công</span>}
+                                        {order.status.name == "CANCELLED" && <span className="ml-2 font-semibold">Đơn hàng đã bị hủy</span>}
                                     </div>
                                 </li>
                             </Link>

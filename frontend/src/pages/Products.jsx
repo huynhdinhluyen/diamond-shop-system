@@ -15,6 +15,7 @@ export default function Products() {
     const [isLoading, setIsLoading] = useState(true);
     const query = useQuery();
     const categoryId = query.get("category");
+    const searchQuery = query.get("query");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,9 +39,13 @@ export default function Products() {
         const fetchProducts = async () => {
             setIsLoading(true);
             try {
-                const data = categoryId
-                    ? await getProductsByCategory(categoryId)
-                    : await getProducts();
+                let data;
+                if (searchQuery) {
+                    data = await getProducts();
+                    data = data.filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
+                } else {
+                    data = categoryId ? await getProductsByCategory(categoryId) : await getProducts();
+                }
                 setProducts(data);
             } catch (error) {
                 console.error(error);
@@ -50,7 +55,7 @@ export default function Products() {
         };
 
         fetchProducts();
-    }, [categoryId]);
+    }, [categoryId, searchQuery]);
 
     const handleCategoryClick = (id) => {
         navigate(`/products?category=${id}`);
@@ -79,9 +84,9 @@ export default function Products() {
             ) : products.length === 0 ? (
                 <Typography variant="body1">Không có sản phẩm</Typography>
             ) : (
-                <div className="grid-cols-4 grid">
+                <div className="grid grid-cols-4 gap-4">
                     {products.map((product) => (
-                        <div key={product.id} className="mr-2 my-3">
+                        <div key={product.id} className="my-3">
                             <ProductCard product={product} />
                         </div>
                     ))}

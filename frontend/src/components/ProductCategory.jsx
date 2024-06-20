@@ -12,7 +12,7 @@ export default function ProductCategory() {
   const [show, setShow] = useState(false);
 
   const settings = {
-    infinite: true,
+    infinite: false,
     speed: 2000,
     slidesToShow: 5,
     slidesToScroll: 1,
