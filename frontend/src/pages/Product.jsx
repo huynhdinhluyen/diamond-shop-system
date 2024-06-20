@@ -92,7 +92,7 @@ export default function Product() {
     };
 
     const renderSizeText = (size) => {
-        if (product.category.id === 3) {
+        if (product.category.name.toLowerCase().includes("dây chuyền".toLowerCase())) {
             return `Size ${size.name} - Chiều dài: ${size.length} cm`;
         } else {
             return `Size ${size.name} - Đường kính: ${size.diameter} mm`;
