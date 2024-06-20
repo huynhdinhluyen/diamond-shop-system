@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Input from "../components/Input";
@@ -7,6 +8,7 @@ import { useOrder } from '../hooks/useOrder';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { getExchangeRate } from '../service/exchangeService';
 import { toast } from 'react-toastify';
+import { useCart } from '../hooks/useCart';
 
 const PaymentPage = () => {
     const location = useLocation();
@@ -14,6 +16,7 @@ const PaymentPage = () => {
     const { order } = state;
     const [paymentMethod, setPaymentMethod] = useState('');
     const { addOrder } = useOrder();
+    const { removeFromCart } = useCart();
     const [products, setProducts] = useState([]);
     const [note, setNote] = useState('');
     const [error, setError] = useState('');
@@ -67,7 +70,11 @@ const PaymentPage = () => {
                 transaction: id,
                 note,
             };
+            console.log(newOrder);
             const addedOrder = await addOrder(newOrder);
+            for (const detail of newOrder.orderDetails) {
+                await removeFromCart(detail.productId);
+            }
             navigate(`/order-detail/${addedOrder.id}`);
         } catch (error) {
             console.error('Failed to process payment:', error);
