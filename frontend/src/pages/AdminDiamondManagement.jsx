@@ -26,12 +26,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   TextField,
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
+import { highlightText } from "../utils/highlightText";
 
 const diamondSchema = yup.object({
   color: yup.string().required("Màu sắc không được để trống"),
@@ -68,6 +70,8 @@ export default function AdminDiamondManagement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [diamondIdToDelete, setDiamondIdToDelete] = useState(null);
+  const [sortBy, setSortBy] = useState("size");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const [defaultValues, setDefaultValues] = useState({
     color: "",
@@ -179,6 +183,28 @@ export default function AdminDiamondManagement() {
       diamond.size.toString().includes(searchTerm)
   );
 
+  const sortedDiamonds = [...filteredDiamonds].sort((a, b) => {
+    const aValue = a[sortBy];
+    const bValue = b[sortBy];
+
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortOrder === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" className="!mt-4" gutterBottom>
@@ -216,42 +242,99 @@ export default function AdminDiamondManagement() {
           Error loading data: {error.message}
         </Typography>
       ) : (
-        <TableContainer component={Paper} className="mt-4">
-          <Table>
+        <TableContainer
+          component={Paper}
+          className="mt-4 max-h-[500px] overflow-y-auto"
+        >
+          <Table stickyHeader>
             <TableHead>
-              <TableRow>
-                <TableCell className="!text-center">Cấp màu</TableCell>
-                <TableCell className="!text-center">Nguồn gốc</TableCell>
-                <TableCell className="!text-center">
-                  Trọng lượng (carat)
+              <TableRow className="sticky top-0 z-10 bg-white">
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "color"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("color")}
+                  >
+                    Cấp màu
+                  </TableSortLabel>
                 </TableCell>
-                <TableCell className="!text-center">Kích thước (mm)</TableCell>
-                <TableCell className="!text-center">Chế tác</TableCell>
-                <TableCell className="!text-center">Độ tinh khiết</TableCell>
-                <TableCell className="!text-center">Giá (VNĐ)</TableCell>
-                <TableCell className="!text-center">Thao tác</TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "origin"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("origin")}
+                  >
+                    Nguồn gốc
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "cutType"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("cutType")}
+                  >
+                    Chế tác
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "clarity"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("clarity")}
+                  >
+                    Độ tinh khiết
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "caratWeight"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("caratWeight")}
+                  >
+                    Trọng lượng (carat)
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "size"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("size")}
+                  >
+                    Kích thước (mm)
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "price"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("price")}
+                  >
+                    Giá
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredDiamonds.map((diamond) => (
+              {sortedDiamonds.map((diamond) => (
                 <TableRow key={diamond.id}>
-                  <TableCell className="!text-center">
-                    {diamond.color}
+                  <TableCell>
+                    {highlightText(diamond.color, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {diamond.origin}
+                  <TableCell>
+                    {highlightText(diamond.origin, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
+                  <TableCell>
+                    {highlightText(diamond.cutType, searchTerm)}
+                  </TableCell>
+                  <TableCell>
+                    {highlightText(diamond.clarity, searchTerm)}
+                  </TableCell>
+                  <TableCell className="!text-right">
                     {diamond.caratWeight}
                   </TableCell>
-                  <TableCell className="!text-center">{diamond.size}</TableCell>
-                  <TableCell className="!text-center">
-                    {diamond.cutType}
-                  </TableCell>
-                  <TableCell className="!text-center">
-                    {diamond.clarity}
-                  </TableCell>
-                  <TableCell className="!text-center">
+                  <TableCell className="!text-right">{diamond.size}</TableCell>
+                  <TableCell className="!text-right">
                     {diamond.price.toLocaleString()} VNĐ
                   </TableCell>
                   <TableCell className="!text-center">
@@ -261,7 +344,6 @@ export default function AdminDiamondManagement() {
                     >
                       <EditIcon />
                     </IconButton>
-
                     <IconButton
                       aria-label="delete"
                       color="error"

@@ -18,6 +18,7 @@ import {
   IconButton,
   InputAdornment,
   DialogContentText,
+  TableSortLabel,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -33,6 +34,7 @@ import {
   getDiamondCasings,
   updateDiamondCasing,
 } from "../service/diamondCasingService";
+import { highlightText } from "../utils/highlightText";
 
 const diamondCasingSchema = yup.object({
   material: yup.string().required("Chất liệu không được để trống"),
@@ -53,6 +55,8 @@ export default function AdminDiamondCasingManagement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [casingIdToDelete, setCasingIdToDelete] = useState(null);
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const [defaultValues, setDefaultValues] = useState({
     material: "",
@@ -142,6 +146,28 @@ export default function AdminDiamondCasingManagement() {
     diamondCasing.material.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const sortedCasings = [...filteredDiamondCasings].sort((a, b) => {
+    const aValue = a[sortBy];
+    const bValue = b[sortBy];
+
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortOrder === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
@@ -179,25 +205,52 @@ export default function AdminDiamondCasingManagement() {
           Error loading data: {error.message}
         </Typography>
       ) : (
-        <TableContainer component={Paper} className="mt-4">
-          <Table>
+        <TableContainer
+          component={Paper}
+          className="mt-4 max-h-[500px] overflow-y-auto"
+        >
+          <Table stickyHeader>
             <TableHead>
-              <TableRow>
-                <TableCell className="!text-center">ID</TableCell>
-                <TableCell className="!text-center">Chất liệu</TableCell>
-                <TableCell className="!text-center">Giá (VNĐ)</TableCell>
+              <TableRow className="sticky top-0 z-10 bg-white">
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "id"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("id")}
+                  >
+                    ID
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-center">
+                  <TableSortLabel
+                    active={sortBy === "material"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("material")}
+                  >
+                    Chất liệu
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "price"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("price")}
+                  >
+                    Giá (VNĐ)
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell className="!text-center">Hành động</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredDiamondCasings.map((casing) => (
+              {sortedCasings.map((casing) => (
                 <TableRow key={casing.id}>
-                  <TableCell className="!text-center">{casing.id}</TableCell>
+                  <TableCell>{casing.id}</TableCell>
                   <TableCell className="!text-center">
-                    {casing.material}
+                    {highlightText(casing.material, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {casing.price.toLocaleString("vi-VN")} VNĐ
+                  <TableCell className="!text-right">
+                    {casing.price.toLocaleString("vi-VN")}
                   </TableCell>
                   <TableCell className="!text-center">
                     <IconButton
@@ -219,7 +272,6 @@ export default function AdminDiamondCasingManagement() {
           </Table>
         </TableContainer>
       )}
-
       {/* Dialog thêm/chỉnh sửa vỏ kim cương */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>

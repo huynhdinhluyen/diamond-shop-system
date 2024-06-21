@@ -146,6 +146,8 @@ export default function Dashboard() {
                   tickFormatter={(value) =>
                     new Intl.NumberFormat("vi-VN").format(value)
                   }
+                  width={80} // Điều chỉnh width của trục Y
+                  type="number" // Đảm bảo kiểu dữ liệu là number
                 />
                 <Tooltip
                   formatter={(value) =>

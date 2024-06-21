@@ -44,8 +44,6 @@ import Payment from "./pages/Payment";
 import OrderDetail from "./pages/OrderDetail";
 import MyOrder from "./components/MyOrder";
 import Products from "./pages/Products";
-// import AdminProductManagement from "./pages/AdminProductManagement";
-
 
 function App() {
   return (
@@ -154,15 +152,24 @@ function App() {
         <Route path="/manager" element={<ManagerLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="customers-management" element={<CustomerManagement />} />
-          <Route path="sales-staffs-management" element={<SaleStaffManagement />} />
-          <Route path="delivery-staffs-management" element={<DeliveryStaffManagement />} />
+          <Route
+            path="sales-staffs-management"
+            element={<SaleStaffManagement />}
+          />
+          <Route
+            path="delivery-staffs-management"
+            element={<DeliveryStaffManagement />}
+          />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="products" element={<AdminProductManagement />} />
           <Route path="categories" element={<AdminCategoryManagement />} />
-          <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
+          <Route
+            path="diamond-casings"
+            element={<AdminDiamondCasingManagement />}
+          />
           <Route path="diamonds" element={<AdminDiamondManagement />} />
           <Route path="users" element={<AdminUserManagement />} />
         </Route>
@@ -328,15 +335,7 @@ function App() {
             </Layout>
           }
         />
-        <Route path="/admin" element={<AdminLayout />}>
-          {/* <Route index element={<AdminDashboard />} /> */}
-          <Route path="products" element={<AdminProductManagement />} />
-          <Route path="categories" element={<AdminCategoryManagement />} />
-          <Route path="diamond-casings" element={<AdminDiamondCasingManagement />} />
-          <Route path="diamonds" element={<AdminDiamondManagement />} />
-          <Route path="users" element={<AdminUserManagement />} />
-          {/* <Route path="products" element={<AdminProductManagement />} /> */}
-        </Route>
+
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
