@@ -31,15 +31,8 @@ export const OrderProvider = ({ children }) => {
         return newOrder;
     }
 
-    const getProductFromOrder = async (orderId) => {
+    const getProductFromOrder = async (order) => {
         try {
-            // Fetch the order details from the API
-            const order = await orderService.getOrderById(orderId);
-            if (!order) {
-                throw new Error('Order not found');
-            }
-
-            // Fetch the product details for each order detail
             const products = await Promise.all(order.orderDetails.map(async (detail) => {
                 const product = await getProductById(detail.productId);
                 return { ...product, quantity: detail.quantity, unitPrice: detail.unitPrice, size: detail.size };
