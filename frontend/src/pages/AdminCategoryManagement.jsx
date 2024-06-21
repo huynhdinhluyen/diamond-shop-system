@@ -201,8 +201,8 @@ export default function AdminCategoryManagement() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className="!text-center">ID</TableCell>
-                <TableCell className="!text-center">Tên</TableCell>
+                <TableCell>ID</TableCell>
+                <TableCell>Tên</TableCell>
                 <TableCell className="!text-center">Ảnh</TableCell>
                 <TableCell className="!text-center">Hành động</TableCell>
               </TableRow>
@@ -210,10 +210,8 @@ export default function AdminCategoryManagement() {
             <TableBody>
               {categories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell className="!text-center">{category.id}</TableCell>
-                  <TableCell className="!text-center">
-                    {category.name}
-                  </TableCell>
+                  <TableCell>{category.id}</TableCell>
+                  <TableCell>{category.name}</TableCell>
                   <TableCell className="!flex">
                     <img
                       src={category.imageUrl}
