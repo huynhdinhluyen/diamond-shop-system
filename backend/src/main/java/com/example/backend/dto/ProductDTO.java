@@ -18,7 +18,6 @@ public class ProductDTO {
     private BigDecimal profitMargin;
     private int stockQuantity;
     private PromotionDTO promotion;
-    private WarrantyDTO warranty;
     private DiamondCasingDTO diamondCasing;
     private Long costPrice;
     private Long salePrice;
