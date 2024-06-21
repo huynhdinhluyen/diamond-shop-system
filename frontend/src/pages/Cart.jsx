@@ -83,6 +83,10 @@ export default function Cart() {
     };
 
     const handleRemoveSelected = () => {
+        if (selectedItems.length === 0) {
+            toast.error("Vui lòng chọn ít nhất một sản phẩm để xóa.");
+            return;
+        }
         Swal.fire({
             title: "Bạn có chắc chắn muốn xóa các sản phẩm đã chọn khỏi giỏ hàng không?",
             icon: "warning",

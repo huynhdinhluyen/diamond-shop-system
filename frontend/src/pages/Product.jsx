@@ -237,11 +237,12 @@ export default function Product() {
                                     <td className="py-2 px-4 border-b border-gray-200">
                                         {product.auxiliaryDiamonds ? (
                                             <ul className="ml-4 list-disc">
-                                                {product.auxiliaryDiamonds.map((diamond, index) => (
-                                                    <li key={index}>
-                                                        Màu: {diamond.color}, Xuất xứ: {diamond.origin}, Trọng lượng carat: {diamond.caratWeight}, Kiểu cắt: {diamond.cutType}, Độ trong: {diamond.clarity}, Chứng chỉ GIA: {diamond.giaCertificate}
-                                                    </li>
-                                                ))}
+                                                <li>Màu: {product.mainDiamond.color}</li>
+                                                <li>Xuất xứ: {product.mainDiamond.origin}</li>
+                                                <li>Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
+                                                <li>Kiểu cắt: {product.mainDiamond.cutType}</li>
+                                                <li>Độ trong: {product.mainDiamond.clarity}</li>
+                                                <li>Chứng chỉ GIA: {product.mainDiamond.giaCertificate}</li>
                                             </ul>
                                         ) : (
                                             "Không có"
