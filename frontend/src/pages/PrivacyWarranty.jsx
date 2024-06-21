@@ -4,7 +4,8 @@ export default function PrivacyWarranty() {
     return (
         <div className="container lg:mt-10 px-4 ">
             <h3 className="h3 text-accent text-center uppercase mb-3">CHÍNH SÁCH BẢO HÀNH</h3>
-            <h4 className="h4 text-center uppercase mb-5">Khi bảo hành, phiền quý khách mang theo hóa đơn mua hàng!</h4>
+            <h4 className="h4 text-center uppercase mb-2">Khi bảo hành, phiền quý khách mang theo hóa đơn mua hàng!</h4>
+            <h5 className="h5 text-center mb-5">(Trong trường hợp quý khách không còn hóa đơn mua hàng, quý khách không áp dụng được điều khoản bảo hành miễn phí)</h5>
             <table className="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr className="bg-gray-100 border-b">

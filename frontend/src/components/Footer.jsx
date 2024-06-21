@@ -164,7 +164,7 @@ export default function Footer() {
       <Map />
       <div className="py-[30px] border-t">
         <div className="container mx-auto text-center">
-          <div className="font-light text-base">
+          <div className="font-light text-accent">
             Copyright &copy; 2024 DHL Diamond - All rights reserved.
           </div>
         </div>

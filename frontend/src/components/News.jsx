@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const News = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 3;
+  const postsPerPage = 4;
 
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
@@ -22,7 +22,7 @@ const News = () => {
         </h4>
         <div className="w-96 border-t border-gray-300"></div>
       </div>
-      <div className="col-span-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+      <div className="col-span-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {currentPost.map((section, index) => (
           <Link to={`/news/${section.id}`} key={index}>
             <div className="flex flex-col gap-x-4 border-b-2 border-gray-200 pb-2 cursor-pointer h-full">

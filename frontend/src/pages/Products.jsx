@@ -83,7 +83,7 @@ export default function Products() {
         <div className="container mx-auto my-8">
             <div className="flex justify-between">
                 <div className="w-1/4">
-                    <div className="flex flex-col mt-2 mr-3">
+                    <div className="flex flex-col mt-16 mr-3">
                         <h3 className="h4 mb-2 text-accent mx-auto">DANH MỤC SẢN PHẨM</h3>
                         <button
                             onClick={() => handleCategoryClick(null, "Tất cả sản phẩm")}
