@@ -329,7 +329,27 @@ export default function AdminUserManagement() {
                   <TableCell>
                     {highlightText(user.firstName, searchTerm)}
                   </TableCell>
-                  <TableCell>{highlightText(user.role, searchTerm)}</TableCell>
+                  <TableCell>
+                    {highlightText(
+                      (() => {
+                        switch (user.role) {
+                          case "ADMIN":
+                            return "Quản trị viên";
+                          case "SALES_STAFF":
+                            return "Nhân viên bán hàng";
+                          case "DELIVERY_STAFF":
+                            return "Nhân viên giao hàng";
+                          case "CUSTOMER":
+                            return "Khách hàng";
+                          case "MANAGER":
+                            return "Quản lý";
+                          default:
+                            return user.role;
+                        }
+                      })(),
+                      searchTerm
+                    )}
+                  </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <IconButton
                       color="primary"
