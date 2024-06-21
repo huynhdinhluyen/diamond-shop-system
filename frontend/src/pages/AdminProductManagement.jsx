@@ -23,6 +23,8 @@ import {
   InputLabel,
   FormControl,
   OutlinedInput,
+  DialogContentText,
+  TableSortLabel,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -41,9 +43,9 @@ import {
 } from "../service/productService";
 import { getDiamonds } from "../service/diamondService";
 import { getDiamondCasings } from "../service/diamondCasingService";
-import { getWarranties } from "../service/warrantyService";
 import { getPromotions } from "../service/promotionService";
 import { getCategories } from "../service/categoryService";
+import { highlightText } from "../utils/highlightText";
 
 const productSchema = yup.object({
   name: yup.string().required("Tên sản phẩm không được để trống"),
@@ -71,9 +73,6 @@ const productSchema = yup.object({
   promotion: yup.object().shape({
     id: yup.number().required("Khuyến mãi không được để trống"),
   }),
-  warranty: yup.object().shape({
-    id: yup.number().required("Bảo hành không được để trống"),
-  }),
   mainDiamond: yup.number().nullable(),
   auxiliaryDiamond: yup.number().nullable(),
   category: yup
@@ -88,7 +87,6 @@ export default function AdminProductManagement() {
   const [products, setProducts] = useState([]);
   const [diamonds, setDiamonds] = useState([]);
   const [diamondCasings, setDiamondCasings] = useState([]);
-  const [warranties, setWarranties] = useState([]);
   const [promotions, setPromotions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -99,14 +97,11 @@ export default function AdminProductManagement() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [imageName, setImageName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const {
     register,
@@ -118,7 +113,6 @@ export default function AdminProductManagement() {
     resolver: yupResolver(productSchema),
     defaultValues: {
       diamondCasing: { id: "" },
-      warranty: { id: "" },
       promotion: { id: "" },
       mainDiamond: null,
       auxiliaryDiamond: null,
@@ -134,22 +128,15 @@ export default function AdminProductManagement() {
     try {
       const productData = await getProducts();
       setProducts(productData);
-      const [
-        diamondsData,
-        diamondCasingsData,
-        warrantiesData,
-        promotionsData,
-        categoriesData,
-      ] = await Promise.all([
-        getDiamonds(),
-        getDiamondCasings(),
-        getWarranties(),
-        getPromotions(),
-        getCategories(),
-      ]);
+      const [diamondsData, diamondCasingsData, promotionsData, categoriesData] =
+        await Promise.all([
+          getDiamonds(),
+          getDiamondCasings(),
+          getPromotions(),
+          getCategories(),
+        ]);
       setDiamonds(diamondsData);
       setDiamondCasings(diamondCasingsData);
-      setWarranties(warrantiesData);
       setPromotions(promotionsData);
       setCategories(categoriesData);
     } catch (error) {
@@ -159,6 +146,14 @@ export default function AdminProductManagement() {
       setIsLoading(false);
     }
   };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleOpenDialog = (product = null) => {
     setSelectedProduct(product);
@@ -170,7 +165,6 @@ export default function AdminProductManagement() {
       stockQuantity: product?.stockQuantity || 0,
       diamondCasing: { id: product?.diamondCasing?.id || "" },
       promotion: { id: product?.promotion?.id || "" },
-      warranty: { id: product?.warranty?.id || "" },
       mainDiamond: product?.mainDiamond?.id || "",
       auxiliaryDiamond: product?.auxiliaryDiamond?.id || "",
       category: { id: product?.category?.id || "" },
@@ -195,6 +189,7 @@ export default function AdminProductManagement() {
   };
 
   const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       const mainDiamond = data.mainDiamond ? { id: data.mainDiamond } : null;
       const auxiliaryDiamond = data.auxiliaryDiamond
@@ -206,7 +201,6 @@ export default function AdminProductManagement() {
         auxiliaryDiamond,
         categoryId: data.category?.id,
         promotion: data.promotion,
-        warranty: data.warranty,
       };
       if (imageFile) {
         const storageRef = ref(storage, `product_images/${imageFile.name}`);
@@ -236,6 +230,8 @@ export default function AdminProductManagement() {
       }
     } catch (error) {
       toast.error("Lỗi khi lưu sản phẩm");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -256,14 +252,42 @@ export default function AdminProductManagement() {
   };
 
   const handleDeleteProduct = async (productId) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-      try {
-        await deleteProduct(productId);
-        fetchData();
-        toast.success("Xóa sản phẩm thành công");
-      } catch (error) {
-        toast.error("Lỗi khi xóa sản phẩm");
-      }
+    setProductIdToDelete(productId);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteProduct(productIdToDelete);
+      fetchData();
+      toast.success("Xóa vỏ kim cương thành công");
+    } catch (error) {
+      toast.error("Lỗi khi xóa vỏ kim cương");
+    } finally {
+      setOpenConfirmDialog(false);
+      setProductIdToDelete(null);
+    }
+  };
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    const aValue = a[sortBy];
+    const bValue = b[sortBy];
+
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortOrder === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
     }
   };
 
@@ -299,19 +323,78 @@ export default function AdminProductManagement() {
           Error loading data: {error.message}
         </Typography>
       ) : (
-        <TableContainer component={Paper} className="mt-4">
-          <Table>
+        <TableContainer
+          component={Paper}
+          className="mt-4 max-h-[500px] overflow-y-auto"
+        >
+          <Table stickyHeader>
             <TableHead>
-              <TableRow>
-                <TableCell className="!text-center">ID</TableCell>
-                <TableCell className="!text-center">Tên sản phẩm</TableCell>
+              <TableRow className="sticky top-0 z-10 bg-white">
+                <TableCell className="!text-center">
+                  <TableSortLabel
+                    active={sortBy === "id"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("id")}
+                  >
+                    ID
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "name"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("name")}
+                  >
+                    Tên sản phẩm
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell className="!text-center">Hình ảnh</TableCell>
-                <TableCell className="!text-center">Chi phí gia công</TableCell>
-                <TableCell className="!text-center">Giá gốc</TableCell>
-                <TableCell className="!text-center">Giá bán</TableCell>
-                <TableCell className="!text-center">Lợi nhuận</TableCell>
-                <TableCell className="!text-center">Số lượng tồn kho</TableCell>
-                <TableCell className="!text-center">Hành động</TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "laborCost"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("laborCost")}
+                  >
+                    Chi phí gia công 
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "costPrice"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("costPrice")}
+                  >
+                    Giá gốc
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "salePrice"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("salePrice")}
+                  >
+                    Giá bán
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "profitMargin"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("profitMargin")}
+                  >
+                    Tỉ lệ áp giá
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!text-right">
+                  <TableSortLabel
+                    active={sortBy === "stockQuantity"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("stockQuantity")}
+                  >
+                    Số lượng tồn kho
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -322,11 +405,11 @@ export default function AdminProductManagement() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredProducts.map((product) => (
+                sortedProducts.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell className="!text-center">{product.id}</TableCell>
-                    <TableCell className="!text-center">
-                      {product.name}
+                    <TableCell>{product.id}</TableCell>
+                    <TableCell>
+                      {highlightText(product.name, searchTerm)}
                     </TableCell>
                     <TableCell className="!flex">
                       <img
@@ -336,13 +419,13 @@ export default function AdminProductManagement() {
                         className="mx-auto"
                       />
                     </TableCell>
-                    <TableCell className="!text-center">
+                    <TableCell className="!text-right">
                       {product.laborCost.toLocaleString()} VNĐ
                     </TableCell>
-                    <TableCell className="!text-center">
+                    <TableCell className="!text-right">
                       {product.costPrice.toLocaleString()} VNĐ
                     </TableCell>
-                    <TableCell className="!text-center">
+                    <TableCell className="!text-right">
                       {product.salePrice.toLocaleString()} VNĐ
                     </TableCell>
                     <TableCell className="!text-center">
@@ -529,26 +612,7 @@ export default function AdminProductManagement() {
                 {errors?.promotion?.message}
               </FormHelperText>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Bảo hành</InputLabel>
-              <Controller
-                name="warranty.id"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} label="Bảo hành" error={!!errors.warranty}>
-                    <MenuItem value="">None</MenuItem>
-                    {warranties.map((warranty) => (
-                      <MenuItem key={warranty.id} value={warranty.id}>
-                        {warranty.warrantyFree}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              />
-              <FormHelperText error={!!errors.warranty}>
-                {errors?.warranty?.message}
-              </FormHelperText>
-            </FormControl>
+
             <FormControl fullWidth margin="normal">
               <InputLabel>Danh mục</InputLabel>
               <Controller
@@ -597,12 +661,33 @@ export default function AdminProductManagement() {
             )}
             <DialogActions>
               <Button onClick={handleCloseDialog}>Hủy</Button>
-              <Button type="submit" variant="contained" color="primary">
-                {selectedProduct ? "Lưu" : "Thêm"}
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? <CircularProgress size={24} /> : "Lưu"}
               </Button>
             </DialogActions>
           </form>
         </DialogContent>
+      </Dialog>
+      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận xóa</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn xóa sản phẩm này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Xóa
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

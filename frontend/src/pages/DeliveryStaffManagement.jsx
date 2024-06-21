@@ -15,6 +15,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   FormControl,
   FormHelperText,
@@ -31,6 +32,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   TextField,
   Typography,
 } from "@mui/material";
@@ -40,6 +42,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import { highlightText } from "../utils/highlightText";
 
 const roleOptions = [
   { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
@@ -73,6 +76,11 @@ export default function DeliveryStaffManagement() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -138,6 +146,7 @@ export default function DeliveryStaffManagement() {
   };
 
   const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       if (selectedDeliveryStaff) {
         await updateUser(selectedDeliveryStaff.id, data);
@@ -150,20 +159,51 @@ export default function DeliveryStaffManagement() {
       handleCloseDialog();
     } catch (error) {
       toast.error("Lỗi khi lưu thông tin");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleDeleteDeliveryStaff = async (deliveryStaffId) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa nhân viên này?")) {
-      try {
-        await deleteUser(deliveryStaffId);
-        fetchData();
-        toast.success("Xóa nhân viên thành công");
-      } catch (error) {
-        toast.error("Lỗi khi xóa tài khoản nhân viên này");
-      }
+  const handleDeleteUser = async (userId) => {
+    setUserIdToDelete(userId);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteUser(userIdToDelete);
+      fetchData();
+      toast.success("Xóa nhân viên thành công");
+    } catch (error) {
+      toast.error("Lỗi khi xóa nhân viên");
+    } finally {
+      setOpenConfirmDialog(false);
+      setUserIdToDelete(null);
     }
   };
+
+  const sortedUsers = [...filteredDeliveryStaffs].sort((a, b) => {
+    const aValue = a[sortBy];
+    const bValue = b[sortBy];
+
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortOrder === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
@@ -201,39 +241,90 @@ export default function DeliveryStaffManagement() {
           Error loading data: {error.message}
         </Typography>
       ) : (
-        <TableContainer component={Paper} className="!mt-4">
-          <Table>
+        <TableContainer
+          component={Paper}
+          className="mt-4 max-h-[500px] overflow-y-auto"
+        >
+          <Table stickyHeader>
             <TableHead>
-              <TableRow>
-                <TableCell className="!text-center">ID</TableCell>
-                <TableCell className="!text-center">Username</TableCell>
-                <TableCell className="!text-center">Email</TableCell>
-                <TableCell className="!text-center">Số điện thoại</TableCell>
-                <TableCell className="!text-center">Họ</TableCell>
-                <TableCell className="!text-center">Tên</TableCell>
-                <TableCell className="!text-center">Hành động</TableCell>
+              <TableRow className="sticky top-0 z-10 bg-white">
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "id"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("id")}
+                  >
+                    ID
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "username"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("username")}
+                  >
+                    Username
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "email"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("email")}
+                  >
+                    Email
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "phoneNumber"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("phoneNumber")}
+                  >
+                    Số điện thoại
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "lastName"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("lastName")}
+                  >
+                    Họ
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "firstName"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("firstName")}
+                  >
+                    Tên
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredDeliveryStaffs.map((deliveryStaff) => (
+              {sortedUsers.map((deliveryStaff) => (
                 <TableRow key={deliveryStaff.id}>
                   <TableCell className="!text-center">
                     {deliveryStaff.id}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {deliveryStaff.username}
+                  <TableCell>
+                    {highlightText(deliveryStaff.username, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {deliveryStaff.email}
+                  <TableCell>
+                    {highlightText(deliveryStaff.email, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {deliveryStaff.phoneNumber}
+                  <TableCell>
+                    {highlightText(deliveryStaff.phoneNumber, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {deliveryStaff.lastName}
+                  <TableCell>
+                    {highlightText(deliveryStaff.lastName, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {deliveryStaff.firstName}
+                  <TableCell>
+                    {highlightText(deliveryStaff.firstName, searchTerm)}
                   </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <IconButton
@@ -244,9 +335,7 @@ export default function DeliveryStaffManagement() {
                     </IconButton>
                     <IconButton
                       color="error"
-                      onClick={() =>
-                        handleDeleteDeliveryStaff(deliveryStaff.id)
-                      }
+                      onClick={() => handleDeleteUser(deliveryStaff.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -374,8 +463,13 @@ export default function DeliveryStaffManagement() {
               </FormControl>
               <DialogActions>
                 <Button onClick={handleCloseDialog}>Hủy</Button>
-                <Button type="submit" variant="contained" color="primary">
-                  Lưu
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? <CircularProgress size={24} /> : "Lưu"}
                 </Button>
               </DialogActions>
             </form>
@@ -468,13 +562,34 @@ export default function DeliveryStaffManagement() {
               />
               <DialogActions>
                 <Button onClick={handleCloseDialog}>Hủy</Button>
-                <Button type="submit" variant="contained" color="primary">
-                  Thêm
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? <CircularProgress size={24} /> : "Thêm"}
                 </Button>
               </DialogActions>
             </form>
           )}
         </DialogContent>
+      </Dialog>
+      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận xóa</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn xóa người dùng này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Xóa
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

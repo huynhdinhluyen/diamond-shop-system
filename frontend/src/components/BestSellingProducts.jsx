@@ -28,12 +28,15 @@ export default function BestSellingProducts() {
     fetchData();
   }, []);
   return (
-    <Paper elevation={3} sx={{ p: 2 }}>
+    <div>
       <Typography variant="h6">Sản phẩm bán chạy nhất</Typography>
-      <TableContainer>
-        <Table>
+      <TableContainer
+        component={Paper}
+        className="mt-4 max-h-[500px] overflow-y-auto"
+      >
+        <Table stickyHeader>
           <TableHead>
-            <TableRow>
+            <TableRow className="sticky top-0 z-10 bg-white">
               <TableCell>Sản phẩm</TableCell>
               <TableCell align="right">Số lượng đã bán</TableCell>
               <TableCell align="right">Doanh thu</TableCell>
@@ -61,6 +64,6 @@ export default function BestSellingProducts() {
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+    </div>
   );
 }

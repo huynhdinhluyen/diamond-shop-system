@@ -25,7 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "LEFT JOIN FETCH p.category c " +
             "LEFT JOIN FETCH p.diamondCasing dc " +
             "LEFT JOIN FETCH p.promotion pr " +
-            "LEFT JOIN FETCH p.warranty w " +
             "LEFT JOIN FETCH p.productDiamonds pd " +
             "LEFT JOIN FETCH pd.diamond d " +
             "WHERE c.id = :categoryId")
