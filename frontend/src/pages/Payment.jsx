@@ -14,6 +14,7 @@ const PaymentPage = () => {
     const location = useLocation();
     const { state } = location;
     const { order } = state;
+    console.log(order)
     const [paymentMethod, setPaymentMethod] = useState('');
     const { addOrder } = useOrder();
     const { removeFromCart } = useCart();
