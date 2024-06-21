@@ -67,8 +67,9 @@ const OrderDetail = () => {
                                             </Link>
                                         </td>
                                         <td className="py-3 px-4 border-b border-gray-300 text-[15px]">
-                                            {product.category.name === "Dây chuyền" ? product.size + "cm" : product.size + "mm"}
-                                        </td>
+                                            {["Dây chuyền", "Nhẫn", "Vòng tay"].includes(product.category.name) ?
+                                                (product.category.name === "Dây chuyền" ? product.size + "cm" : product.size + "mm")
+                                                : "N/A"}                                        </td>
                                         <td className="py-3 px-4 border-b border-gray-300"><Price price={product.unitPrice} /></td>
                                         <td className="py-3 px-4 border-b border-gray-300">{product.quantity}</td>
                                         <td className="py-3 px-4 border-b border-gray-300"><Price price={product.unitPrice * product.quantity} /></td>

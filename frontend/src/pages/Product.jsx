@@ -71,10 +71,10 @@ export default function Product() {
 
         const order = {
             userId: user.id,
-            deliveryFee: 50000,
             discountPrice: 0,
             totalPrice: product.costPrice * quantity,
             createdAt: new Date().toISOString(),
+            deliveryFee: product.costPrice * quantity > 50000000 ? 0 : 50000,
             customerName: `${user.lastName} ${user.firstName}`,
             shippingAddress: user.address,
             phoneNumber: user.phoneNumber,
@@ -130,7 +130,7 @@ export default function Product() {
                             <div className="flex">
                                 <p className="">Vận chuyển:</p>
                                 <i className="ri-truck-fill text-accent ml-8 mr-2"></i>
-                                <span className="text-black">Miễn phí vận chuyển</span>
+                                <span className="text-black">Miễn phí với hóa đơn trên 50.000.000đ</span>
                             </div>
                             <div className="flex">
                                 <p className="">Vận chuyển tới:</p>

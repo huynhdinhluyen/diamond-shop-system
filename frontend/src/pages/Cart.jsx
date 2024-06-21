@@ -6,7 +6,6 @@ import Price from "../components/Price";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { addOrder } from '../service/orderService';
 
 export default function Cart() {
     const { cart, getProductFromCart, changeQuantity, removeFromCart } = useCart();
@@ -63,7 +62,6 @@ export default function Cart() {
                     text: "Sản phẩm đã được xóa",
                     icon: "success",
                 });
-                window.location.reload();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 Swal.fire({
                     title: "Đã hủy",
@@ -84,6 +82,35 @@ export default function Cart() {
         });
     };
 
+    const handleRemoveSelected = () => {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa các sản phẩm đã chọn khỏi giỏ hàng không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy",
+            cancelButtonColor: "#d33",
+            confirmButtonColor: "#3085d6",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                selectedItems.forEach(productId => removeFromCart(productId));
+                Swal.fire({
+                    title: "Thành công!",
+                    text: "Các sản phẩm đã được xóa",
+                    icon: "success",
+                });
+                setSelectedItems([]);
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: "Đã hủy",
+                    text: "Sản phẩm chưa xóa",
+                    icon: "error",
+                });
+            }
+        });
+    };
+
     const handleCheckout = async () => {
         if (selectedItems.length === 0) {
             toast.error("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
@@ -93,14 +120,14 @@ export default function Cart() {
         const orderItems = cart.items.filter((item) => selectedItems.includes(item.productId));
         const order = {
             userId: user.id,
-            transaction_id: null, // Transaction ID sẽ được cập nhật sau khi chọn phương thức thanh toán
-            deliveryFee: 50000, // Ví dụ phí giao hàng
-            discountPrice: 0, // Ví dụ giá giảm
+            transaction_id: null,
+            deliveryFee: 50000,
+            discountPrice: 0,
             totalPrice: orderItems.reduce((total, item) => total + item.price * item.quantity, 0),
             createdAt: new Date().toISOString(),
-            customerName: user.lastName + " " + user.firstName, // Giả sử user object có field name
-            shippingAddress: user.address, // Giả sử user object có field address
-            phoneNumber: user.phoneNumber, // Giả sử user object có field phone
+            customerName: user.lastName + " " + user.firstName,
+            shippingAddress: user.address,
+            phoneNumber: user.phoneNumber,
             orderDetails: orderItems.map((item) => ({
                 productId: item.productId,
                 quantity: item.quantity,
@@ -108,17 +135,7 @@ export default function Cart() {
                 size: item.size
             }))
         };
-
-        try {
-            const newOrder = await addOrder(order);
-            if (newOrder) {
-                orderItems.forEach(item => removeFromCart(item.productId));
-                navigate("/payment", { state: { order } });
-            }
-        } catch (error) {
-            console.error("Failed to place order:", error);
-            toast.error("Đặt hàng không thành công, vui lòng thử lại.");
-        }
+        navigate("/payment", { state: { order } });
     };
 
     return (
@@ -156,7 +173,7 @@ export default function Cart() {
                                                 className="w-16 text-center border rounded"
                                             />
                                         </div>
-                                        <button className="px-4 py-2 text-white rounded-xl bg-accent hover:bg-accent-secondary cursor-pointer" onClick={() => handleRemove(item.productId)}>Xóa</button>
+                                        <button className="px-4 py-2 text-white rounded-xl bg-red-500 hover:bg-red-700 cursor-pointer" onClick={() => handleRemove(item.productId)}>Xóa</button>
                                     </div>
                                 </li>
                             ))}
@@ -174,12 +191,20 @@ export default function Cart() {
                                     </span>
                                 </div>
                             </div>
-                            <button
-                                onClick={handleCheckout}
-                                className="btn-accent p-3 rounded-lg text-white bg-primary hover:bg-primary-dark transition"
-                            >
-                                Tiến hành đặt hàng
-                            </button>
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={handleCheckout}
+                                    className="btn-accent p-3 rounded-lg text-white bg-primary hover:bg-primary-dark transition"
+                                >
+                                    Tiến hành đặt hàng
+                                </button>
+                                <button
+                                    onClick={handleRemoveSelected}
+                                    className="btn-danger p-3 rounded-lg text-white bg-red-500 hover:bg-red-700 transition"
+                                >
+                                    Xóa sản phẩm khỏi giỏ hàng
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )
