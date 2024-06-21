@@ -24,6 +24,7 @@ import {
   InputAdornment,
   OutlinedInput,
   DialogContentText,
+  TableSortLabel,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -41,6 +42,7 @@ import {
   getUsers,
   updateUser,
 } from "../service/userService";
+import { highlightText } from "../utils/highlightText";
 
 const roleOptions = [
   { value: "ADMIN", label: "Quản trị viên" },
@@ -79,6 +81,8 @@ export default function AdminUserManagement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -175,6 +179,28 @@ export default function AdminUserManagement() {
     }
   };
 
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    const aValue = a[sortBy];
+    const bValue = b[sortBy];
+
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortOrder === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
@@ -213,38 +239,97 @@ export default function AdminUserManagement() {
           Error loading data: {error.message}
         </Typography>
       ) : (
-        <TableContainer component={Paper} className="!mt-4">
-          <Table>
+        <TableContainer
+          component={Paper}
+          className="mt-4 max-h-[500px] overflow-y-auto"
+        >
+          <Table stickyHeader>
             <TableHead>
-              <TableRow>
-                <TableCell className="!text-center">ID</TableCell>
-                <TableCell className="!text-center">Username</TableCell>
-                <TableCell className="!text-center">Email</TableCell>
-                <TableCell className="!text-center">Số điện thoại</TableCell>
-                <TableCell className="!text-center">Họ</TableCell>
-                <TableCell className="!text-center">Tên</TableCell>
-                <TableCell className="!text-center">Vai trò</TableCell>
-                <TableCell className="!text-center">Hành động</TableCell>
+              <TableRow className="sticky top-0 z-10 bg-white">
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "id"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("id")}
+                  >
+                    ID
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "username"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("username")}
+                  >
+                    Username
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "email"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("email")}
+                  >
+                    Email
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "phoneNumber"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("phoneNumber")}
+                  >
+                    Số điện thoại
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "lastName"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("lastName")}
+                  >
+                    Họ
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "firstName"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("firstName")}
+                  >
+                    Tên
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "role"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("role")}
+                  >
+                    Vai trò
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers.map((user) => (
+              {sortedUsers.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell className="!text-center">{user.id}</TableCell>
-                  <TableCell className="!text-center">
-                    {user.username}
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>
+                    {highlightText(user.username, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">{user.email}</TableCell>
-                  <TableCell className="!text-center">
-                    {user.phoneNumber}
+                  <TableCell>{highlightText(user.email, searchTerm)}</TableCell>
+                  <TableCell>
+                    {highlightText(user.phoneNumber, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {user.lastName}
+                  <TableCell>
+                    {highlightText(user.lastName, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">
-                    {user.firstName}
+                  <TableCell>
+                    {highlightText(user.firstName, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-center">{user.role}</TableCell>
+                  <TableCell>{highlightText(user.role, searchTerm)}</TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <IconButton
                       color="primary"
