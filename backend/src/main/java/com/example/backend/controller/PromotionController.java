@@ -1,12 +1,11 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.PromotionDTO;
+import com.example.backend.entity.Promotion;
 import com.example.backend.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,11 @@ public class PromotionController {
     @GetMapping
     public ResponseEntity<List<PromotionDTO>> getAllPromotions(){
         return ResponseEntity.ok(promotionService.getAllPromotions());
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<PromotionDTO> createPromotion(@RequestBody PromotionDTO promotionDTO) {
+        PromotionDTO createdPromotion = promotionService.addPromotion(promotionDTO);
+        return ResponseEntity.ok(createdPromotion);
     }
 }
