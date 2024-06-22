@@ -81,7 +81,6 @@ public class ProductMapper {
             productDiamonds.add(new ProductDiamond(product, auxiliaryDiamond, false));
         }
         product.setProductDiamonds(productDiamonds);
-
         return product;
     }
 
