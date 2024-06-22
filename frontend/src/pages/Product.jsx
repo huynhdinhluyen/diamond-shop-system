@@ -72,7 +72,7 @@ export default function Product() {
         const order = {
             userId: user.id,
             discountPrice: 0,
-            totalPrice: product.costPrice * quantity,
+            totalPrice: product.salePrice * quantity,
             createdAt: new Date().toISOString(),
             deliveryFee: product.costPrice * quantity > 50000000 ? 0 : 50000,
             customerName: `${user.lastName} ${user.firstName}`,
@@ -82,7 +82,7 @@ export default function Product() {
                 {
                     productId: product.id,
                     quantity: quantity,
-                    unitPrice: product.costPrice,
+                    unitPrice: product.salePrice,
                     size: selectedSize?.name || "N/A",
                 }
             ]
@@ -111,7 +111,7 @@ export default function Product() {
         return sizeGuides[category.toLowerCase()] || null;
     };
 
-
+    console.log(product)
     return (
         <div className="mt-10">
             {!product ? (
@@ -125,7 +125,7 @@ export default function Product() {
                         <div className="flex flex-col gap-y-3 ml-4">
                             <h3 className="h3">{product.name}</h3>
                             <h3 className="h3 text-accent">
-                                <Price price={product.costPrice} />
+                                <Price price={product.salePrice} />
                             </h3>
                             <div className="flex">
                                 <p className="">Vận chuyển:</p>

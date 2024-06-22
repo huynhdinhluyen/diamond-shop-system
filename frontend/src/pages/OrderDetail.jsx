@@ -16,15 +16,28 @@ const OrderDetail = () => {
             try {
                 const fetchedOrder = await getOrderById(orderId);
                 setOrder(fetchedOrder);
-                const products = await getProductFromOrder(orderId);
-                setOrderDetails(products);
             } catch (error) {
                 console.error('Failed to fetch order details:', error);
             }
         };
 
         fetchOrder();
-    }, [orderId, getProductFromOrder]);
+    }, [orderId]);
+
+    useEffect(() => {
+        if (order) {
+            const fetchProducts = async () => {
+                try {
+                    const products = await getProductFromOrder(order);
+                    setOrderDetails(products);
+                } catch (error) {
+                    console.error('Failed to fetch product details:', error);
+                }
+            };
+
+            fetchProducts();
+        }
+    }, [order, getProductFromOrder]);
 
     if (!order) {
         return <div>Loading...</div>;
@@ -101,24 +114,24 @@ const OrderDetail = () => {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <div className='flex justify-between'>
-                                <h4 className="font-semibold">Hình thức giao hàng</h4>
+                            <div className='flex justify-between mb-3'>
+                                <h4 className="font-semibold">Hình thức giao hàng:</h4>
                                 <p>Giao hàng tận nơi: <span className="font-semibold">{order.shippingAddress}</span></p>
                             </div>
-                            <div className='flex justify-between'>
-                                <h4 className="font-semibold">Phương thức thanh toán</h4>
+                            <div className='flex justify-between mb-3'>
+                                <h4 className="font-semibold">Phương thức thanh toán:</h4>
                                 <div>
                                     {transactionId === 1 ? <p>Trả tiền mặt sau khi nhận hàng. Vui lòng thanh toán <span className='text-accent font-semibold'>{<Price price={totalPayment} />}</span> sau khi nhận hàng.</p> : <p>Chuyển khoản</p>}
                                 </div>
                             </div>
-                        </div>
-                        <div className='flex justify-between'>
-                            <h4 className="font-semibold">Trạng thái đơn hàng:</h4>
-                            {orderStatus == "PENDING" && (<p className='px-3 py-2 bg-accent text-white'>Đã nhận được đơn hàng</p>)}
-                            {orderStatus == "PROCESSING" && (<p className='px-3 py-2 bg-accent text-white'>Đang xử lý</p>)}
-                            {orderStatus == "SHIPPED" && (<p className='px-3 py-2 bg-accent text-white'>Đã giao hàng cho đơn vị vận chuyển</p>)}
-                            {orderStatus == "DELIVERED" && (<p className='px-3 py-2 bg-accent text-white'>Đơn hàng đã được giao thành công</p>)}
-                            {orderStatus == "CANCELLED" && (<p className='px-3 py-2 bg-accent text-white'>Đơn hàng đã hủy</p>)}
+                            <div className='flex justify-between'>
+                                <h4 className="font-semibold">Trạng thái đơn hàng:</h4>
+                                {orderStatus == "PENDING" && (<p className='px-3 py-2 bg-accent text-white'>Đã nhận được đơn hàng</p>)}
+                                {orderStatus == "PROCESSING" && (<p className='px-3 py-2 bg-accent text-white'>Đang xử lý</p>)}
+                                {orderStatus == "SHIPPED" && (<p className='px-3 py-2 bg-accent text-white'>Đã giao hàng cho đơn vị vận chuyển</p>)}
+                                {orderStatus == "DELIVERED" && (<p className='px-3 py-2 bg-accent text-white'>Đơn hàng đã được giao thành công</p>)}
+                                {orderStatus == "CANCELLED" && (<p className='px-3 py-2 bg-accent text-white'>Đơn hàng đã hủy</p>)}
+                            </div>
                         </div>
                     </div>
                 </div>
