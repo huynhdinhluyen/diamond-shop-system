@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Price from "../components/Price"
@@ -23,7 +24,14 @@ function ProductCard({ product }) {
               {product.name}
             </h3>
             <p className="mt-1 text-lg font-semibold text-red-500">
-              <Price price={product.salePrice} />
+              {product.discountPrice > 0 ?
+                <div className="flex gap-x-10">
+                  <Price price={product.discountPrice} />
+                  <div className="text-gray-500 text-[14px] line-through">
+                    <Price price={product.salePrice} />
+                  </div>
+                </div>
+                : <Price price={product.salePrice} />}
             </p>
           </div>
         </div>

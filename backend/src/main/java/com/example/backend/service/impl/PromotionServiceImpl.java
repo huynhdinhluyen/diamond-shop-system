@@ -8,6 +8,7 @@ import com.example.backend.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -20,5 +21,12 @@ public class PromotionServiceImpl implements PromotionService {
     public List<PromotionDTO> getAllPromotions() {
         List<Promotion> promotions = promotionRepository.findAll();
         return promotionMapper.toDtoList(promotions);
+    }
+
+    @Override
+    public PromotionDTO addPromotion(PromotionDTO promotionDTO) {
+        Promotion promotion = promotionMapper.toEntity(promotionDTO);
+        Promotion savedPromotion = promotionRepository.save(promotion);
+        return promotionMapper.toDto(savedPromotion);
     }
 }

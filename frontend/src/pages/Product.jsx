@@ -23,7 +23,7 @@ export default function Product() {
     useEffect(() => {
         getProductById(productId).then(product => {
             setProduct(product);
-
+            console.log(product)
             if (product && product.category && product.category.id && !["kim cương viên", "bông tai", "hoa tai"].includes(product.category.name.toLowerCase())) {
                 getSizesByCategory(product.category.id).then(setSizes);
             }
@@ -72,7 +72,7 @@ export default function Product() {
         const order = {
             userId: user.id,
             discountPrice: 0,
-            totalPrice: product.salePrice * quantity,
+            totalPrice: product.discountPrice > 0 ? product.discountPrice * quantity : product.salePrice * quantity,
             createdAt: new Date().toISOString(),
             deliveryFee: product.costPrice * quantity > 50000000 ? 0 : 50000,
             customerName: `${user.lastName} ${user.firstName}`,
@@ -82,7 +82,7 @@ export default function Product() {
                 {
                     productId: product.id,
                     quantity: quantity,
-                    unitPrice: product.salePrice,
+                    unitPrice: product.discountPrice > 0 ? product.discountPrice : product.salePrice,
                     size: selectedSize?.name || "N/A",
                 }
             ]
@@ -125,7 +125,14 @@ export default function Product() {
                         <div className="flex flex-col gap-y-3 ml-4">
                             <h3 className="h3">{product.name}</h3>
                             <h3 className="h3 text-accent">
-                                <Price price={product.salePrice} />
+                                {product.discountPrice > 0 ?
+                                    <div className="flex gap-x-10">
+                                        <Price price={product.discountPrice} />
+                                        <div className="text-gray-500 text-[20px] line-through">
+                                            <Price price={product.salePrice} />
+                                        </div>
+                                    </div>
+                                    : <Price price={product.salePrice} />}
                             </h3>
                             <div className="flex">
                                 <p className="">Vận chuyển:</p>
