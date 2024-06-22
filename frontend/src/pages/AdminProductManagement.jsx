@@ -22,7 +22,6 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  OutlinedInput,
   DialogContentText,
   TableSortLabel,
 } from "@mui/material";
@@ -70,11 +69,11 @@ const productSchema = yup.object({
     .shape({
       id: yup.number().required("Vỏ kim cương không được để trống"),
     }),
-  promotion: yup.object().shape({
-    id: yup.number().required("Khuyến mãi không được để trống"),
+  promotion: yup.object().nullable(),
+  mainDiamond: yup.object().nullable().shape({
+    id: yup.number().required("Kim cương chính không được để trống"),
   }),
-  mainDiamond: yup.number().nullable(),
-  auxiliaryDiamond: yup.number().nullable(),
+  auxiliaryDiamond: yup.object().nullable(),
   category: yup
     .object()
     .nullable()
@@ -114,8 +113,8 @@ export default function AdminProductManagement() {
     defaultValues: {
       diamondCasing: { id: "" },
       promotion: { id: "" },
-      mainDiamond: null,
-      auxiliaryDiamond: null,
+      mainDiamond: { id: "" },
+      auxiliaryDiamond: { id: "" },
     },
   });
 
@@ -165,8 +164,8 @@ export default function AdminProductManagement() {
       stockQuantity: product?.stockQuantity || 0,
       diamondCasing: { id: product?.diamondCasing?.id || "" },
       promotion: { id: product?.promotion?.id || "" },
-      mainDiamond: product?.mainDiamond?.id || "",
-      auxiliaryDiamond: product?.auxiliaryDiamond?.id || "",
+      mainDiamond: { id: product?.mainDiamond?.id || "" },
+      auxiliaryDiamond: { id: product?.auxiliaryDiamond?.id || "" },
       category: { id: product?.category?.id || "" },
     });
     setImageName(product?.imageUrl || "");
@@ -191,16 +190,14 @@ export default function AdminProductManagement() {
   const handleFormSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const mainDiamond = data.mainDiamond ? { id: data.mainDiamond } : null;
-      const auxiliaryDiamond = data.auxiliaryDiamond
-        ? { id: data.auxiliaryDiamond }
-        : null;
       const productData = {
         ...data,
-        mainDiamond,
-        auxiliaryDiamond,
+        mainDiamond: data.mainDiamond?.id ? data.mainDiamond : null,
+        auxiliaryDiamond: data.auxiliaryDiamond?.id
+          ? data.auxiliaryDiamond
+          : null,
         categoryId: data.category?.id,
-        promotion: data.promotion,
+        promotion: data.promotion?.id ? data.promotion : null,
       };
       if (imageFile) {
         const storageRef = ref(storage, `product_images/${imageFile.name}`);
@@ -355,7 +352,7 @@ export default function AdminProductManagement() {
                     direction={sortOrder}
                     onClick={() => handleSort("laborCost")}
                   >
-                    Chi phí gia công 
+                    Chi phí gia công
                   </TableSortLabel>
                 </TableCell>
                 <TableCell className="!text-right">
@@ -520,71 +517,60 @@ export default function AdminProductManagement() {
               </FormHelperText>
             </FormControl>
 
-            <FormControl fullWidth>
-              <InputLabel id="main-diamond-select-label">
-                Kim cương chính
-              </InputLabel>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Kim cương chính</InputLabel>
               <Controller
-                name="mainDiamond"
+                name="mainDiamond.id"
                 control={control}
                 defaultValue={selectedProduct?.mainDiamond?.id || ""}
                 render={({ field }) => (
                   <Select
-                    labelId="main-diamond-select-label"
-                    id="main-diamond-select"
                     {...field}
-                    value={field.value || ""}
-                    input={<OutlinedInput label="Kim cương chính" />}
-                    renderValue={(selected) => {
-                      const diamond = diamonds.find((d) => d.id === selected);
-                      return diamond
-                        ? `${diamond.color} - ${diamond.size} mm - ${diamond.caratWeight} carat - ${diamond.clarity} - ${diamond.cutType}`
-                        : "";
-                    }}
+                    label="Kim cương chính"
+                    error={!!errors.mainDiamond}
                   >
                     <MenuItem value="">None</MenuItem>
                     {diamonds.map((diamond) => (
                       <MenuItem key={diamond.id} value={diamond.id}>
-                        {`${diamond.color} - ${diamond.size} mm- ${diamond.caratWeight} Carat - ${diamond.clarity} - ${diamond.cutType}`}
+                        {diamond.size} mm- {diamond.color} -{" "}
+                        {diamond.caratWeight} carat - {diamond.clarity} -{" "}
+                        {diamond.cutType}
                       </MenuItem>
                     ))}
                   </Select>
                 )}
               />
+              <FormHelperText error={!!errors.mainDiamond}>
+                {errors?.mainDiamond?.id?.message}
+              </FormHelperText>
             </FormControl>
 
-            {/* Auxiliary Diamonds Dropdown */}
             <FormControl fullWidth margin="normal">
-              <InputLabel id="auxiliary-diamond-select-label">
-                Kim cương phụ
-              </InputLabel>
+              <InputLabel>Kim cương phụ</InputLabel>
               <Controller
-                name="auxiliaryDiamond"
+                name="auxiliaryDiamond.id"
                 control={control}
                 defaultValue={selectedProduct?.auxiliaryDiamond?.id || ""}
                 render={({ field }) => (
                   <Select
-                    labelId="auxiliary-diamond-label"
-                    id="auxiliary-diamonds-select"
                     {...field}
-                    value={field.value || ""}
-                    input={<OutlinedInput label="Kim cương phụ" />}
-                    renderValue={(selected) => {
-                      const diamond = diamonds.find((d) => d.id === selected);
-                      return diamond
-                        ? `${diamond.color} - ${diamond.size} mm - ${diamond.caratWeight} carat - ${diamond.clarity} - ${diamond.cutType}`
-                        : "";
-                    }}
+                    label="Kim cương phụ"
+                    error={!!errors.auxiliaryDiamond}
                   >
                     <MenuItem value="">None</MenuItem>
                     {diamonds.map((diamond) => (
                       <MenuItem key={diamond.id} value={diamond.id}>
-                        {`${diamond.color} - ${diamond.size} mm - ${diamond.caratWeight} Carat - ${diamond.clarity} - ${diamond.cutType}`}
+                        {diamond.size} mm- {diamond.color} -{" "}
+                        {diamond.caratWeight} carat - {diamond.clarity} -{" "}
+                        {diamond.cutType}
                       </MenuItem>
                     ))}
                   </Select>
                 )}
               />
+              <FormHelperText error={!!errors.auxiliaryDiamond}>
+                {errors?.auxiliaryDiamond?.id?.message}
+              </FormHelperText>
             </FormControl>
 
             <FormControl fullWidth margin="normal">
