@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,6 +110,10 @@ public class ProductMapper {
         if (productDTO.getPromotion() != null) {
             Promotion selectedPromotion = promotionRepository.findById(productDTO.getPromotion().getId())
                     .orElseThrow(() -> new RuntimeException("Promotion not found"));
+            LocalDate currentDate = LocalDate.now();
+            if (currentDate.isBefore(selectedPromotion.getStartDate()) || currentDate.isAfter(selectedPromotion.getEndDate())) {
+                throw new RuntimeException("Promotion not updated: current date is outside the promotion's valid date range");
+            }
             BigDecimal discountRate = selectedPromotion.getDiscountRate();
             if (productDTO.getProfitMargin().compareTo(discountRate) >= 0) {
                 product.setPromotion(selectedPromotion);
@@ -142,7 +147,7 @@ public class ProductMapper {
             throw new IllegalArgumentException("Original price cannot be null");
         }
         if (discountRate == null) {
-            return originalPrice; // No discount applied if discount rate is null
+            return originalPrice;
         }
 
         BigDecimal discount = originalPrice.multiply(discountRate);
