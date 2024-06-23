@@ -8,6 +8,7 @@ import { useAuth } from "../hooks/useAuth";
 import { getProductById } from "../service/productService";
 import { getSizesByCategory } from "../service/sizeService";
 import SimilarProduct from "../components/SimilarProduct";
+import { toast } from "react-toastify";
 
 export default function Product() {
     const { user } = useAuth();
@@ -23,7 +24,6 @@ export default function Product() {
     useEffect(() => {
         getProductById(productId).then(product => {
             setProduct(product);
-            console.log(product)
             if (product && product.category && product.category.id && !["kim cương viên", "bông tai", "hoa tai"].includes(product.category.name.toLowerCase())) {
                 getSizesByCategory(product.category.id).then(setSizes);
             }
@@ -33,6 +33,10 @@ export default function Product() {
     }, [productId]);
 
     const handleAddToCart = () => {
+        if (user == null) {
+            toast.error("Đăng nhập trước khi thêm vào giỏ hàng!");
+            return;
+        }
         const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
 
         if (!isSizeNotRequiredCategory && !selectedSize) {
@@ -62,6 +66,10 @@ export default function Product() {
     };
 
     const handleBuyNow = () => {
+        if (user == null) {
+            toast.error("Đăng nhập trước khi đặt hàng!");
+            return;
+        }
         const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
 
         if (!isSizeNotRequiredCategory && !selectedSize) {
