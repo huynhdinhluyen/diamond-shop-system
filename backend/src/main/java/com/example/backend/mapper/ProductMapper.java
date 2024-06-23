@@ -107,6 +107,7 @@ public class ProductMapper {
         if (productDTO.getDiamondCasing() != null) {
             product.setDiamondCasing(diamondCasingMapper.toEntity(productDTO.getDiamondCasing()));
         }
+
         if (productDTO.getPromotion() != null) {
             Promotion selectedPromotion = promotionRepository.findById(productDTO.getPromotion().getId())
                     .orElseThrow(() -> new RuntimeException("Promotion not found"));
@@ -120,7 +121,10 @@ public class ProductMapper {
             } else {
                 throw new RuntimeException("Tỉ suất lợi nhuận phải lớn hơn tỉ lệ chiết khấu");
             }
+        } else {
+            product.setPromotion(null);
         }
+
         if (productDTO.getCategory() != null) {
             product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
         }
