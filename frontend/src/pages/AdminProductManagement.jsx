@@ -578,12 +578,14 @@ export default function AdminProductManagement() {
               <Controller
                 name="promotion.id"
                 control={control}
-                defaultValue={selectedProduct?.promotion?.id || ""}
+                defaultValue={selectedProduct?.promotion?.id || null}
                 render={({ field }) => (
                   <Select
                     {...field}
                     label="Khuyến mãi"
                     error={!!errors.promotion}
+                    onChange={(event) => field.onChange(event.target.value === "" ? null : event.target.value)}
+                    value={field.value || ""}
                   >
                     <MenuItem value="">None</MenuItem>
                     {promotions.map((promotion) => (
