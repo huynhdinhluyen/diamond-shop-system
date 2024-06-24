@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -99,17 +100,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDTO addOrder(OrderDTO orderDTO) {
         User user = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Order order = new Order();
         order.setUser(user);
-        if (orderDTO.getTransaction() != null) {
-            Transaction transaction = transactionRepository.findById(orderDTO.getTransaction())
-                    .orElseThrow(() -> new RuntimeException("Transaction not found"));
-            order.setTransaction(transaction);
-        }
+
+        // Set order properties
         order.setDeliveryFee(orderDTO.getDeliveryFee());
         order.setDiscountPrice(orderDTO.getDiscountPrice());
         order.setTotalPrice(orderDTO.getTotalPrice());
@@ -133,6 +132,7 @@ public class OrderServiceImpl implements OrderService {
             }
             product.setStockQuantity(product.getStockQuantity() - detailDTO.getQuantity());
             productRepository.save(product);
+
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
             orderDetail.setProductId(product.getId());
@@ -143,7 +143,22 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setOrderDetails(orderDetails);
 
+        // Save order first to generate an ID
         Order savedOrder = orderRepository.save(order);
+
+        // Handle transaction
+        if (orderDTO.getTransaction() != null) {
+            TransactionDTO transactionDTO = orderDTO.getTransaction();
+            Transaction transaction = new Transaction();
+            transaction.setPaymentMethod(transactionDTO.getPaymentMethod());
+            transaction.setTransactionDate(Instant.now());
+            transaction.setTransactionAmount(transactionDTO.getTransactionAmount());
+            transaction.setStatus(transactionDTO.getStatus()); // Use the status provided by frontend
+            Transaction savedTransaction = transactionRepository.save(transaction);
+            savedOrder.setTransaction(savedTransaction);
+        }
+
+        savedOrder = orderRepository.save(savedOrder);
         return convertToDto(savedOrder);
     }
 
@@ -208,7 +223,18 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
         orderDTO.setUserId(order.getUser().getId());
-        orderDTO.setTransaction(order.getTransaction() != null ? order.getTransaction().getId() : null);
+
+        // Set transaction information
+        if (order.getTransaction() != null) {
+            TransactionDTO transactionDTO = new TransactionDTO();
+            transactionDTO.setId(order.getTransaction().getId());
+            transactionDTO.setPaymentMethod(order.getTransaction().getPaymentMethod());
+            transactionDTO.setTransactionDate(order.getTransaction().getTransactionDate());
+            transactionDTO.setTransactionAmount(order.getTransaction().getTransactionAmount());
+            transactionDTO.setStatus(order.getTransaction().getStatus());
+            orderDTO.setTransaction(transactionDTO);
+        }
+
         orderDTO.setDeliveryFee(order.getDeliveryFee());
         orderDTO.setDiscountPrice(order.getDiscountPrice());
         orderDTO.setTotalPrice(order.getTotalPrice());
@@ -217,10 +243,27 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setShippingAddress(order.getShippingAddress());
         orderDTO.setPhoneNumber(order.getPhoneNumber());
         orderDTO.setNote(order.getNote());
-        orderDTO.setStatus(convertOrderStatusToDTO(order.getStatus()));
-        List<OrderDetailDTO> orderDetailDTOs = order.getOrderDetails().stream().
-                map(this::convertToDto).collect(Collectors.toList());
+
+        // Set order status information
+        OrderStatusDTO statusDTO = new OrderStatusDTO();
+        statusDTO.setId(order.getStatus().getId());
+        statusDTO.setName(order.getStatus().getName());
+        orderDTO.setStatus(statusDTO);
+
+        // Convert order details to DTOs
+        List<OrderDetailDTO> orderDetailDTOs = order.getOrderDetails().stream()
+                .map(detail -> {
+                    OrderDetailDTO detailDTO = new OrderDetailDTO();
+                    detailDTO.setProductId(detail.getProductId());
+                    detailDTO.setQuantity(detail.getQuantity());
+                    detailDTO.setUnitPrice(detail.getUnitPrice());
+                    detailDTO.setSize(detail.getSize());
+                    return detailDTO;
+                })
+                .collect(Collectors.toList());
+
         orderDTO.setOrderDetails(orderDetailDTOs);
+
         return orderDTO;
     }
 

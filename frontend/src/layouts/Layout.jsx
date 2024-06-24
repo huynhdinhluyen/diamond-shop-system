@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Newsletter from "../components/Newsletter";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PhoneButton from "../components/PhoneButton";
 
 export default function Layout({ children }) {
   return (
@@ -14,6 +15,7 @@ export default function Layout({ children }) {
       <div className="lg:hidden absolute sm:flex bottom-0">
         <ShoppingCartIcon />
       </div>
+      <PhoneButton />
     </div>
   );
 }
