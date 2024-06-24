@@ -51,7 +51,7 @@ export default function ProductCategory() {
                       alt={category.name}
                       className="w-44 h-44 object-cover rounded-full transition-transform duration-300 hover:scale-105 mx-auto"
                     />
-                    <p className="mt-4 text-xl">{category.name}</p>
+                    <p className="mt-4 text-md font-semibold">{category.name}</p>
                   </Link>
                 </div>
               </Grow>

@@ -14,7 +14,6 @@ const PaymentPage = () => {
     const location = useLocation();
     const { state } = location;
     const { order } = state;
-    console.log(order)
     const [paymentMethod, setPaymentMethod] = useState('');
     const { addOrder } = useOrder();
     const { removeFromCart } = useCart();
@@ -22,6 +21,11 @@ const PaymentPage = () => {
     const [note, setNote] = useState('');
     const [error, setError] = useState('');
     const [exchangeRate, setExchangeRate] = useState(null);
+    const [paypalPaymentCompleted, setPaypalPaymentCompleted] = useState(false);
+    const totalAmount = products.reduce((total, product) => total + product.unitPrice * product.quantity, 0);
+    const shippingFee = totalAmount >= 50000000 ? 0 : 50000;
+    const totalPaymentVND = totalAmount + shippingFee - order.discountPrice;
+    const totalPaymentUSD = (totalPaymentVND / exchangeRate).toFixed(2);
     const [orderDetails, setOrderDetails] = useState({
         customerName: order.customerName,
         phoneNumber: order.phoneNumber,
@@ -58,20 +62,29 @@ const PaymentPage = () => {
         fetchExchangeRate();
     }, []);
 
-    const handleOrder = async () => {
-        const id = paymentMethod === 'Chuyển khoản' ? 2 : 1;
+    const handleOrder = async (transactionStatus = 'INCOMPLETE') => {
         if (paymentMethod === '' || paymentMethod === 'Chọn phương thức thanh toán của bạn') {
             setError('Vui lòng chọn phương thức thanh toán.');
             return;
         }
+
+        if (paymentMethod === 'Chuyển khoản' && !paypalPaymentCompleted) {
+            setError('Vui lòng hoàn tất chuyển khoản qua PayPal trước khi đặt hàng.');
+            return;
+        }
+
         try {
             const newOrder = {
                 ...order,
                 ...orderDetails,
-                transaction: id,
+                transaction: {
+                    paymentMethod,
+                    transactionDate: new Date().toISOString(),
+                    transactionAmount: totalPaymentVND,
+                    status: transactionStatus
+                },
                 note,
             };
-            console.log(newOrder);
             const addedOrder = await addOrder(newOrder);
             for (const detail of newOrder.orderDetails) {
                 await removeFromCart(detail.productId);
@@ -93,16 +106,9 @@ const PaymentPage = () => {
     if (products.length === 0) {
         return <div>Loading...</div>;
     }
-
-    const totalAmount = products.reduce((total, product) => total + product.unitPrice * product.quantity, 0);
-    const shippingFee = totalAmount >= 50000000 ? 0 : 50000;
-    const totalPaymentVND = totalAmount + shippingFee - order.discountPrice;
-    const totalPaymentUSD = (totalPaymentVND / exchangeRate).toFixed(2);
-
     //Test paypal: 
     //sb-lmnov31265068@personal.example.com
     //l778,J@)
-
     return (
         <PayPalScriptProvider options={{ "client-id": "AX4x0xZ5zRYc99ovorXk5ouwFOtobLBMYgGR6JaFiB31vvEH2Z2TAk-qUouX_H9y6ligOQpKYPkZzIVH" }}>
             <div className="container mt-10 bg-gray-50 p-5 rounded-xl grid grid-cols-12 gap-4">
@@ -190,7 +196,8 @@ const PaymentPage = () => {
                             onApprove={(data, actions) => {
                                 return actions.order.capture().then((details) => {
                                     toast.success(`Chuyển khoản thành công!`);
-                                    handleOrder();
+                                    setPaypalPaymentCompleted(true);
+                                    handleOrder('COMPLETE');
                                 });
                             }}
                         />
@@ -224,7 +231,7 @@ const PaymentPage = () => {
                             <span><Price price={totalPaymentVND} /></span>
                         </div>
                     </div>
-                    <button onClick={handleOrder} className='btn btn-accent btn-lg my-3 mx-auto w-[75%]'>Đặt hàng</button>
+                    <button onClick={() => handleOrder()} className='btn btn-accent btn-lg my-3 mx-auto w-[75%]'>Đặt hàng</button>
                 </div>
             </div >
         </PayPalScriptProvider>

@@ -22,7 +22,7 @@ const FixedMapComponent = () => {
       center={fixedPosition}
       zoom={13}
       scrollWheelZoom={false}
-      style={{ height: "100vh", width: "100%" }}
+      style={{ height: "100vh", width: "100%", zIndex: "0" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <Marker position={fixedPosition}>
