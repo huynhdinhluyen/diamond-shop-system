@@ -28,8 +28,8 @@ public class Order {
     @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "transaction_id", referencedColumnName = "id")
     private Transaction transaction;
 
     @ColumnDefault("0")

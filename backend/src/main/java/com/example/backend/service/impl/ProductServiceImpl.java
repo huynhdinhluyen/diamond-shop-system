@@ -154,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findAll().stream()
                 .filter(product -> (categoryId == null || product.getCategory().getId().equals(categoryId)) &&
                         (searchQuery == null || product.getName().toLowerCase().contains(searchQuery.toLowerCase())))
-                .collect(Collectors.toList());
+                .toList();
 
         return products.stream()
                 .map(productMapper::toDto)
