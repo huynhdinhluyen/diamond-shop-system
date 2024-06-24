@@ -61,4 +61,13 @@ public class ProductController {
         List<ProductDTO> products = productService.getProductsByCategory(categoryId);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/get-range-price")
+    public List<ProductDTO> getFilteredProducts(
+            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) Long minPrice,
+            @RequestParam(required = false) Long maxPrice) {
+        return productService.getFilteredProducts(categoryId, query, minPrice, maxPrice);
+    }
 }

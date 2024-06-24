@@ -119,7 +119,6 @@ export default function Product() {
         return sizeGuides[category.toLowerCase()] || null;
     };
 
-    console.log(product)
     return (
         <div className="mt-10">
             {!product ? (

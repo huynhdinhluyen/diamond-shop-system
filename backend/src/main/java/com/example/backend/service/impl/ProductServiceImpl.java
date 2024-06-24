@@ -147,4 +147,19 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findByCategoryId(categoryId);
         return products.stream().map(productMapper::toDto).collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public List<ProductDTO> getFilteredProducts(Integer categoryId, String searchQuery, Long minPrice, Long maxPrice) {
+        List<Product> products = productRepository.findAll().stream()
+                .filter(product -> (categoryId == null || product.getCategory().getId().equals(categoryId)) &&
+                        (searchQuery == null || product.getName().toLowerCase().contains(searchQuery.toLowerCase())))
+                .collect(Collectors.toList());
+
+        return products.stream()
+                .map(productMapper::toDto)
+                .filter(productDTO -> (minPrice == null || productDTO.getSalePrice() >= minPrice) &&
+                        (maxPrice == null || productDTO.getSalePrice() <= maxPrice))
+                .collect(Collectors.toList());
+    }
 }
