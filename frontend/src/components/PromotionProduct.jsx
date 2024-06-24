@@ -56,7 +56,6 @@ function PromotionProduct() {
         getProducts()
             .then((data) => {
                 setProducts(data);
-                console.log(products)
             })
             .catch((error) => {
                 setError(error);

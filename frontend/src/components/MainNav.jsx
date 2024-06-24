@@ -41,7 +41,7 @@ export default function MainNav({ pages }) {
           id="search-input"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="outline-none w-[140px] focus:w-[190px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-base transition-all duration-150"
+          className="outline-none w-[140px] focus:w-[190px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-[14px] transition-all duration-150"
         />
       </form>
     </nav>

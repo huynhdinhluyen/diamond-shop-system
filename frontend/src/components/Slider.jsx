@@ -7,12 +7,25 @@ export default function Slider() {
     navigate("/products");
   };
   const sliderData = [
-    { image: "/src/assets/img/slider/swipe-1.jpg" },
-    { image: "/src/assets/img/slider/swipe-2.jpg" },
-    { image: "/src/assets/img/slider/swipe-3.jpg" },
+    {
+      image: "/src/assets/img/slider/swipe-1.jpg",
+      title: "Kim cương đến từ thiên đường",
+      description: "Tạo Nên Những Kỷ Niệm Vĩnh Cửu Với Kim Cương Hoàn Mỹ Và Khám Phá Sự Tinh Tế Và Hoàn Hảo Trong Từng Thiết Kế",
+    },
+    {
+      image: "/src/assets/img/slider/swipe-2.jpg",
+      title: "Sự hoàn hảo trong từng chi tiết",
+      description: "Khám phá sự tinh xảo và vẻ đẹp tuyệt vời của những viên kim cương hoàn hảo nhất.",
+    },
+    {
+      image: "/src/assets/img/slider/swipe-3.jpg",
+      title: "Vẻ đẹp vĩnh cửu",
+      description: "Những thiết kế trang sức mang đến sự sang trọng và đẳng cấp, tạo nên những khoảnh khắc không thể quên.",
+    },
   ];
+
   const items = sliderData.map((data, index) => (
-    <div key={index} className="h-[480px] w-full">
+    <div key={index} className="h-[480px] w-full relative">
       <img
         className="w-full h-full object-cover rounded-md"
         role="presentation"
@@ -20,10 +33,9 @@ export default function Slider() {
         alt=""
       />
       <div className="absolute text-center lg:text-left md:text-center md:justify-center sm:text-center top-[20%] lg:left-[5%]">
-        <h2 className="h2 mb-6 text-white">Kim cương đến từ thiên đường</h2>
-        <p className="mb-[42px] text-white  leading-8">
-          Tạo Nên Những Kỷ Niệm Vĩnh Cửu Với Kim Cương Hoàn Mỹ Và Khám Phá Sự
-          Tinh Tế Và Hoàn Hảo Trong Từng Thiết Kế
+        <h2 className="h2 mb-6 text-white">{data.title}</h2>
+        <p className="mb-[42px] text-white leading-8">
+          {data.description}
         </p>
         <button
           className="btn btn-accent btn-lg w-[250px] mx-auto lg:mx-0"
@@ -34,6 +46,7 @@ export default function Slider() {
       </div>
     </div>
   ));
+
   return (
     <div className="flex lg:mt-6">
       <AliceCarousel

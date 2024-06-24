@@ -67,14 +67,15 @@ function RingProduct() {
     );
 
     const categoryId = filteredProducts.length > 0 ? filteredProducts[0].category.id : null;
+    const categoryName = filteredProducts.length > 0 ? filteredProducts[0].category.name : null;
 
     return (
         <div className="container mx-auto mt-8">
-            <div className="flex items-center justify-between mb-4 mx-2">
-                <h1 className="text-xl text-center font-bold text-nowrap text-accent">
-                    BÔNG TAI
+            <img src="https://cdn-media.glamira.com/media/catalog/category/product_image_top_banner_pearl_earrings_uk.jpg" alt="" className="h-50" />
+            <div className="flex items-center justify-between my-4 text-center">
+                <h1 className="text-xl text-center font-bold text-nowrap text-accent mx-auto">
+                    {categoryName}
                 </h1>
-                <Link to={`/products?category=${categoryId}`} className="underline hover:text-accent transition-all duration-200">Xem thêm</Link>
             </div>
 
             {isLoading ? (
@@ -92,6 +93,9 @@ function RingProduct() {
                             </div>
                         ))}
                     </Slider>
+                    <div className="text-center mt-3">
+                        <Link to={`/products?category=${categoryId}`} className="border-2 py-2 px-3 hover:text-accent transition-all duration-200">Xem thêm</Link>
+                    </div>
                 </div>
             )}
         </div>

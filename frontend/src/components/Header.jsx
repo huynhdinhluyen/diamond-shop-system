@@ -36,7 +36,7 @@ export default function Header() {
   };
 
   return (
-    <header className="py-8 lg:pt-6 ">
+    <header className="py-8 lg:pt-6">
       <div className="container px-[15px] mx-auto relative flex flex-col lg:flex-row lg:justify-between gap-y-4 lg:gap-y-0 ">
         <Logo />
         <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-10 lg:gap-y-0 mx-5">
