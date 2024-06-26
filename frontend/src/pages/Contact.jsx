@@ -116,13 +116,13 @@ export default function Contact() {
               type="text"
               name="user_name"
               placeholder="Họ Tên*"
-              className="p-2 bg-grey placeholder:italic lg:w-[50%] rounded-md outline-none"
+              className="p-2 bg-gray-100 placeholder:italic lg:w-[50%] rounded-md outline-none"
             />
             <input
               type="text"
               name="user_email"
               placeholder="Email*"
-              className="p-2 bg-grey placeholder:italic lg:w-[50%] rounded-md outline-none"
+              className="p-2 bg-gray-100 placeholder:italic lg:w-[50%] rounded-md outline-none"
             />
           </div>
           <div className="flex flex-col gap-y-2 mt-2">
@@ -131,7 +131,7 @@ export default function Contact() {
               name="message"
               rows="4"
               placeholder="Nội dung*"
-              className="p-2 bg-grey placeholder:italic w-full rounded-md outline-none"
+              className="p-2 bg-gray-100 placeholder:italic w-full rounded-md outline-none"
             />
           </div>
           <div className="flex justify-center">

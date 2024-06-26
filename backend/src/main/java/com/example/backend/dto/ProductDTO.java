@@ -24,4 +24,5 @@ public class ProductDTO {
     private DiamondDTO mainDiamond;
     private DiamondDTO auxiliaryDiamond;
     private CategoryDTO category;
+    private BigDecimal discountPrice;
 }

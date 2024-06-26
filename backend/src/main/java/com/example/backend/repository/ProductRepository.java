@@ -29,5 +29,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "LEFT JOIN FETCH pd.diamond d " +
             "WHERE c.id = :categoryId")
     List<Product> findByCategoryId(@Param("categoryId") Integer categoryId);
-
+    @Query("SELECT p FROM Product p WHERE (:categoryId IS NULL OR p.category.id = :categoryId) " +
+            "AND (:searchQuery IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :searchQuery, '%')))")
+    List<Product> findFilteredProducts(@Param("categoryId") Integer categoryId,
+                                       @Param("searchQuery") String searchQuery);
 }

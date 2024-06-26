@@ -28,11 +28,12 @@ export const CartProvider = ({ children }) => {
 
         const combinedCart = cartItems.map(item => {
             const product = products.find(p => p.id === item.productId);
+            console.log(product);
             return {
                 ...item,
                 productName: product?.name,
                 image: product?.imageUrl,
-                price: product?.costPrice,
+                price: product?.discountPrice > 0 ? product?.discountPrice : product.salePrice,
                 stockQuantity: product?.stockQuantity
             };
         });

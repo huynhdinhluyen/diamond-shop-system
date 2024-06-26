@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 body {
-  @apply text-secondary font-primary text-[17px] leading-8;
+  @apply text-secondary font-primary text-[15px] leading-8;
+  font-family: "Poppins", sans-serif;
 }
+
 
 h1,
 h2,
@@ -13,22 +15,23 @@ h4,
 h5,
 h6 {
   @apply text-primary leading-[120%];
+  font-family: "Montserrat", sans-serif;
 }
 
 .h1 {
-  @apply text-[36px] xl:text-[64px] font-semibold;
+  @apply text-[36px] xl:text-[64px] font-normal;
 }
 
 .h2 {
-  @apply text-[30px] xl:text-[44px] font-semibold  tracking-[0.44px];
+  @apply text-[30px] xl:text-[44px] font-normal  tracking-[0.44px];
 }
 
 .h3 {
-  @apply text-[30px] xl:text-[26px] font-semibold;
+  @apply text-[30px] xl:text-[26px] font-normal;
 }
 
 .h4 {
-  @apply text-[20px] xl:text-[20px]  font-semibold;
+  @apply text-[20px] xl:text-[20px]  font-normal;
 }
 
 .btn {
@@ -69,11 +72,34 @@ h6 {
 }
 
 .slick-prev, .slick-next {
-  color: white;
   position: absolute;
   top: 35%;
+  width: 40px; 
+  height: 40px; 
+  border-radius: 100%;
+  border: #f9cab9 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; 
+  cursor: pointer; 
+  font-size: 20px;
 }
 
-.slick-next:before, .slick-prev:before{
-  color: #f55f1e;
+.slick-next{ 
+  right: -5%;
+}
+
+.slick-prev{
+  left: -5%;
+}
+
+.slick-prev:before {
+  content: '<'; /* Thêm biểu tượng mũi tên cho nút trước */
+  color: #f9c4b0; /* Màu của biểu tượng */
+}
+
+.slick-next:before {
+  content: '>'; /* Thêm biểu tượng mũi tên cho nút tiếp theo */
+  color: #f9c4b0; /* Màu của biểu tượng */
 }

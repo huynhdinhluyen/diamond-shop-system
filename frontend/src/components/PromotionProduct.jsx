@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { CircularProgress, Button, TextField } from "@mui/material";
@@ -7,6 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
+
 
 const settings = {
     infinite: true,
@@ -45,7 +47,7 @@ const settings = {
     ]
 };
 
-function RingProduct() {
+function PromotionProduct() {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -62,18 +64,18 @@ function RingProduct() {
     }, []);
 
     const filteredProducts = products.filter((product) =>
-        product.category.name.toLowerCase().includes("vòng tay".toLowerCase())
+        product.discountPrice > 0
     );
 
-    const categoryId = filteredProducts.length > 0 ? filteredProducts[0].category.id : null;
-    const categoryName = filteredProducts.length > 0 ? filteredProducts[0].category.name : null;
+    if (filteredProducts.length === 0) {
+        return null; // Do not render if no discounted products
+    }
 
     return (
         <div className="container mx-auto mt-8">
-            <img src="https://file.hstatic.net/1000381168/collection/baner-lac-tay-1920x820_15cb320cc46c454aa83b2c94b72fbbe5.png" alt="" className="h-50" />
-            <div className="flex items-center justify-between my-4 text-center">
-                <h1 className="text-xl text-center font-bold text-nowrap text-accent mx-auto">
-                    {categoryName}
+            <div className="flex items-center justify-between mb-4 mx-2">
+                <h1 className="text-xl text-center font-bold text-nowrap text-accent">
+                    SẢN PHẨM ĐANG ĐƯỢC GIẢM GIÁ
                 </h1>
             </div>
 
@@ -92,13 +94,10 @@ function RingProduct() {
                             </div>
                         ))}
                     </Slider>
-                    <div className="text-center mt-3">
-                        <Link to={`/products?category=${categoryId}`} className="border-2 py-2 px-3 hover:text-accent transition-all duration-200">Xem thêm</Link>
-                    </div>
                 </div>
             )}
         </div>
     );
 }
 
-export default RingProduct;
+export default PromotionProduct;

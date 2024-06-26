@@ -121,7 +121,7 @@ const OrderDetail = () => {
                             <div className='flex justify-between mb-3'>
                                 <h4 className="font-semibold">Phương thức thanh toán:</h4>
                                 <div>
-                                    {transactionId === 1 ? <p>Trả tiền mặt sau khi nhận hàng. Vui lòng thanh toán <span className='text-accent font-semibold'>{<Price price={totalPayment} />}</span> sau khi nhận hàng.</p> : <p>Chuyển khoản</p>}
+                                    {order.transaction.paymentMethod}
                                 </div>
                             </div>
                             <div className='flex justify-between'>

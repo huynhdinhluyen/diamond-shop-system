@@ -1,11 +1,15 @@
 package com.example.backend.mapper;
+
 import com.example.backend.dto.DiamondDTO;
 import com.example.backend.dto.ProductDTO;
 import com.example.backend.entity.*;
 import com.example.backend.repository.DiamondRepository;
+import com.example.backend.repository.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +26,8 @@ public class ProductMapper {
     private DiamondRepository diamondRepository;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private PromotionRepository promotionRepository;
 
     public ProductDTO toDto(Product product) {
         if (product == null) {
@@ -49,10 +55,17 @@ public class ProductMapper {
 
         productDTO.setCostPrice(calculateCostPrice(product));
         productDTO.setSalePrice(calculateSalePrice(product, productDTO.getCostPrice()));
-
+        if (product.getPromotion() != null && product.getPromotion().getDiscountRate() != null) {
+            BigDecimal discountRate = product.getPromotion().getDiscountRate();
+            BigDecimal originalPrice = BigDecimal.valueOf(productDTO.getSalePrice());
+            BigDecimal discountPrice = calculateDiscountedPrice(originalPrice, discountRate);
+            productDTO.setDiscountPrice(discountPrice);
+        } else {
+            productDTO.setDiscountPrice(BigDecimal.ZERO);
+        }
         return productDTO;
-
     }
+
     public Product toEntity(ProductDTO productDTO) {
         if (productDTO == null) {
             throw new IllegalArgumentException("ProductDTO cannot be null");
@@ -94,9 +107,24 @@ public class ProductMapper {
         if (productDTO.getDiamondCasing() != null) {
             product.setDiamondCasing(diamondCasingMapper.toEntity(productDTO.getDiamondCasing()));
         }
+
         if (productDTO.getPromotion() != null) {
-            product.setPromotion(promotionMapper.toEntity(productDTO.getPromotion()));
+            Promotion selectedPromotion = promotionRepository.findById(productDTO.getPromotion().getId())
+                    .orElseThrow(() -> new RuntimeException("Promotion not found"));
+            LocalDate currentDate = LocalDate.now();
+            if (currentDate.isBefore(selectedPromotion.getStartDate()) || currentDate.isAfter(selectedPromotion.getEndDate())) {
+                throw new RuntimeException("Promotion not updated: current date is outside the promotion's valid date range");
+            }
+            BigDecimal discountRate = selectedPromotion.getDiscountRate();
+            if (productDTO.getProfitMargin().compareTo(discountRate) >= 0) {
+                product.setPromotion(selectedPromotion);
+            } else {
+                throw new RuntimeException("Tỉ suất lợi nhuận phải lớn hơn tỉ lệ chiết khấu");
+            }
+        } else {
+            product.setPromotion(null);
         }
+
         if (productDTO.getCategory() != null) {
             product.setCategory(categoryMapper.toEntity(productDTO.getCategory()));
         }
@@ -118,4 +146,15 @@ public class ProductMapper {
         return salePriceDecimal.longValue();
     }
 
+    private BigDecimal calculateDiscountedPrice(BigDecimal originalPrice, BigDecimal discountRate) {
+        if (originalPrice == null) {
+            throw new IllegalArgumentException("Original price cannot be null");
+        }
+        if (discountRate == null) {
+            return originalPrice;
+        }
+
+        BigDecimal discount = originalPrice.multiply(discountRate);
+        return originalPrice.subtract(discount);
+    }
 }

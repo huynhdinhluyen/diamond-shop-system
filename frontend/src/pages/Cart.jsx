@@ -122,12 +122,13 @@ export default function Cart() {
         }
 
         const orderItems = cart.items.filter((item) => selectedItems.includes(item.productId));
+        const totalPrice = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
         const order = {
             userId: user.id,
             transaction_id: null,
-            deliveryFee: 50000,
             discountPrice: 0,
-            totalPrice: orderItems.reduce((total, item) => total + item.price * item.quantity, 0),
+            totalPrice: totalPrice,
+            deliveryFee: totalPrice >= 50000000 ? 0 : 50000,
             createdAt: new Date().toISOString(),
             customerName: user.lastName + " " + user.firstName,
             shippingAddress: user.address,

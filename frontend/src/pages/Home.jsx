@@ -6,12 +6,14 @@ import RingProduct from "../components/RingProduct";
 import BraceletProduct from "../components/BraceletProduct";
 import NecklaceProduct from "../components/NecklaceProduct";
 import EarringProduct from "../components/EarringProduct";
+import PromotionProduct from "../components/PromotionProduct";
 export default function Home() {
   return (
     <div className="relative">
       <Slider />
       <Benefits />
       <ProductCategory />
+      <PromotionProduct />
       <RingProduct />
       <BraceletProduct />
       <NecklaceProduct />

@@ -63,3 +63,15 @@ export const getProductsByCategory = async (categoryId) => {
     throw error;
   }
 };
+
+export async function getProductsByPriceRange(categoryId, minPrice, maxPrice) {
+  try {
+    const response = await axiosInstance.get(`/api/products/get-range-price`, {
+      params: { categoryId, minPrice, maxPrice }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch products by price range:', error);
+    throw error;
+  }
+}
