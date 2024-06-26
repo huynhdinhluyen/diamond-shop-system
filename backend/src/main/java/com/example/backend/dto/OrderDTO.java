@@ -1,7 +1,5 @@
 package com.example.backend.dto;
 
-import com.example.backend.entity.Transaction;
-import com.example.backend.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,7 +15,7 @@ import java.util.List;
 public class OrderDTO {
     private Integer id;
     private Integer userId;
-    private Integer transaction;
+    private TransactionDTO transaction;
     private Long deliveryFee;
     private Long discountPrice;
     private Long totalPrice;

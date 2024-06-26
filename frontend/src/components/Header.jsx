@@ -52,35 +52,35 @@ export default function Header() {
           </div>
         </div>
 
-        <div className="lg:flex lg:gap-x-10 items-center w-auto bg-grey px-5 hidden rounded-xl ">
+        <div className="lg:flex lg:gap-x-10 items-center w-auto bg-grey px-5 hidden rounded-xl">
           <div className="text-secondary cursor-pointer flex items-center gap-x-2">
             {user ? (
-              <div className="text-nowrap flex items-center gap-x-2 relative group z-20">
+              <div className="text-nowrap flex items-center gap-x-2 relative group">
                 <AccountCircleOutlinedIcon /> {user.lastName} {user.firstName}
-                <div className="absolute z-10000 bg-white hidden group-hover:flex w-[200px] top-12 flex-col rounded-lg text-base ">
+                <div className="shadow-lg absolute bg-white hidden group-hover:flex w-[200px] top-12 flex-col rounded-lg z-50">
                   <Link
                     to="/profile"
-                    className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                    className="p-3 hover:bg-slate-50 hover:text-accent transition-all duration-300"
                   >
                     Hồ sơ
                   </Link>
                   <Link
                     to="/my-order"
-                    className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                    className="p-3  hover:bg-slate-50 hover:text-accent transition-all duration-300"
                   >
                     Đơn hàng của bạn
                   </Link>
                   {user.role === "ADMIN" && (
                     <Link
                       to="/admin"
-                      className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                      className="p-3  hover:bg-slate-50 hover:text-accent transition-all duration-300"
                     >
                       Dashboard
                     </Link>
                   )}
                   <div
                     onClick={handleLogout}
-                    className="p-3 text-base hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                    className="p-3  hover:bg-slate-50 hover:text-accent transition-all duration-300"
                   >
                     Đăng xuất
                   </div>

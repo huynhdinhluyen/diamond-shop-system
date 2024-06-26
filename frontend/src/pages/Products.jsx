@@ -25,9 +25,9 @@ export default function Products() {
 
     const priceRanges = [
         { label: "Dưới 5 triệu", value: "0-5000000" },
-        { label: "5 triệu - 15 triệu", value: "50000000-15000000" },
-        { label: "15 triệu - 30 triệu", value: "15000000-300000000" },
-        { label: "Trên 30 triệu", value: "300000000-" },
+        { label: "5 triệu - 15 triệu", value: "5000000-15000000" },
+        { label: "15 triệu - 30 triệu", value: "15000000-30000000" },
+        { label: "Trên 30 triệu", value: "30000000-" },
     ];
 
     useEffect(() => {
