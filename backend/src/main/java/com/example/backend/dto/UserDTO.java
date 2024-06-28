@@ -25,9 +25,4 @@ public class UserDTO {
     private String accessToken;
     private String refreshToken;
 //    private boolean enabled;
-
-    public UserDTO(Integer id, String username) {
-        this.id = id;
-        this.username = username;
-    }
 }
