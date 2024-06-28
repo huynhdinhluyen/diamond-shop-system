@@ -11,11 +11,11 @@ export default function ManagerLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await logout();
       navigate("/");
-      toast.success("Đăng xuất thành công");
     } catch (error) {
       console.error("Error logging out:", error);
       toast.error("Đăng xuất thất bại. Vui lòng thử lại.");
@@ -31,7 +31,7 @@ export default function ManagerLayout() {
   };
   return user && user.role === "MANAGER" ? (
     <div>
-      <AppBar position="static" className="!bg-[#f55f1e] !shadow-md">
+      <AppBar position="static" className="!bg-slate-800 !shadow-md">
         <Toolbar>
           <IconButton
             edge="start"

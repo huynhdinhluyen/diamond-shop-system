@@ -29,5 +29,18 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
     );
+
     List<Order> findByUser(@Param("user") User user);
+
+    @Query("SELECT DAY(o.createdAt) AS dayOfMonth, SUM(o.totalPrice) AS totalSales " +
+            "FROM Order o " +
+            "JOIN OrderAssignment oa ON o.id = oa.order.id " + // JOIN với OrderAssignment để lọc theo nhân viên
+            "WHERE oa.staff.id = :staffId AND o.status.name = 'DELIVERED' " +
+            "AND o.createdAt BETWEEN :startOfMonth AND :endOfMonth " +
+            "GROUP BY DAY(o.createdAt)")
+    List<Object[]> findMonthlySalesDataByStaff(
+            @Param("staffId") Integer staffId,
+            @Param("startOfMonth") LocalDateTime startOfMonth,
+            @Param("endOfMonth") LocalDateTime endOfMonth
+    );
 }
