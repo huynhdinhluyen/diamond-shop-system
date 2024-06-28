@@ -7,18 +7,21 @@ import "react-toastify/dist/ReactToastify.css";
 
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(userService.getUser());
   const login = async (username, password) => {
     try {
       const user = await userService.login(username, password);
       setUser(user);
-      if (user.role === 'ADMIN') {
-        window.location.href = '/admin';
-      } else if (user.role === 'MANAGER') {
-        window.location.href = '/manager';
+      if (user.role === "ADMIN") {
+        window.location.href = "/admin";
+      } else if (user.role === "MANAGER") {
+        window.location.href = "/manager";
+      } else if (user.role === "SALES_STAFF") {
+        window.location.href = "/sales-staff";
+      } else if (user.role === "DELIVERY_STAFF") {
+        window.location.href = "/delivery";
       } else {
-        window.location.href = '/';
+        window.location.href = "/";
       }
       toast.success("Đăng nhập thành công!");
       return true;
@@ -35,20 +38,22 @@ export const AuthProvider = ({ children }) => {
       toast.success("Đăng ký thành công, mời bạn đăng nhập!");
       return true;
     } catch (err) {
-      toast.error(err.response.data || "Đăng ký thất bại!")
+      toast.error(err.response.data || "Đăng ký thất bại!");
       return false;
     }
-  }
+  };
 
   const logout = async () => {
     await userService.logout();
     setUser(null);
-    toast.success("Đăng xuất thành công!")
   };
 
   const updateProfile = async (userUpdate) => {
     try {
-      const updatedUser = await userService.updateUserProfile(user.id, userUpdate);
+      const updatedUser = await userService.updateUserProfile(
+        user.id,
+        userUpdate
+      );
       setUser(updatedUser);
       toast.success("Cập nhật hồ sơ thành công!");
     } catch (err) {
@@ -64,10 +69,12 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       toast.error("Đổi mật khẩu thất bại!");
     }
-  }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, changePassword }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, register, updateProfile, changePassword }}
+    >
       {children}
     </AuthContext.Provider>
   );
