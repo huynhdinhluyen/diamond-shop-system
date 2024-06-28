@@ -26,7 +26,10 @@ export default function Header() {
 
   useEffect(() => {
     if (cart.items) {
-      const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+      const totalItems = cart.items.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
       setCartCount(totalItems);
     }
   }, [cart]);
@@ -70,6 +73,22 @@ export default function Header() {
                   >
                     Đơn hàng của bạn
                   </Link>
+                  {user.role === "SALES_STAFF" && (
+                    <Link
+                      to="/sales-staff"
+                      className="p-3  hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  {user.role === "DELIVERY_STAFF" && (
+                    <Link
+                      to="/delivery"
+                      className="p-3  hover:bg-slate-50 hover:text-accent transition-all duration-300"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
                   {user.role === "ADMIN" && (
                     <Link
                       to="/admin"
@@ -105,14 +124,15 @@ export default function Header() {
           >
             <ShoppingCartIcon />
             Giỏ hàng
-            {cartCount <= 0 ?
+            {cartCount <= 0 ? (
               <span className="bg-accent text-white rounded-full text-xs absolute bottom-[-7px] left-3 w-5 h-5 flex items-center justify-center">
                 0
-              </span> : (
-                <span className="bg-accent text-white rounded-full text-xs absolute bottom-[-7px] left-3 w-5 h-5 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
+              </span>
+            ) : (
+              <span className="bg-accent text-white rounded-full text-xs absolute bottom-[-7px] left-3 w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
 

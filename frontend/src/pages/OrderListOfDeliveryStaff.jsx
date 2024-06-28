@@ -11,6 +11,7 @@ import {
   Button,
   CircularProgress,
   TableHead,
+  TableSortLabel,
 } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
 import {
@@ -28,6 +29,8 @@ export default function OrderListOfDeliveryStaff() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
+  const [sortBy, setSortBy] = useState("status.name");
+  const [sortOrder, setSortOrder] = useState("des");
 
   const fetchOrders = async () => {
     try {
@@ -75,6 +78,73 @@ export default function OrderListOfDeliveryStaff() {
     }
   };
 
+  const compareBy = (a, b, orderBy) => {
+    let aValue = a.order[orderBy];
+    let bValue = b.order[orderBy];
+
+    if (
+      a.orderStatus.name === "SHIPPING" &&
+      b.orderStatus.name !== "SHIPPING"
+    ) {
+      return -1;
+    }
+    if (
+      a.orderStatus.name !== "SHIPPING" &&
+      b.orderStatus.name === "SHIPPING"
+    ) {
+      return 1;
+    }
+    if (
+      a.orderStatus.name === "WAITING_FOR_PICKUP" &&
+      b.orderStatus.name !== "WAITING_FOR_PICKUP"
+    ) {
+      return -1;
+    }
+    if (
+      a.orderStatus.name !== "WAITING_FOR_PICKUP" &&
+      b.orderStatus.name === "WAITING_FOR_PICKUP"
+    ) {
+      return 1;
+    }
+    if (
+      a.orderStatus.name === "COMPLETED" &&
+      b.orderStatus.name !== "COMPLETED"
+    ) {
+      return -1;
+    }
+    if (
+      a.orderStatus.name !== "COMPLETED" &&
+      b.orderStatus.name === "COMPLETED"
+    ) {
+      return 1;
+    }
+
+    // Nếu cùng trạng thái CONFIRMED, PENDING hoặc không phải cả hai, thì sắp xếp theo tiêu chí khác
+    if (orderBy === "createdAt") {
+      aValue = new Date(aValue);
+      bValue = new Date(bValue);
+    }
+
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortOrder === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  };
+
+  const sortedOrders = orders.sort((a, b) => compareBy(a, b, sortBy));
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
   return (
     <Box className="p-4 bg-gray-100">
       <Typography variant="h4" className="!font-bold !mb-4">
@@ -96,12 +166,20 @@ export default function OrderListOfDeliveryStaff() {
                 <TableCell>Số điện thoại khách hàng</TableCell>
                 <TableCell>Thời gian đặt hàng</TableCell>
                 <TableCell className="!text-right">Tổng tiền</TableCell>
-                <TableCell>Trạng thái đơn hàng</TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "orderStatus.name"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("orderStatus.name")}
+                  >
+                    Trạng thái đơn hàng
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell className="!text-center">Hành động</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
+              {sortedOrders.map((order) => (
                 <TableRow key={order.order.id}>
                   <TableCell>
                     <Link
