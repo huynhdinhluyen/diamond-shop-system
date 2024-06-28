@@ -1,16 +1,14 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.dto.*;
-import com.example.backend.entity.Category;
-import com.example.backend.entity.Order;
-import com.example.backend.entity.User;
-import com.example.backend.repository.*;
 import com.example.backend.entity.*;
-import com.example.backend.repository.OrderDetailRepository;
-import com.example.backend.repository.OrderRepository;
+import com.example.backend.exception.OrderNotFoundException;
+import com.example.backend.exception.OrderStatusNotFoundException;
+import com.example.backend.exception.UserNotFoundException;
+import com.example.backend.mapper.OrderMapper;
+import com.example.backend.repository.*;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +25,11 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    private TransactionRepository transactionRepository;
-
-    @Autowired
-    private OrderStatusRepository orderStatusRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
+    private final OrderAssignmentRepository orderAssignmentRepository;
+    private final OrderMapper orderMapper;
+    private final TransactionRepository transactionRepository;
+    private final OrderStatusRepository orderStatusRepository;
+    private final ProductRepository productRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -53,36 +47,61 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public Map<String, Long> getMonthlySales(String startDate, String endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         LocalDateTime startDateTime = startDate != null
                 ? LocalDate.parse(startDate, formatter).atStartOfDay()
                 : LocalDate.now().minusMonths(11).atStartOfDay();
-
         LocalDateTime endDateTime = endDate != null
                 ? LocalDate.parse(endDate, formatter).plusDays(1).atStartOfDay() // Cộng 1 ngày để bao gồm cả endDate
                 : LocalDate.now().plusDays(1).atStartOfDay();
-
         if (startDateTime.isAfter(endDateTime)) {
             throw new IllegalArgumentException("Start date cannot be after end date");
         }
-
         List<Object[]> results = orderRepository.getMonthlySales(startDateTime, endDateTime);
-
         Map<String, Long> monthlySales = new LinkedHashMap<>(); // Sử dụng LinkedHashMap để giữ thứ tự
         for (Object[] result : results) {
             String monthYear = (String) result[0];
             Long totalSales = ((Number) result[1]).longValue();
             monthlySales.put(monthYear, totalSales);
         }
-
         // Điền các tháng còn thiếu bằng 0
         LocalDate startDateWithoutTime = startDateTime.toLocalDate();
         LocalDate endDateWithoutTime = endDateTime.toLocalDate().minusDays(1); // Trừ 1 ngày để loại trừ ngày hiện tại
-        for (LocalDate date = startDateWithoutTime; date.isBefore(endDateWithoutTime); date = date.plusMonths(1)) {
+        for (LocalDate date = startDateWithoutTime;
+             date.isBefore(endDateWithoutTime);
+             date = date.plusMonths(1)) {
             String monthYear = String.format("%02d/%d", date.getMonthValue(), date.getYear());
             monthlySales.putIfAbsent(monthYear, 0L);
         }
+        return monthlySales;
+    }
 
+    @Override
+    public Map<String, Long> getMonthlySalesOfSalesStaff(Integer staffId, String startDate, String endDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime startDateTime = startDate != null
+                ? LocalDate.parse(startDate, formatter).atStartOfDay()
+                : LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime endDateTime = endDate != null
+                ? LocalDate.parse(endDate, formatter).plusDays(1).atStartOfDay() // Cộng 1 ngày để bao gồm cả endDate
+                : LocalDate.now().plusDays(1).atStartOfDay();
+        if (startDateTime.isAfter(endDateTime)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+        List<Object[]> results = orderRepository.findMonthlySalesDataByStaff(staffId, startDateTime, endDateTime);
+        Map<String, Long> monthlySales = new LinkedHashMap<>();
+        for (Object[] result : results) {
+            String monthYear = (String) result[0];
+            Long totalSales = ((Number) result[1]).longValue();
+            monthlySales.put(monthYear, totalSales);
+        }
+        LocalDate startDateWithoutTime = startDateTime.toLocalDate();
+        LocalDate endDateWithoutTime = endDateTime.toLocalDate().minusDays(1);
+        for (LocalDate date = startDateWithoutTime;
+             date.isBefore(endDateWithoutTime);
+             date = date.plusMonths(1)) {
+            String monthYear = String.format("%02d/%d", date.getMonthValue(), date.getYear());
+            monthlySales.putIfAbsent(monthYear, 0L);
+        }
         return monthlySales;
     }
 
@@ -90,13 +109,12 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public Map<String, Long> getCategoryRevenue() {
         List<Object[]> results = orderDetailRepository.getCategoryRevenue();
-        Map<String, Long> categoryRevenue = new TreeMap<>(results.stream()
+        return new TreeMap<>(results.stream()
                 .collect(Collectors.toMap(
                         result -> ((Category) result[0]).getName(),
                         result -> ((Long) result[1]),
                         (oldValue, newValue) -> oldValue
                 )));
-        return categoryRevenue;
     }
 
     @Override
@@ -107,7 +125,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = new Order();
         order.setUser(user);
-
         // Set order properties
         order.setDeliveryFee(orderDTO.getDeliveryFee());
         order.setDiscountPrice(orderDTO.getDiscountPrice());
@@ -117,13 +134,10 @@ public class OrderServiceImpl implements OrderService {
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setPhoneNumber(orderDTO.getPhoneNumber());
         order.setNote(orderDTO.getNote());
-
         OrderStatus status = orderStatusRepository.findByName("PENDING")
-                .orElseThrow(() -> new RuntimeException("Order status not found"));
+                .orElseThrow(() -> new OrderStatusNotFoundException("PENDING"));
         order.setStatus(status);
-
         List<OrderDetail> orderDetails = new ArrayList<>();
-
         for (OrderDetailDTO detailDTO : orderDTO.getOrderDetails()) {
             Product product = productRepository.findById(detailDTO.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -132,7 +146,6 @@ public class OrderServiceImpl implements OrderService {
             }
             product.setStockQuantity(product.getStockQuantity() - detailDTO.getQuantity());
             productRepository.save(product);
-
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
             orderDetail.setProductId(product.getId());
@@ -142,10 +155,8 @@ public class OrderServiceImpl implements OrderService {
             orderDetails.add(orderDetail);
         }
         order.setOrderDetails(orderDetails);
-
         // Save order first to generate an ID
         Order savedOrder = orderRepository.save(order);
-
         // Handle transaction
         if (orderDTO.getTransaction() != null) {
             TransactionDTO transactionDTO = orderDTO.getTransaction();
@@ -157,9 +168,10 @@ public class OrderServiceImpl implements OrderService {
             Transaction savedTransaction = transactionRepository.save(transaction);
             savedOrder.setTransaction(savedTransaction);
         }
-
         savedOrder = orderRepository.save(savedOrder);
-        return convertToDto(savedOrder);
+        // sau khi add order thì phân công việc cho nhân viên bán hàng
+        assignTaskToSalesStaff(savedOrder);
+        return orderMapper.toOrderDTO(savedOrder);
     }
 
     @Override
@@ -168,15 +180,15 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         List<Order> orders = orderRepository.findByUser(user);
-        return orders.stream().map(this::convertToDto).collect(Collectors.toList());
+        return orders.stream().map(orderMapper::toOrderDTO).collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public OrderDTO getOrderById(Integer orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
-        return convertToDto(order);
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        return orderMapper.toOrderDTO(order);
     }
 
     @Override
@@ -219,83 +231,147 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    private OrderDTO convertToDto(Order order) {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(order.getId());
-        orderDTO.setUserId(order.getUser().getId());
-
-        // Set transaction information
-        if (order.getTransaction() != null) {
-            TransactionDTO transactionDTO = new TransactionDTO();
-            transactionDTO.setId(order.getTransaction().getId());
-            transactionDTO.setPaymentMethod(order.getTransaction().getPaymentMethod());
-            transactionDTO.setTransactionDate(order.getTransaction().getTransactionDate());
-            transactionDTO.setTransactionAmount(order.getTransaction().getTransactionAmount());
-            transactionDTO.setStatus(order.getTransaction().getStatus());
-            orderDTO.setTransaction(transactionDTO);
-        }
-
-        orderDTO.setDeliveryFee(order.getDeliveryFee());
-        orderDTO.setDiscountPrice(order.getDiscountPrice());
-        orderDTO.setTotalPrice(order.getTotalPrice());
-        orderDTO.setCreatedAt(order.getCreatedAt());
-        orderDTO.setCustomerName(order.getCustomerName());
-        orderDTO.setShippingAddress(order.getShippingAddress());
-        orderDTO.setPhoneNumber(order.getPhoneNumber());
-        orderDTO.setNote(order.getNote());
-
-        // Set order status information
-        OrderStatusDTO statusDTO = new OrderStatusDTO();
-        statusDTO.setId(order.getStatus().getId());
-        statusDTO.setName(order.getStatus().getName());
-        orderDTO.setStatus(statusDTO);
-
-        // Convert order details to DTOs
-        List<OrderDetailDTO> orderDetailDTOs = order.getOrderDetails().stream()
-                .map(detail -> {
-                    OrderDetailDTO detailDTO = new OrderDetailDTO();
-                    detailDTO.setProductId(detail.getProductId());
-                    detailDTO.setQuantity(detail.getQuantity());
-                    detailDTO.setUnitPrice(detail.getUnitPrice());
-                    detailDTO.setSize(detail.getSize());
-                    return detailDTO;
-                })
-                .collect(Collectors.toList());
-
-        orderDTO.setOrderDetails(orderDetailDTOs);
-
-        return orderDTO;
+    @Override
+    public List<OrderAssignment> getOrderByStaff(Integer staffId) {
+        return orderAssignmentRepository.findOrderAssignmentsByStaff(staffId);
     }
 
-    private OrderDetailDTO convertToDto(OrderDetail orderDetail) {
-        OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-        orderDetailDTO.setProductId(orderDetail.getProductId());
-        orderDetailDTO.setQuantity(orderDetail.getQuantity());
-        orderDetailDTO.setUnitPrice(orderDetail.getUnitPrice());
-        orderDetailDTO.setSize(orderDetail.getSize());
-        return orderDetailDTO;
+    @Override
+    public OrderAssignment confirmOrder(Integer orderId) {
+        // set status order cho khách hàng thấy
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        OrderStatus orderStatus = orderStatusRepository.findByName("CONFIRMED")
+                .orElseThrow(() -> new OrderStatusNotFoundException("CONFIRMED"));
+        order.setStatus(orderStatus);
+        orderRepository.save(order);
+        // find và set trạng thái đơn hàng cho nhân viên có ít đơn hàng nhất
+        OrderAssignment orderAssignment = orderAssignmentRepository.findByOrderIdAndSalesStaff(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderStatus = orderStatusRepository.findByName("CONFIRMED")
+                .orElseThrow(() -> new OrderStatusNotFoundException("CONFIRMED"));
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        return orderAssignmentRepository.save(orderAssignment);
     }
 
-    private TransactionDTO convertToTransactionDTO(Transaction transaction) {
-        if (transaction == null) {
-            return null;
+    @Override
+    public OrderAssignment assignOrderToDeliveryStaff(Integer orderId) {
+        // set status order cho khách hàng thấy
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        OrderStatus orderStatus = orderStatusRepository.findByName("WAITING_FOR_PICKUP")
+                .orElseThrow(() -> new OrderStatusNotFoundException("WAITING_FOR_PICKUP"));
+        order.setStatus(orderStatus);
+        orderRepository.save(order);
+        //set status order cho nhân viên bán hàng
+        OrderAssignment orderAssignment = orderAssignmentRepository.findByOrderIdAndSalesStaff(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderStatus = orderStatusRepository.findByName("WAITING_FOR_PICKUP")
+                .orElseThrow(() -> new OrderStatusNotFoundException("WAITING_FOR_PICKUP"));
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        orderAssignmentRepository.save(orderAssignment);
+        // find nhân viên giao hàng có ít đơn hàng có trạng thái shipping nhất và set trạng thái
+        Integer staffId = orderAssignmentRepository.findDeliveryStaffWithLeastTasks();
+        User staff = new User();
+        if (staffId != null) {
+            staff = userRepository.findById(staffId).orElseThrow(() -> new UserNotFoundException(staffId));
+        } else {
+            List<User> deliveryStaffs = userRepository.findByRole("DELIVERY_STAFF");
+            if (!deliveryStaffs.isEmpty()) {
+                Collections.shuffle(deliveryStaffs); // Xáo trộn danh sách
+                staff = deliveryStaffs.getFirst(); // Lấy nhân viên đầu tiên (ngẫu nhiên)
+            }
         }
-        TransactionDTO transactionDTO = new TransactionDTO();
-        transactionDTO.setId(transaction.getId());
-        transactionDTO.setPaymentMethod(transaction.getPaymentMethod());
-        transactionDTO.setTransactionDate(transaction.getTransactionDate());
-        transactionDTO.setTransactionAmount(transaction.getTransactionAmount());
-        transactionDTO.setStatus(transaction.getStatus());
-        return transactionDTO;
+        orderAssignment = new OrderAssignment();
+        orderAssignment.setOrder(order);
+        orderAssignment.setStaff(staff);
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        return orderAssignmentRepository.save(orderAssignment);
     }
 
-    private OrderStatusDTO convertOrderStatusToDTO(OrderStatus status) {
-        if (status == null) {
-            return null;
+    @Override
+    public OrderAssignment pickUpOrder(Integer orderId) {
+        // set status order cho khách hàng thấy
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        OrderStatus orderStatus = orderStatusRepository.findByName("SHIPPING")
+                .orElseThrow(() -> new OrderStatusNotFoundException("SHIPPING"));
+        order.setStatus(orderStatus);
+        orderRepository.save(order);
+        //set status order cho nhân viên bán hàng
+        OrderAssignment orderAssignment = orderAssignmentRepository.findByOrderIdAndSalesStaff(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        orderAssignmentRepository.save(orderAssignment);
+        //set status order cho nhân viên giao hàng
+        orderAssignment = orderAssignmentRepository.findByOrderIdAndDeliveryStaff(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        return orderAssignmentRepository.save(orderAssignment);
+    }
+
+    @Override
+    public OrderAssignment completeOrder(Integer orderId) {
+        // set status order cho khách hàng thấy
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        OrderStatus orderStatus = orderStatusRepository.findByName("COMPLETED")
+                .orElseThrow(() -> new OrderStatusNotFoundException("COMPLETED"));
+        order.setStatus(orderStatus);
+        orderRepository.save(order);
+        //set status order cho nhân viên bán hàng
+        OrderAssignment orderAssignment = orderAssignmentRepository.findByOrderIdAndSalesStaff(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        orderAssignmentRepository.save(orderAssignment);
+        //set status order cho nhân viên giao hàng
+        orderAssignment = orderAssignmentRepository.findByOrderIdAndDeliveryStaff(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        return orderAssignmentRepository.save(orderAssignment);
+    }
+
+    @Override
+    public OrderAssignment cancelOrder(Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        OrderStatus orderStatus = orderStatusRepository.findByName("CANCELLED")
+                .orElseThrow(() -> new OrderStatusNotFoundException("CANCELLED"));
+        order.setStatus(orderStatus);
+        orderRepository.save(order);
+        OrderAssignment orderAssignment = orderAssignmentRepository.findByOrderIdAndSalesStaff(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderAssignment.setOrderStatus(orderStatus);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        return orderAssignmentRepository.save(orderAssignment);
+    }
+
+    private void assignTaskToSalesStaff(Order order) {
+        Integer result = orderAssignmentRepository.findSalesStaffWithLeastTasks();
+        User staff = new User();
+        if (result != null) {
+            staff = userRepository.findById(result).orElseThrow(() -> new UserNotFoundException(result));
+        } else {
+            List<User> salesStaffs = userRepository.findByRole("SALES_STAFF");
+            if (!salesStaffs.isEmpty()) {
+                Collections.shuffle(salesStaffs); // Xáo trộn danh sách
+                staff = salesStaffs.getFirst(); // Lấy nhân viên đầu tiên (ngẫu nhiên)
+            }
         }
-        OrderStatusDTO statusDTO = new OrderStatusDTO();
-        statusDTO.setId(status.getId());
-        statusDTO.setName(status.getName());
-        return statusDTO;
+        OrderStatus status = orderStatusRepository.findByName("PENDING")
+                .orElseThrow(() -> new OrderStatusNotFoundException("PENDING"));
+        OrderAssignment orderAssignment = new OrderAssignment();
+        orderAssignment.setOrder(order);
+        orderAssignment.setStaff(staff);
+        orderAssignment.setOrderStatus(status);
+        orderAssignment.setUpdateAt(LocalDateTime.now());
+        orderAssignmentRepository.save(orderAssignment);
     }
 }

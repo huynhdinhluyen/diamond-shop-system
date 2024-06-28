@@ -26,7 +26,10 @@ export const logout = () => {
 };
 
 export const updateUserProfile = async (userId, updatedUser) => {
-  const { data } = await axiosInstance.put(`/api/users/update?userId=${userId}`, updatedUser);
+  const { data } = await axiosInstance.put(
+    `/api/users/update?userId=${userId}`,
+    updatedUser
+  );
   return data;
 };
 
@@ -72,9 +75,7 @@ export async function deleteUser(userId) {
 
 export async function getUserByRole(role) {
   try {
-    const response = await axiosInstance.get(
-      `/api/dashboard/get-users-by-role?role=${role}`
-    );
+    const response = await axiosInstance.get(`/api/users/role?role=${role}`);
     return response.data;
   } catch (error) {
     handleError("Error fetching user by role:", error);
