@@ -2,21 +2,17 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
+import com.example.backend.enums.RoleName;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.UserService;
-import com.example.backend.util.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,21 +51,6 @@ public class UserController {
         authService.changePassword(passwordChangeRequest);
         return ResponseEntity.ok("Password changed successfully");
     }
-
-    //Add a user REST API
-//    @PostMapping("/addUser")
-//    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userDTO) {
-//        UserDTO dto = userService.addUser(userDTO);
-//        return new ResponseEntity<>(dto, HttpStatus.CREATED);
-//    }
-
-
-//    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-//    @PostMapping("/login")
-//    public ResponseEntity<User> login(@RequestBody LoginForm loginForm) {
-//        User user = userService.login(loginForm.getEmail(), loginForm.getPassword());
-//        return ResponseEntity.ok(user);
-//    }
 
     @GetMapping("/get-user-token")
     public ResponseEntity<UserDetails> getUserDetails(@RequestHeader("Authorization") String token) {
@@ -125,5 +106,11 @@ public class UserController {
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<List<UserDTO>> findUsersByRole(@RequestParam RoleName role) {
+        List<UserDTO> users = userService.findByRole(role);
+        return ResponseEntity.ok(users);
     }
 }
