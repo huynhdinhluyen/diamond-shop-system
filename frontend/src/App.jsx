@@ -44,10 +44,20 @@ import Payment from "./pages/Payment";
 import OrderDetail from "./pages/OrderDetail";
 import MyOrder from "./components/MyOrder";
 import Products from "./pages/Products";
+import SalesStaffLayout from "./layouts/SalesStaffLayout";
+import SalesStaffDashboard from "./pages/SalesStaffDashboard";
+import OrderListOfSalesStaff from "./pages/OrderListOfSalesStaff";
+import OrderDetailOfSalesStaff from "./pages/OrderDetailOfSalesStaff";
+import DeliveryStaffLayout from "./layouts/DeliveryStaffLayout";
+import DeliveryStaffDashboard from "./pages/DeliveryStaffDashboard";
+import OrderListOfDeliveryStaff from "./pages/OrderListOfDeliveryStaff";
+import OrderHistoryOfDeliveryStaff from "./pages/OrderHistoryOfDeliveryStaff";
+import Profile from "./pages/Profile";
+import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
 
 function App() {
   return (
-    <div>
+    <div className="scroll-smooth focus:scroll-auto">
       <ScrollToTop />
       <Routes>
         <Route
@@ -148,6 +158,24 @@ function App() {
             </Layout>
           }
         />
+
+        <Route path="/sales-staff" element={<SalesStaffLayout />}>
+          <Route index element={<SalesStaffDashboard />} />
+          <Route path="orders" element={<OrderListOfSalesStaff />} />
+          <Route path="orders/:orderId" element={<OrderDetailOfSalesStaff />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
+
+        <Route path="/delivery" element={<DeliveryStaffLayout />}>
+          <Route index element={<DeliveryStaffDashboard />} />
+          <Route path="orders" element={<OrderListOfDeliveryStaff />} />
+          <Route
+            path="orders/:orderId"
+            element={<OrderDetailOfDeliveryStaff />}
+          />
+          <Route path="history" element={<OrderHistoryOfDeliveryStaff />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
 
         <Route path="/manager" element={<ManagerLayout />}>
           <Route index element={<Dashboard />} />
