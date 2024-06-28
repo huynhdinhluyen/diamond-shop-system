@@ -12,3 +12,12 @@ export async function getDashboardData(startDate, endDate) {
     handleError("Error fetching dashboard data:", error);
   }
 }
+
+export async function getMonlySalesOfSalesStaff(staffId){
+  try {
+    const response = await axiosInstance.get(`/api/dashboard/sales-staff/${staffId}`);
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching monthly sales of sales staff:", error);
+  }
+}
