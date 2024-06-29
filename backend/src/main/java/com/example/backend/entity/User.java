@@ -94,4 +94,11 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Column(name = "points", nullable = false, columnDefinition = "int default 0")
+    private Integer points = 0;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "membership_level_id")
+    private MembershipLevel membershipLevel;
 }

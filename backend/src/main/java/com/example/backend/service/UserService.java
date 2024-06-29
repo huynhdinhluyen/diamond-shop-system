@@ -16,4 +16,5 @@ public interface UserService {
     User updateUser(Integer userId, User updatedUser);
     void deleteUser(Integer userId) throws UserNotFoundException;
     List<UserDTO> findByRole(RoleName roleName);
+    UserDTO getUserByUsername(String username);
 }

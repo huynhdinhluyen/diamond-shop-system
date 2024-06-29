@@ -30,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private final TransactionRepository transactionRepository;
     private final OrderStatusRepository orderStatusRepository;
     private final ProductRepository productRepository;
+    private final MembershipLevelRepository membershipLevelRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -168,6 +169,11 @@ public class OrderServiceImpl implements OrderService {
             Transaction savedTransaction = transactionRepository.save(transaction);
             savedOrder.setTransaction(savedTransaction);
         }
+
+        // Calculate and update points
+        int pointsEarned = (int) (order.getTotalPrice() / 500000); //500.000 get 1 point
+        updateUserMembershipLevel(user, pointsEarned);
+
         savedOrder = orderRepository.save(savedOrder);
         // sau khi add order thì phân công việc cho nhân viên bán hàng
         assignTaskToSalesStaff(savedOrder);
@@ -373,5 +379,17 @@ public class OrderServiceImpl implements OrderService {
         orderAssignment.setOrderStatus(status);
         orderAssignment.setUpdateAt(LocalDateTime.now());
         orderAssignmentRepository.save(orderAssignment);
+    }
+
+    private void updateUserMembershipLevel(User user, int newPoints) {
+        int totalPoints = user.getPoints() + newPoints;
+
+        MembershipLevel newMembershipLevel = membershipLevelRepository
+                .findByMinPointsLessThanEqualAndMaxPointsGreaterThanEqual(totalPoints, totalPoints)
+                .orElseThrow(() -> new RuntimeException("Membership level not found"));
+
+        user.setPoints(totalPoints);
+        user.setMembershipLevel(newMembershipLevel);
+        userRepository.save(user);
     }
 }
