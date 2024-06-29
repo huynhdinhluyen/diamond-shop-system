@@ -8,6 +8,7 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     @Transactional(readOnly = true)
     public Long getTotalCustomers() {
@@ -29,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserMapper::maptoUserDTO)
+        return users.stream().map(userMapper::maptoUserDTO)
                 .collect(Collectors.toList());
     }
 
@@ -63,7 +67,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findByRole(RoleName roleName) {
         List<User> users = userRepository.findByRole(roleName.name());
-        return users.stream().map(UserMapper::maptoUserDTO)
+        return users.stream().map(userMapper::maptoUserDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO getUserByUsername(String username) {
+        return userMapper.maptoUserDTO(userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username)));
     }
 }

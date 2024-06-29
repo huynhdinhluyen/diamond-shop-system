@@ -1,6 +1,6 @@
 export default function Newsletter() {
   return (
-    <div className="md:h-[350px] bg-primary py-12 flex items-center relative overflow-hidden">
+    <div className="md:h-[350px] bg-primary py-12 flex items-center relative overflow-hidden mt-10">
       <div className="absolute left-0 bottom-0"></div>
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-[58px]">

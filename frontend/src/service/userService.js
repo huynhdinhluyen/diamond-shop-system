@@ -6,20 +6,35 @@ export const getUser = () =>
     ? JSON.parse(localStorage.getItem("user"))
     : null;
 
+export const setUser = (user) => {
+  localStorage.setItem('user', JSON.stringify(user));
+};
+
 export const login = async (username, password) => {
   const { data } = await axiosInstance.post("api/users/login", {
     username,
     password,
   });
   localStorage.setItem("user", JSON.stringify(data));
+  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
   return data;
 };
 
 export const register = async (registerData) => {
   const { data } = await axiosInstance.post("api/users/register", registerData);
   localStorage.setItem("user", JSON.stringify(data));
+  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
   return data;
 };
+
+// export async function getUserById(userId) {
+//   try {
+//     const response = await axiosInstance.get(`/api/users/get/${userId}`);
+//     return response.data;
+//   } catch (error) {
+//     handleError("Error fetching users:", error);
+//   }
+// }
 
 export const logout = () => {
   localStorage.removeItem("user");
@@ -45,6 +60,7 @@ export async function getUsers() {
     handleError("Error fetching users:", error);
   }
 }
+
 
 export async function createUser(userData) {
   try {
@@ -76,6 +92,15 @@ export async function deleteUser(userId) {
 export async function getUserByRole(role) {
   try {
     const response = await axiosInstance.get(`/api/users/role?role=${role}`);
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching user by role:", error);
+  }
+}
+
+export async function getUserByUsername(username) {
+  try {
+    const response = await axiosInstance.get(`/api/users/get/${username}`);
     return response.data;
   } catch (error) {
     handleError("Error fetching user by role:", error);

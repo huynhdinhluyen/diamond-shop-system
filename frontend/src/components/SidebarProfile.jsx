@@ -9,7 +9,6 @@ export default function SidebarProfile({ onMainComponentChange }) {
 
     const handleClick = (item) => {
         onMainComponentChange(item);
-        console.log(item)
     };
 
     const items = [
@@ -37,16 +36,30 @@ export default function SidebarProfile({ onMainComponentChange }) {
 
     const { user } = useAuth();
 
+
+    const translateMembershipLevel = (membershipLevel) => {
+        switch (membershipLevel.toLowerCase()) {
+            case "bronze":
+                return "Đồng";
+            case "silver":
+                return "Bạc";
+            case "diamond":
+                return "Kim cương";
+            case "platinum":
+                return "Bạch kim";
+            default:
+                return membershipLevel;
+        }
+    }
+
     return (
         <div className="col-span-3">
             <div className="flex mb-4">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg" className="w-[60px] h-[60px] rounded-full mr-3" alt="user" />
                 <div className="">
                     <p className="text-md">{user.username}</p>
-                    <div className="flex items-center">
-                        <i className="ri-edit-fill text-gray-300 mr-2"></i>
-                        <p className="text-md">Chỉnh sửa</p>
-                    </div>
+                    <p className="text-accent font-semibold">Điểm tích lũy của bạn: {user.points}</p>
+                    <p className="text-accent font-semibold">Thành viên {translateMembershipLevel(user.membershipLevel.name)}</p>
                 </div>
             </div>
             <ul className="list-none">

@@ -84,13 +84,14 @@ export default function MyOrder() {
                                     <div className="flex justify-end text-gray-500 mt-2">
                                         Tổng tiền: <span className="font-semibold ml-2"> <Price price={order.totalPrice} /> </span>
                                     </div>
-                                    <div className="flex justify-end text-gray-500 mt-2">
-                                        Trạng thái đơn hàng:
-                                        {order.status.name === "PENDING" && <span className="ml-2 font-semibold">Đã nhận được đơn hàng</span>}
-                                        {order.status.name === "PROCESSING" && <span className="ml-2 font-semibold">Đang xử lý</span>}
-                                        {order.status.name === "SHIPPED" && <span className="ml-2 font-semibold">Đã giao hàng cho đơn vị vận chuyển</span>}
-                                        {order.status.name === "DELIVERED" && <span className="ml-2 font-semibold">Đơn hàng đã được giao thành công</span>}
-                                        {order.status.name === "CANCELLED" && <span className="ml-2 font-semibold">Đơn hàng đã bị hủy</span>}
+                                    <div className="flex justify-end items-center text-gray-500 mt-2">
+                                        <p className="mr-3">Trạng thái đơn hàng:</p>
+                                        {order.status.name === "PENDING" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đang chờ xác nhận</p>)}
+                                        {order.status.name === "CONFIRMED" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đã xác nhận đơn hàng</p>)}
+                                        {order.status.name === "SHIPPING" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đơn hàng đang giao đến bạn</p>)}
+                                        {order.status.name === "WAITING_FOR_PICKUP" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đợi đơn vị vận chuyển lấy hàng</p>)}
+                                        {order.status.name === "CANCELLED" && (<p className='px-3 py-2 bg-red-500 text-white text-center rounded-md'>Đơn hàng đã hủy</p>)}
+                                        {order.status.name === "COMPLETED" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đơn hàng được giao thành công</p>)}
                                     </div>
                                 </li>
                             </Link>

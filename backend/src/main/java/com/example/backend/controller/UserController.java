@@ -52,15 +52,15 @@ public class UserController {
         return ResponseEntity.ok("Password changed successfully");
     }
 
-    @GetMapping("/get-user-token")
-    public ResponseEntity<UserDetails> getUserDetails(@RequestHeader("Authorization") String token) {
-        if (token != null && token.startsWith("Bearer")) {
-            String jwtToken = token.substring(7);
-            UserDetails userDetails = authService.getUserDetailsFromToken(jwtToken);
-            return ResponseEntity.ok(userDetails);
-        }
-        return ResponseEntity.badRequest().build();
-    }
+//    @GetMapping("/get-user-token")
+//    public ResponseEntity<UserDetails> getUserDetails(@RequestHeader("Authorization") String token) {
+//        if (token != null && token.startsWith("Bearer")) {
+//            String jwtToken = token.substring(7);
+//            UserDetails userDetails = authService.getUserDetailsFromToken(jwtToken);
+//            return ResponseEntity.ok(userDetails);
+//        }
+//        return ResponseEntity.badRequest().build();
+//    }
 
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam Integer userId, @RequestBody User updatedUser) {
@@ -112,5 +112,11 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> findUsersByRole(@RequestParam RoleName role) {
         List<UserDTO> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/get/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+        UserDTO user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(user);
     }
 }

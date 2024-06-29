@@ -17,7 +17,7 @@ public class Point {
     private Integer id;
 
     @Column(name = "points", nullable = false)
-    private Long points;
+    private Integer points;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")

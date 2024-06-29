@@ -13,7 +13,6 @@ public interface OrderService {
     Long getTotalOrders();
     Long getTotalRevenue();
     Map<String, Long> getMonthlySales(String startDate, String endDate);
-
     Map<String, Long> getMonthlySalesOfSalesStaff(Integer staffId, String startDate, String endDate);
     Map<String, Long> getCategoryRevenue();
     OrderDTO addOrder(OrderDTO orderDTO);

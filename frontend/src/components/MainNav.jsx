@@ -16,7 +16,7 @@ export default function MainNav({ pages }) {
 
   return (
     <nav className="bg-white absolute w-full left-0 -bottom-[86px] shadow-custom1 h-16 rounded-[10px] hidden lg:flex lg:items-center lg:justify-between lg:px-[50px] z-10">
-      <ul className="flex gap-x-4">
+      <ul className="flex gap-x-4 text-nowrap">
         {pages.map((page, index) => (
           <li key={index} className="last:border-r-0 border-r">
             <Link
@@ -28,7 +28,7 @@ export default function MainNav({ pages }) {
           </li>
         ))}
       </ul>
-      <form className="relative flex gap-x-[10px]" onSubmit={handleSearch}>
+      <form className="relative lg:flex gap-x-1 md:hidden" onSubmit={handleSearch}>
         <label
           htmlFor="search-input"
           className="flex justify-center items-center group"
@@ -37,11 +37,11 @@ export default function MainNav({ pages }) {
         </label>
         <input
           type="text"
-          placeholder="Tìm kiếm sản phẩm..."
+          placeholder="Tìm sản phẩm..."
           id="search-input"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="outline-none w-[140px] focus:w-[190px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-[14px] transition-all duration-150"
+          className="outline-none lg:w-[130px] focus:border-b-2 focus:border-accent placeholder:italic placeholder:text-[14px] transition-all duration-75"
         />
       </form>
     </nav>
