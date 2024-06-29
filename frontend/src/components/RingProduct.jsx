@@ -4,8 +4,8 @@ import { CircularProgress, Button, TextField } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { getProducts } from "../service/productService";
 import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 
 const settings = {
@@ -38,7 +38,7 @@ const settings = {
         {
             breakpoint: 480,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
                 slidesToScroll: 1
             }
         }
@@ -69,7 +69,7 @@ function RingProduct() {
 
     return (
         <div className="container mx-auto mt-8">
-            <img src="https://www.tierra.vn/files/banner-1-mZcGGdPA2x.webp" alt="" className="w-full h-50" />
+            <img src="https://www.tierra.vn/files/banner-1-mZcGGdPA2x.webp" alt="" className="w-full lg:h-96 h-auto object-cover" />
             <div className="flex items-center justify-between my-4 text-center">
                 <h1 className="text-xl text-center font-bold text-nowrap text-accent mx-auto">
                     {categoryName}

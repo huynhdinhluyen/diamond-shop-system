@@ -14,7 +14,7 @@ const News = () => {
   const currentPost = newsData.news.slice(firstPostIndex, lastPostIndex);
 
   return (
-    <div className="container mt-10">
+    <div className="container my-10">
       <div className="flex items-center justify-center mb-4">
         <div className="w-96 border-t border-gray-300"></div>
         <h4 className="text-2xl text-center font-bold mb-4 mx-8 text-nowrap text-accent uppercase">

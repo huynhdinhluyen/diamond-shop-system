@@ -38,7 +38,7 @@ const settings = {
         {
             breakpoint: 480,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
                 slidesToScroll: 1
             }
         }
@@ -70,7 +70,7 @@ function RingProduct() {
 
     return (
         <div className="container mx-auto mt-8">
-            <img src="https://file.hstatic.net/1000381168/collection/baner-lac-tay-1920x820_15cb320cc46c454aa83b2c94b72fbbe5.png" alt="" className="h-50" />
+            <img src="https://file.hstatic.net/1000381168/collection/baner-lac-tay-1920x820_15cb320cc46c454aa83b2c94b72fbbe5.png" alt="" className="w-full lg:h-96 h-auto object-cover" />
             <div className="flex items-center justify-between my-4 text-center">
                 <h1 className="text-xl text-center font-bold text-nowrap text-accent mx-auto">
                     {categoryName}

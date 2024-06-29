@@ -157,7 +157,7 @@ export default function Cart() {
                                         checked={selectedItems.includes(item.productId)}
                                         onChange={() => handleCheckboxChange(item.productId)}
                                     />
-                                    <img src={item.image} className="w-[100px] md:w-32 h-32 object-cover" alt={item.productName} />
+                                    <img src={item.image} className="w-[100px] md:w-32 h-32 object-cover rounded-lg" alt={item.productName} />
                                     <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4">
                                         <span className="text-lg text-center">
                                             {item.productName}
@@ -178,7 +178,9 @@ export default function Cart() {
                                                 className="w-16 text-center border rounded"
                                             />
                                         </div>
-                                        <button className="px-4 py-2 text-white rounded-xl bg-red-500 hover:bg-red-700 cursor-pointer" onClick={() => handleRemove(item.productId)}>Xóa</button>
+                                        <button className="px-4 py-2 text-white text-lg rounded-xl bg-red-500 hover:bg-red-700 cursor-pointer" onClick={() => handleRemove(item.productId)}>
+                                            <i className="ri-delete-bin-line"></i>
+                                        </button>
                                     </div>
                                 </li>
                             ))}
@@ -196,16 +198,16 @@ export default function Cart() {
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex gap-4">
+                            <div className="flex-col flex md:flex-row gap-x-4 text-center">
                                 <button
                                     onClick={handleCheckout}
-                                    className="btn-accent p-3 rounded-lg text-white bg-primary hover:bg-primary-dark transition"
+                                    className="btn-accent p-2 rounded-lg text-white bg-primary hover:bg-primary-dark transition md:w-60 md:text-nowrap md:mr-2 mb-2 md:mb-0"
                                 >
                                     Tiến hành đặt hàng
                                 </button>
                                 <button
                                     onClick={handleRemoveSelected}
-                                    className="btn-danger p-3 rounded-lg text-white bg-red-500 hover:bg-red-700 transition"
+                                    className="btn-danger p-2 rounded-lg text-white bg-red-500 hover:bg-red-700 transition md:w-60 md:text-nowrap"
                                 >
                                     Xóa sản phẩm khỏi giỏ hàng
                                 </button>

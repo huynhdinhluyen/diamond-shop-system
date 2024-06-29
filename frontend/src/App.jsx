@@ -54,11 +54,13 @@ import OrderListOfDeliveryStaff from "./pages/OrderListOfDeliveryStaff";
 import OrderHistoryOfDeliveryStaff from "./pages/OrderHistoryOfDeliveryStaff";
 import Profile from "./pages/Profile";
 import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 function App() {
   return (
     <div className="scroll-smooth focus:scroll-auto">
       <ScrollToTop />
+      <ScrollToTopButton />
       <Routes>
         <Route
           path="/"
