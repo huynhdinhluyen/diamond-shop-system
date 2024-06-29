@@ -164,8 +164,8 @@ export default function OrderListOfSalesStaff() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Mã đơn hàng</TableCell>
-                <TableCell>
+                <TableCell className="!font-bold">Mã đơn hàng</TableCell>
+                <TableCell className="!font-bold">
                   {" "}
                   <TableSortLabel
                     active={sortBy === "createdAt"}
@@ -175,11 +175,16 @@ export default function OrderListOfSalesStaff() {
                     Thời gian đặt hàng
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>Tên khách hàng</TableCell>
-                <TableCell>Số điện thoại</TableCell>
-                <TableCell className="!text-right">Tổng tiền</TableCell>
-                <TableCell>Ghi chú</TableCell>
-                <TableCell>
+                <TableCell className="!font-bold">Tên khách hàng</TableCell>
+                <TableCell className="!font-bold">Số điện thoại</TableCell>
+                <TableCell className="!text-right !font-bold">
+                  Tổng tiền
+                </TableCell>
+                <TableCell className="!font-bold">
+                  Trạng thái giao dịch
+                </TableCell>
+                <TableCell className="!font-bold">Ghi chú</TableCell>
+                <TableCell className="!font-bold">
                   <TableSortLabel
                     active={sortBy === "orderStatus.name"}
                     direction={sortOrder}
@@ -188,7 +193,9 @@ export default function OrderListOfSalesStaff() {
                     Trạng thái đơn hàng
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!text-center">Hành động</TableCell>
+                <TableCell className="!text-center !font-bold">
+                  Hành động
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -214,6 +221,12 @@ export default function OrderListOfSalesStaff() {
                   <TableCell className="!text-right">
                     {order.order.totalPrice?.toLocaleString("vi-VN") || "0"} VNĐ
                   </TableCell>
+                  {order.order.transaction.status === "INCOMPLETE" && (
+                    <TableCell>Chưa thanh toán</TableCell>
+                  )}
+                  {order.order.transaction.status === "COMPLETED" && (
+                    <TableCell>Đã thanh toán</TableCell>
+                  )}
                   <TableCell className="!italic">
                     {order.order?.note || "Không có"}
                   </TableCell>

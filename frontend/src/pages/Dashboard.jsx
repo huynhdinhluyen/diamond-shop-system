@@ -139,7 +139,7 @@ export default function Dashboard() {
               />
             </LocalizationProvider>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={monthlySalesData} margin={{ left: 24 }}>
+              <LineChart data={monthlySalesData} margin={{ left: 30 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" allowDuplicatedCategory={false} />
                 <YAxis
