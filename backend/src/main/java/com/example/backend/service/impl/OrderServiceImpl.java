@@ -7,8 +7,11 @@ import com.example.backend.exception.OrderStatusNotFoundException;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.repository.*;
+import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final MembershipLevelRepository membershipLevelRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     @Override
     @Transactional(readOnly = true)
     public Long getTotalOrders() {
@@ -171,7 +175,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Calculate and update points
-        int pointsEarned = (int) (order.getTotalPrice() / 500000); //500.000 get 1 point
+        int pointsEarned = calculatePoints(order.getTotalPrice()); //500.000 get 1 point
         updateUserMembershipLevel(user, pointsEarned);
 
         savedOrder = orderRepository.save(savedOrder);
@@ -352,6 +356,9 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new OrderStatusNotFoundException("CANCELLED"));
         order.setStatus(orderStatus);
         orderRepository.save(order);
+        int pointsToDeduct = calculatePoints(order.getTotalPrice());
+        updateUserMembershipLevel(order.getUser(), -pointsToDeduct);
+
         OrderAssignment orderAssignment = orderAssignmentRepository.findByOrderIdAndSalesStaff(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
         orderAssignment.setOrderStatus(orderStatus);
@@ -386,10 +393,16 @@ public class OrderServiceImpl implements OrderService {
 
         MembershipLevel newMembershipLevel = membershipLevelRepository
                 .findByMinPointsLessThanEqualAndMaxPointsGreaterThanEqual(totalPoints, totalPoints)
-                .orElseThrow(() -> new RuntimeException("Membership level not found"));
-
+                .orElseGet(() -> membershipLevelRepository.findByMinPointsLessThanEqualAndMaxPointsIsNull(totalPoints)
+                        .orElseThrow(() -> new RuntimeException("Membership level not found")));
+        logger.info("Membership level: " + newMembershipLevel.getName());
         user.setPoints(totalPoints);
         user.setMembershipLevel(newMembershipLevel);
         userRepository.save(user);
     }
+
+    private int calculatePoints(Long totalPrice) {
+        return (int) (totalPrice / 500000); // 500.000 get 1 point
+    }
+
 }

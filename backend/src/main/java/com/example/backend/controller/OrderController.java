@@ -4,6 +4,7 @@ import com.example.backend.dto.OrderDTO;
 import com.example.backend.request.NoteRequest;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,16 @@ public class OrderController {
     public ResponseEntity<String> updateOrderNote(@PathVariable Integer orderId, @RequestBody NoteRequest noteRequest) {
         orderService.updateOrderNote(orderId, noteRequest.getNote());
         return ResponseEntity.ok("Đã thêm ghi chú!");
+    }
+
+    @PostMapping("/{orderId}/cancel")
+    public ResponseEntity<Void> cancelOrder(@PathVariable Integer orderId) {
+        try {
+            orderService.cancelOrder(orderId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
 }

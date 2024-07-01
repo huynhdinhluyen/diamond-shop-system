@@ -80,7 +80,7 @@ const PaymentPage = () => {
             for (const detail of newOrder.orderDetails) {
                 await removeFromCart(detail.productId);
             }
-            await refreshUser(); // Refresh user data after placing order
+            await refreshUser(); // Làm mới thông tin người dùng sau khi đặt hàng
             navigate(`/order-detail/${addedOrder.id}`);
         } catch (error) {
             console.error('Failed to process payment:', error);
@@ -234,19 +234,19 @@ const PaymentPage = () => {
                     <div className="mt-4">
                         <h4 className="font-semibold">Chi tiết thanh toán</h4>
                         <hr className='my-2' />
-                        <div className="flex justify-between">
+                        <div className="flex justify-between flex-wrap">
                             <span>Tổng tiền hàng:</span>
                             <span><Price price={totalAmount} /></span>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between flex-wrap">
                             <span>Phí vận chuyển:</span>
                             <span><Price price={shippingFee} /></span>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between flex-wrap">
                             <span>Giảm giá:</span>
-                            <span><Price price={discountAmount} /></span>
+                            <span>-<Price price={discountAmount} /></span>
                         </div>
-                        <div className="flex justify-between font-semibold">
+                        <div className="flex justify-between font-semibold flex-wrap">
                             <span>Tổng thanh toán:</span>
                             <span><Price price={totalPaymentVND} /></span>
                         </div>

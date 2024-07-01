@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface MembershipLevelRepository extends JpaRepository<MembershipLevel, Integer> {
     Optional<MembershipLevel> findByName(String name);
     Optional<MembershipLevel> findByMinPointsLessThanEqualAndMaxPointsGreaterThanEqual(int minPoints, int maxPoints);
+    Optional<MembershipLevel> findByMinPointsLessThanEqualAndMaxPointsIsNull(int minPoints);
 }
