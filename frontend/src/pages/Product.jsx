@@ -283,14 +283,14 @@ export default function Product() {
                                 <tr>
                                     <td className="py-2 px-4 border-b border-gray-200">Viên phụ</td>
                                     <td className="py-2 px-4 border-b border-gray-200">
-                                        {product.auxiliaryDiamonds ? (
+                                        {product.auxiliaryDiamond ? (
                                             <ul className="ml-4 list-disc">
-                                                <li>Màu: {product.auxiliaryDiamonds.color}</li>
-                                                <li>Xuất xứ: {product.auxiliaryDiamonds.origin}</li>
-                                                <li>Trọng lượng carat: {product.auxiliaryDiamonds.caratWeight}</li>
-                                                <li>Kiểu cắt: {product.auxiliaryDiamonds.cutType}</li>
-                                                <li>Độ trong: {product.auxiliaryDiamonds.clarity}</li>
-                                                <li>Chứng chỉ GIA: {product.auxiliaryDiamonds.giaCertificate}</li>
+                                                <li>Màu: {product.auxiliaryDiamond.color}</li>
+                                                <li>Xuất xứ: {product.auxiliaryDiamond.origin}</li>
+                                                <li>Trọng lượng carat: {product.auxiliaryDiamond.caratWeight}</li>
+                                                <li>Kiểu cắt: {product.auxiliaryDiamond.cutType}</li>
+                                                <li>Độ trong: {product.auxiliaryDiamond.clarity}</li>
+                                                <li>Chứng chỉ GIA: {product.auxiliaryDiamond.giaCertificate}</li>
                                             </ul>
                                         ) : (
                                             "Không có"
