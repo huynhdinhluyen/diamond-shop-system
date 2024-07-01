@@ -6,13 +6,17 @@ import com.example.backend.enums.RoleName;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,11 +73,5 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findByRole(roleName.name());
         return users.stream().map(userMapper::maptoUserDTO)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public UserDTO getUserByUsername(String username) {
-        return userMapper.maptoUserDTO(userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username)));
     }
 }
