@@ -21,12 +21,12 @@ export default function ProfileLayout() {
 
     return (
         user ? (
-            <div className="grid grid-cols-12 mt-10">
+            <div className="grid grid-cols-12 lg:mt-10">
                 <SidebarProfile onMainComponentChange={handleMainComponentChange} />
-                <div className="col-span-9">
+                <div className="col-span-12 lg:col-span-9">
                     {mainComponent}
                 </div>
             </div>
-        ) : null // Trả về null hoặc một loader trong khi chờ điều hướng
+        ) : null
     );
 }

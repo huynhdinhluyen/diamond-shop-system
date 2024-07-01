@@ -19,7 +19,7 @@ export default function PrivacyShipping() {
             <h4 className="h4 mb-2">Hình thức thanh toán</h4>
             <ul className="list-item ml-4 mb-3">
                 <li className="list-disc list-inside">Trả bằng tiền mặt khi nhân viên DHL Diamond giao tận nơi.</li>
-                <li className="list-disc list-inside">Thanh toán qua số tài khoản: 123 345 6789 DHL (Vietcombank). Để lại thông tin: [HỌ VÀ TÊN] [ SĐT] [MÓN HÀNG].</li>
+                <li className="list-disc list-inside">Thanh toán qua Paypal.</li>
             </ul>
             <span className="font-semibold mr-2 underline">Xem thêm:</span>
             <Link to="/privacy-warranty" className="hover:text-accent duration-200 transition-all">Chính sách bảo hành</Link>

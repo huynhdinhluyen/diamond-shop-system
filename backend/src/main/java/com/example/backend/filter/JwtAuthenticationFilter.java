@@ -44,19 +44,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         String token = authHeader.substring(7);
         String username = jwtService.extractUsername(token);
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if(jwtService.isValid(token, userDetails)){
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (jwtService.isValid(token, userDetails)) {
+                // Nếu token hợp lệ, set authentication
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            } else {
+                // Nếu token hết hạn, thông báo và logout
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token hết hạn, vui lòng đăng nhập lại.");
+                return;
             }
         }
-        filterChain.doFilter(request, response);
     }
 }

@@ -54,3 +54,8 @@ export const updateOrderDetailQuantity = async (orderId, productId, quantity) =>
         throw error;
     }
 };
+
+export const cancelOrder = async (orderId, reason) => {
+    const response = await axiosInstance.post(`/api/order/${orderId}/cancel`, { reason });
+    return response.data;
+};

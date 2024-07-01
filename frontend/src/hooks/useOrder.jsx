@@ -17,7 +17,7 @@ export const OrderProvider = ({ children }) => {
         if (user) {
             getUserOrders();
         }
-    }, [user]);
+    }, [user, orders]);
 
     const getUserOrders = async () => {
         if (!user) return;

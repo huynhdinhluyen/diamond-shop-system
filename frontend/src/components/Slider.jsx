@@ -25,16 +25,16 @@ export default function Slider() {
   ];
 
   const items = sliderData.map((data, index) => (
-    <div key={index} className="h-[480px] w-full relative">
+    <div key={index} className="lg:h-[500px] w-full relative">
       <img
         className="w-full h-full object-cover rounded-md"
         role="presentation"
         src={data.image}
         alt=""
       />
-      <div className="absolute text-center lg:text-left md:text-center md:justify-center sm:text-center top-[20%] lg:left-[5%]">
+      <div className="absolute text-center lg:text-left md:justify-center sm:text-center top-[20%] lg:left-[5%] w-full">
         <h2 className="h2 mb-6 text-white">{data.title}</h2>
-        <p className="mb-[42px] text-white leading-8">
+        <p className="mb-[42px] text-white leading-8 ">
           {data.description}
         </p>
         <button
