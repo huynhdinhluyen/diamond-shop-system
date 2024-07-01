@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(updatedUser.getUsername());
         user.setEmail(updatedUser.getEmail());
         user.setPhoneNumber(updatedUser.getPhoneNumber());
+        user.setAddress(updatedUser.getAddress());
         // Cập nhật các thuộc tính khác của người dùng
         return userRepository.save(user);
     }
