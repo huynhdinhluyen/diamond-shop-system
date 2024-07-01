@@ -133,16 +133,16 @@ export default function Product() {
     }
 
     return (
-        <div className="mt-10">
+        <div className="lg:mt-16 mt-0">
             {!product ? (
                 <NotFound message="Không tìm thấy sản phẩm!" linkText="Quay lại trang chính" />
             ) : (
                 <div className="container">
-                    <div className="flex justify-center gap-x-5">
-                        <div className="w-1/2">
-                            <img src={product.imageUrl} alt={product.name} className="h-full object-cover rounded-md max-w-full" />
+                    <div className="flex lg:flex-row flex-col justify-center gap-x-5 gap-y-5">
+                        <div className="lg:w-1/2 w-full">
+                            <img src={product.imageUrl} alt={product.name} className="object-cover rounded-md max-w-full mx-auto h-96" />
                         </div>
-                        <div className="w-1/2 flex flex-col gap-y-3 ml-4">
+                        <div className="lg:w-1/2 flex flex-col gap-y-3 w-full">
                             <h3 className="h3">{product.name}</h3>
                             <h3 className="h3 text-accent">
                                 {product.discountPrice > 0 ?
@@ -154,25 +154,25 @@ export default function Product() {
                                     </div>
                                     : <Price price={product.salePrice} />}
                             </h3>
-                            <div className="flex">
+                            <div className="flex-col md:flex md:flex-row">
                                 <p className="">Vận chuyển:</p>
                                 <i className="ri-truck-fill text-accent ml-8 mr-2"></i>
                                 <span className="text-black">Miễn phí với hóa đơn trên 50.000.000đ</span>
                             </div>
-                            <div className="flex">
-                                <p className="">Vận chuyển tới:</p>
+                            <div className="flex-col xl:flex xl:flex-row">
+                                <p className="text-nowrap">Vận chuyển tới:</p>
                                 <i className="ri-flag-fill ml-8 mr-2 text-accent"></i>
                                 <span className="text-black text-wrap">{user?.address}</span>
                             </div>
-                            <div className="flex gap-x-3">
-                                <p className="">Số lượng: </p>
+                            <div className="flex-col sm:flex sm:flex-row gap-x-3">
+                                <span className="">Số lượng: </span>
                                 <input
                                     type="number"
                                     min="1"
                                     max={product.stockQuantity}
                                     value={quantity}
                                     onChange={(e) => setQuantity(Number(e.target.value))}
-                                    className="w-16 text-center border rounded"
+                                    className="w-16 text-center border rounded mr-3"
                                     disabled={product.stockQuantity === 0}
                                 />
                                 {product.stockQuantity === 0 ? (
@@ -188,13 +188,13 @@ export default function Product() {
                             )}
                             {selectedSize && (
                                 <div className="mt-2">
-                                    <strong>Kích thước đã chọn:</strong> {renderSizeText(selectedSize)}
+                                    <span className="text-base">Kích thước đã chọn:</span> {renderSizeText(selectedSize)}
                                 </div>
                             )}
                             {product.category && renderSizeGuideLink(product.category.name) && renderSizeGuideImage(product.category.name) && (
                                 <div className="mt-2">
-                                    <div className="flex gap-x-2 mb-2">
-                                        <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline block">
+                                    <div className="flex-col xl:flex xl:flex-row gap-x-2 mb-2">
+                                        <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline text-nowrap">
                                             Hướng dẫn chọn kích cỡ cho {product.category.name}:
                                         </Link>
                                         <img src={renderSizeGuideImage(product.category.name)} alt={`Hướng dẫn chọn kích cỡ cho ${product.category.name}`} className="max-w-80 rounded-md" />
@@ -226,17 +226,17 @@ export default function Product() {
                                     </button>
                                 </DialogActions>
                             </Dialog>
-                            <div className="flex justify-start gap-x-4">
+                            <div className="flex-col md:flex md:flex-row justify-start gap-x-4 md:mx-0 mx-auto">
                                 <button
                                     onClick={handleAddToCart}
-                                    className="bg-accent p-2 text-white hover:bg-accent-secondary w-56 text-[16px] rounded-lg"
+                                    className="bg-accent p-2 text-white hover:bg-accent-secondary w-full md:w-56 text-[16px] rounded-lg md:mb-0 mb-2"
                                     disabled={product.stockQuantity === 0}
                                 >
                                     <i className="ri-shopping-cart-line mr-2"></i>Thêm vào giỏ hàng
                                 </button>
                                 <button
                                     onClick={handleBuyNow}
-                                    className="bg-accent p-2 text-white hover:bg-accent-secondary w-56 rounded-lg text-[16px]"
+                                    className="bg-accent p-2 text-white hover:bg-accent-secondary w-full md:w-56 rounded-lg text-[16px]"
                                     disabled={product.stockQuantity === 0}
                                 >
                                     Mua ngay

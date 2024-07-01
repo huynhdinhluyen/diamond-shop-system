@@ -6,11 +6,13 @@ import Price from '../components/Price';
 import { useOrder } from '../hooks/useOrder';
 import { Dialog, DialogActions, DialogContent, DialogTitle, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material';
 import { toast } from 'react-toastify';
+import { useAuth } from '../hooks/useAuth';
 
 const OrderDetail = () => {
     const { orderId } = useParams();
     const [order, setOrder] = useState(null);
     const { getProductFromOrder } = useOrder();
+    const { refreshUser } = useAuth();
     const [orderDetails, setOrderDetails] = useState([]);
     const [openCancelDialog, setOpenCancelDialog] = useState(false);
     const [cancelReason, setCancelReason] = useState('');
@@ -58,6 +60,7 @@ const OrderDetail = () => {
             await cancelOrder(order.id, cancelReason);
             toast.success('Đơn hàng đã được hủy thành công!');
             fetchOrder();
+            refreshUser();
         } catch (error) {
             toast.error('Không thể hủy đơn hàng. Vui lòng thử lại sau.');
             console.error('Failed to cancel order:', error);
@@ -88,17 +91,17 @@ const OrderDetail = () => {
                             <table className="min-w-full bg-white border border-gray-300">
                                 <thead>
                                     <tr className="w-full bg-gray-200 text-left">
-                                        <th className="py-3 px-4 border-b border-gray-300">Sản phẩm</th>
-                                        <th className="py-3 px-4 border-b border-gray-300">Kích cỡ</th>
-                                        <th className="py-3 px-4 border-b border-gray-300">Đơn giá</th>
-                                        <th className="py-3 px-4 border-b border-gray-300">Số lượng</th>
-                                        <th className="py-3 px-4 border-b border-gray-300">Thành tiền</th>
+                                        <th className="py-3 px-4 border-b border-gray-300 text-nowrap">Sản phẩm</th>
+                                        <th className="py-3 px-4 border-b border-gray-300 text-nowrap">Kích cỡ</th>
+                                        <th className="py-3 px-4 border-b border-gray-300 text-nowrap">Đơn giá</th>
+                                        <th className="py-3 px-4 border-b border-gray-300 text-nowrap">Số lượng</th>
+                                        <th className="py-3 px-4 border-b border-gray-300 text-nowrap">Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {orderDetails.map((product, index) => (
                                         <tr key={index} className="hover:bg-gray-100">
-                                            <td className="py-3 px-4 border-b border-gray-300 hover:text-accent transition-all duration-300">
+                                            <td className="py-3 px-4 border-b border-gray-300 hover:text-accent transition-all duration-300  whitespace-nowrap overflow-hidden overflow-ellipsis">
                                                 <Link to={`/product/${product.id}`}>
                                                     {product.name}
                                                 </Link>
@@ -122,19 +125,19 @@ const OrderDetail = () => {
                         <div className="mt-4">
                             <h4 className="font-semibold">Chi tiết thanh toán</h4>
                             <hr className='my-2' />
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center flex-wrap">
                                 <span>Tổng tiền hàng:</span>
                                 <span><Price price={totalAmount} /></span>
                             </div>
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center flex-wrap">
                                 <span>Phí vận chuyển:</span>
                                 <span><Price price={shippingFee} /></span>
                             </div>
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center flex-wrap">
                                 <span>Giảm giá:</span>
                                 <span>-<Price price={order.discountPrice} /></span>
                             </div>
-                            <div className="flex justify-between items-center font-semibold">
+                            <div className="flex justify-between items-center flex-wrap font-semibold">
                                 <span>Tổng thanh toán:</span>
                                 <span><Price price={totalPayment} /></span>
                             </div>
@@ -152,7 +155,7 @@ const OrderDetail = () => {
                             </div>
                             <div className='flex-col md:flex md:flex-row justify-between items-center'>
                                 <h4 className="font-semibold mb-2 lg:mb-0">Trạng thái đơn hàng:</h4>
-                                {orderStatus === "PENDING" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đã nhận được đơn hàng</p>)}
+                                {orderStatus === "PENDING" && (<p className='px-3 py-2 bg-gray-400 text-white text-center rounded-md'>Đã nhận được đơn hàng</p>)}
                                 {orderStatus === "CONFIRMED" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đã xác nhận đơn hàng</p>)}
                                 {orderStatus === "SHIPPING" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đơn hàng đang giao đến bạn</p>)}
                                 {orderStatus === "WAITING_FOR_PICKUP" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đợi đơn vị vận chuyển lấy hàng</p>)}
