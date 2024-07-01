@@ -179,4 +179,16 @@ public class AuthenticationService {
             throw new Exception("Cập nhật nguời dùng thất bại, vui lòng thử lại!");
         }
     }
+
+    public AuthenticationResponse getUserByUsername(String username) {
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+
+        Map<String, Object> tokenResponse = jwtService.generateToken(user);
+        String token = (String) tokenResponse.get("token");
+        Date expiration = (Date) tokenResponse.get("expiration");
+
+        return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
+    }
+
 }
