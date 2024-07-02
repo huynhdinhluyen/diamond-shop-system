@@ -1,14 +1,15 @@
 package com.example.backend.util;
 
 import com.example.backend.entity.User;
+import com.example.backend.enums.TokenType;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
@@ -18,6 +19,18 @@ public class JwtService {
     @Value("${JWT_SECRET_KEY}")
     private String SECRET_KEY;
 
+    @Value("${JWT_ACCESS_TOKEN_EXPIRATION}")
+    private long accessTokenExpiration;
+
+    @Value("${JWT_REFRESH_TOKEN_EXPIRATION}")
+    private long refreshTokenExpiration;
+
+    @Value("${JWT_FORGOT_PASSWORD_TOKEN_EXPIRATION}")
+    private long forgotTokenExpiration;
+
+//    @Value("${JWT_REFRESH_TOKEN_EXPIRATION}")
+//    private long refreshTokenExpiration;
+
     public String extractUsername (String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -26,6 +39,7 @@ public class JwtService {
         String username = extractUsername(token);
         return (username.equals(user.getUsername())) && !isTokenExpired(token);
     }
+
 
     private boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
@@ -49,15 +63,26 @@ public class JwtService {
                 .getPayload();
     }
 
-    public String generateToken(User user) {
-        String token = Jwts.
-                builder()
+    public String generateToken(User user, long expirationMillis, String TOKEN_TYPE) {
+        return Jwts.builder()
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000))
+                .expiration(new Date(System.currentTimeMillis() + expirationMillis))
+                .claim("Token_Type", TOKEN_TYPE)
                 .signWith(getSigninKey())
                 .compact();
-        return token;
+    }
+
+    public String generateAccessToken(User user) {
+        return generateToken(user, accessTokenExpiration, TokenType.AccessToken.name());
+    }
+
+    public String generateRefreshToken(User user) {
+        return generateToken(user, refreshTokenExpiration, TokenType.RefreshToken.name());
+    }
+
+    public String generateFogotPasswordToken(User user) {
+        return generateToken(user, forgotTokenExpiration, TokenType.ForgotPasswordToken.name());
     }
 
     private SecretKey getSigninKey(){

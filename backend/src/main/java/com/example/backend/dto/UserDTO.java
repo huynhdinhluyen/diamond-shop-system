@@ -24,5 +24,6 @@ public class UserDTO {
     private String verificationCode;
     private String accessToken;
     private String refreshToken;
+    private String resetPasswordToken;
 //    private boolean enabled;
 }

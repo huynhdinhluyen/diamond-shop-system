@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 public enum TokenType {
     AccessToken,
     RefreshToken,
-    ForgotPwToken,
+    ForgotPasswordToken,
     EmailVerificationToken
 }

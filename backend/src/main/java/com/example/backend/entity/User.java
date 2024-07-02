@@ -68,7 +68,8 @@ public class User implements UserDetails {
     @Column(name = "refresh_token", length = 1000)
     private String refreshToken;
 
-    //private boolean enabled;
+    @Column(name = "reset_password_token", length = 1000)
+    private String resetPasswordToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

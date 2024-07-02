@@ -18,7 +18,8 @@ public class UserMapper {
                 user.getRoleName(),
                 user.getVerificationCode(),
                 user.getAccessToken(),
-                user.getRefreshToken()
+                user.getRefreshToken(),
+                user.getResetPasswordToken()
         );
     }
 
@@ -36,7 +37,8 @@ public class UserMapper {
                 dto.getRole(),
                 dto.getVerificationCode(),
                 dto.getAccessToken(),
-                dto.getRefreshToken()
+                dto.getRefreshToken(),
+                dto.getResetPasswordToken()
         );
     }
 }

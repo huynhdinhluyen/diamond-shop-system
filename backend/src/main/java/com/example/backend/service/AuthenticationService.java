@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.request.ChangePasswordRequest;
+import com.example.backend.request.ResetPasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
@@ -20,13 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
     private UserDetailsService userDetailsService;
-
     private final EmailSenderService mailservice;
 
     public AuthenticationService(UserRepository repository,
@@ -64,43 +65,31 @@ public class AuthenticationService {
             user.setEmail(request.getEmail());
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
-            user = repository.save(user);
+            //user = repository.save(user);
             mailservice.sendSimpleMail(user.getEmail(),
-                    "sub",
-                    "123");
-            String token = jwtService.generateToken(user);
-            return new AuthenticationResponse(token, user);
+                    "verifitication",
+                    "123"); // random
+            //String token = jwtService.generateAccessToken(user);
+            return new AuthenticationResponse("sudo token", user);
         } catch (DataIntegrityViolationException e) {
             throw new Exception("Đăng ký thất bại, vui lòng thử lại sau!");
         }
     }
 
     public AuthenticationResponse authenticate(User request) {
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getUsername(),
-//                        request.getPassword()
-//                ));
-//        User user = repository.findByUsername(request.getUsername()).orElseThrow();
-//        logger.info("Received change password request: {}", request);
-//        String token = jwtService.generateToken(user);
-//        return new AuthenticationResponse(token, user);
         try {
-            logger.info("Starting authentication for user: {}", request.getUsername());
-            // Log before authentication
             logger.info("Before authenticationManager.authenticate");
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getUsername(),
                             request.getPassword()
                     ));
-            // Log after successful authentication
             logger.info("After authenticationManager.authenticate");
             User user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
                     new UsernameNotFoundException("User not found: " + request.getUsername()));
             logger.info("User found: {}", user.getUsername());
-            String token = jwtService.generateToken(user);
-            logger.info("Token generated for user: {}", user.getUsername());
+            String token = jwtService.generateAccessToken(user);
+            logger.info("access token generated for user: {}", user.getUsername());
             user.setAccessToken(token);
             repository.save(user);
             logger.info("ACToken generated for user: {}", user.getAccessToken());
@@ -112,8 +101,12 @@ public class AuthenticationService {
     }
 
     public void changePassword(ChangePasswordRequest passwordChangeRequest) {
-        User user = repository.findByUsername(passwordChangeRequest.getUsername())
+        String username = jwtService.extractUsername(passwordChangeRequest.getResetPasswordToken());
+        User user = repository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!user.getResetPasswordToken().equalsIgnoreCase(passwordChangeRequest.getResetPasswordToken())) {
+            throw new RuntimeException("Invalid");
+        }
         if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
             throw new RuntimeException("Old password is incorrect");
         }
@@ -122,7 +115,19 @@ public class AuthenticationService {
         }
         user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
         repository.save(user);
-        //tesst
+    }
+
+    public String resetPassword(ResetPasswordRequest request) {
+        User user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String token = jwtService.generateFogotPasswordToken(user);
+        user.setResetPasswordToken(token);
+        repository.save(user);
+        logger.info("Reset password token saved: {}", token);
+        mailservice.sendSimpleMail(request.getEmail(),
+                "reset password",
+                "your thing: " +token);
+        return "check your mail";
     }
 
     public UserDetails getUserDetailsFromToken(String token) {
@@ -144,7 +149,7 @@ public class AuthenticationService {
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
             user = repository.save(user);
-            String token = jwtService.generateToken(user);
+            String token = jwtService.generateAccessToken(user);
             return new AuthenticationResponse(token, user);
         } catch (DataIntegrityViolationException e) {
             throw new Exception("Cập nhật nguời dùng thất bại, vui lòng thử lại!");

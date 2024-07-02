@@ -6,6 +6,7 @@ import com.example.backend.enums.RoleName;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.request.ChangePasswordRequest;
+import com.example.backend.request.ResetPasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.UserService;
@@ -43,13 +44,6 @@ public class UserController {
             @RequestBody User request
     ){
         return ResponseEntity.ok(authService.authenticate(request));
-    }
-
-    @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
-        //logger.info("Received change password request: {}", passwordChangeRequest);
-        authService.changePassword(passwordChangeRequest);
-        return ResponseEntity.ok("Password changed successfully");
     }
 
     @GetMapping("/get-user-token")
@@ -113,4 +107,17 @@ public class UserController {
         List<UserDTO> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
+
+    @PostMapping("/forget-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        return ResponseEntity.ok(authService.resetPassword(request));
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
+        //logger.info("Received change password request: {}", passwordChangeRequest);
+        authService.changePassword(passwordChangeRequest);
+        return ResponseEntity.ok("Password changed successfully");
+    }
+
 }
