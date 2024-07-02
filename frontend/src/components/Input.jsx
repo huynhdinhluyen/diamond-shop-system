@@ -61,7 +61,7 @@ const Input = forwardRef(({
                     </button>
                 )}
             </div>
-            {error && <div className="text-red-500 text-center text-xs absolute top-0 right-4 flex items-center h-full">{getErrorMessage()}</div>}
+            {error && <div className="text-red-500 text-center text-xs absolute top-0 right-8 flex items-center h-full">{getErrorMessage()}</div>}
         </InputContainer>
     );
 });

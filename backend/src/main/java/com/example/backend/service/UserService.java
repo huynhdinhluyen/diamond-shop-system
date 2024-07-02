@@ -3,6 +3,7 @@ import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.User;
 import com.example.backend.enums.RoleName;
 import com.example.backend.exception.UserNotFoundException;
+import com.example.backend.response.AuthenticationResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,5 +17,4 @@ public interface UserService {
     User updateUser(Integer userId, User updatedUser);
     void deleteUser(Integer userId) throws UserNotFoundException;
     List<UserDTO> findByRole(RoleName roleName);
-    UserDTO getUserByUsername(String username);
 }

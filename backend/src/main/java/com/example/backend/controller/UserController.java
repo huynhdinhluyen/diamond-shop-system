@@ -115,8 +115,7 @@ public class UserController {
     }
 
     @GetMapping("/get/{username}")
-    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
-        UserDTO user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<AuthenticationResponse> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(authService.getUserByUsername(username));
     }
 }
