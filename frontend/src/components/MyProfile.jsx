@@ -23,7 +23,7 @@ export default function MyProfile() {
     }
 
     return (
-        <div className="w-full ml-5">
+        <div className="w-full lg:ml-5">
             <div>
                 <h3 className="h3">Hồ sơ của tôi</h3>
                 <p className="text-gray-400">Quản lý thông tin hồ sơ cá nhân</p>
@@ -32,7 +32,7 @@ export default function MyProfile() {
             <div className="mt-5">
                 <form onSubmit={handleSubmit(submit)}>
                     <div className="flex-grow items-center ">
-                        <label htmlFor="" className="mr-5">Họ:</label>
+                        <label htmlFor="" className="lg:mr-5">Họ:</label>
                         <Input
                             type="text"
                             defaultValue={user.lastName}
@@ -44,7 +44,7 @@ export default function MyProfile() {
                         />
                     </div>
                     <div className="flex-grow items-center w-full mt-5">
-                        <label htmlFor="" className="mr-5">Tên:</label>
+                        <label htmlFor="" className="lg:mr-5">Tên:</label>
                         <Input
                             type="text"
                             defaultValue={user.firstName}
@@ -56,7 +56,7 @@ export default function MyProfile() {
                         />
                     </div>
                     <div className="flex-grow items-center mt-5">
-                        <label htmlFor="" className="mr-5 text-nowrap">Tên đăng nhập:</label>
+                        <label htmlFor="" className="lg:mr-5 text-nowrap">Tên đăng nhập:</label>
                         <Input
                             type="text"
                             defaultValue={user.username}

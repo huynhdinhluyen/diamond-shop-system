@@ -1,6 +1,12 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.UserDTO;
+import com.example.backend.entity.MembershipLevel;
+import com.example.backend.exception.MembershipLevelNotFoundException;
 import com.example.backend.exception.UserNotFoundException;
+import com.example.backend.mapper.MembershipLevelMapper;
+import com.example.backend.mapper.UserMapper;
+import com.example.backend.repository.MembershipLevelRepository;
 import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.request.ResetPasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
@@ -18,6 +24,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.Map;
+
 @Service
 public class AuthenticationService {
 
@@ -27,7 +36,11 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final UserDetailsService userDetailsService;
+    private final MembershipLevelRepository membershipLevelRepository;
+    private final MembershipLevelMapper membershipLevelMapper;
     private final EmailSenderService mailservice;
 
     public AuthenticationService(UserRepository repository,
@@ -35,13 +48,18 @@ public class AuthenticationService {
                                  JwtService jwtService,
                                  AuthenticationManager authenticationManager,
                                  UserDetailsService userDetailsService,
-                                 EmailSenderService mailservice) {
+                                 EmailSenderService mailservice, UserRepository userRepository, UserMapper userMapper,
+                                 MembershipLevelRepository membershipLevelRepository, MembershipLevelMapper membershipLevelMapper) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.mailservice = mailservice;
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.membershipLevelRepository = membershipLevelRepository;
+        this.membershipLevelMapper = membershipLevelMapper;
     }
 
     public AuthenticationResponse register(User request) throws Exception {
@@ -65,12 +83,27 @@ public class AuthenticationService {
             user.setEmail(request.getEmail());
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
+            String token = jwtService.generateAccessToken(user);
             //user = repository.save(user);
+//            mailservice.sendSimpleMail(user.getEmail(),
+//                    "verifitication",
+//                    "123"); // random
+//            //String token = jwtService.generateAccessToken(user);
+//            return new AuthenticationResponse("sudo token", user);
+            MembershipLevel membershipLevel = membershipLevelRepository.findByName("BRONZE")
+                    .orElseThrow(() -> new MembershipLevelNotFoundException("Not Found"));
+            user.setMembershipLevel(membershipLevel);
+            user = repository.save(user);
             mailservice.sendSimpleMail(user.getEmail(),
-                    "verifitication",
-                    "123"); // random
-            //String token = jwtService.generateAccessToken(user);
-            return new AuthenticationResponse("sudo token", user);
+                    "sub",
+                    "123");
+            /*
+            Map<String, Object> tokenResponse = jwtService.generateToken(user);
+            String token = (String) tokenResponse.get("token");
+            Date expiration = (Date) tokenResponse.get("expiration");
+            */
+            Date expiration = jwtService.extractExpiration(token);
+            return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
         } catch (DataIntegrityViolationException e) {
             throw new Exception("Đăng ký thất bại, vui lòng thử lại sau!");
         }
@@ -87,13 +120,20 @@ public class AuthenticationService {
             logger.info("After authenticationManager.authenticate");
             User user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
                     new UsernameNotFoundException("User not found: " + request.getUsername()));
-            logger.info("User found: {}", user.getUsername());
             String token = jwtService.generateAccessToken(user);
             logger.info("access token generated for user: {}", user.getUsername());
+            // --
+            /*
+            Map<String, Object> tokenResponse = jwtService.generateToken(user);
+            String token = (String) tokenResponse.get("token");
+            Date expiration = (Date) tokenResponse.get("expiration");
+            logger.info("Token generated for user: {}", user.getUsername());
+            */
+            // -
             user.setAccessToken(token);
             repository.save(user);
-            logger.info("ACToken generated for user: {}", user.getAccessToken());
-            return new AuthenticationResponse(token, user);
+            Date expiration = jwtService.extractExpiration(token);
+            return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
         } catch (Exception e) {
             logger.error("Error during authentication", e);
             throw e;
@@ -130,9 +170,11 @@ public class AuthenticationService {
         return "check your mail";
     }
 
-    public UserDetails getUserDetailsFromToken(String token) {
+    public User getUserFromToken(String token) {
         String username = jwtService.extractUsername(token);
-        return userDetailsService.loadUserByUsername(username);
+        logger.info("User found: {}", username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
     public AuthenticationResponse updateUser(Integer userId, User request) throws Exception {
@@ -149,10 +191,30 @@ public class AuthenticationService {
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
             user = repository.save(user);
+
+            /* duy
             String token = jwtService.generateAccessToken(user);
             return new AuthenticationResponse(token, user);
+            */
+
+            // Map<String, Object> tokenResponse = jwtService.generateToken(user);
+            String token = jwtService.generateAccessToken(user);
+            Date expiration = jwtService.extractExpiration(token);
+            return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
         } catch (DataIntegrityViolationException e) {
             throw new Exception("Cập nhật nguời dùng thất bại, vui lòng thử lại!");
         }
     }
+
+//    public AuthenticationResponse getUserByUsername(String username) {
+//        User user = repository.findByUsername(username)
+//                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+//
+//        Map<String, Object> tokenResponse = jwtService.generateToken(user);
+//        String token = (String) tokenResponse.get("token");
+//        Date expiration = (Date) tokenResponse.get("expiration");
+//
+//        return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
+//    }
+
 }

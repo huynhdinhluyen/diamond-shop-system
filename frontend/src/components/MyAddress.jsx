@@ -1,28 +1,54 @@
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "../hooks/useAuth";
+import Input from "../components/Input"
+import { useForm } from "react-hook-form";
 
 export default function MyAddress() {
-    const { user } = useAuth();
+    const { user, updateProfile, refreshUser } = useAuth();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        defaultValues: {
+            lastName: user?.lastName || "",
+            firstName: user?.firstName || "",
+            username: user?.username || "",
+            email: user?.email || "",
+            phoneNumber: user?.phoneNumber || "",
+            address: user?.address || ""
+        }
+    });
+
+    const submit = (user) => {
+        updateProfile(user)
+        refreshUser();
+    }
+
     return (
         <div className="ml-10">
-            <div className="flex justify-between mb-5">
-                <h3 className="h3">Địa chỉ nhận hàng</h3>
-                <button className="px-5 py-2 text-white bg-accent">
-                    <i className="ri-add-line text-white mr-2"></i>
-                    Thêm địa chỉ mới
-                </button>
+            <div className="md:flex md:flex-row flex-col justify-between mb-5">
+                <h3 className="h3 mb-3 md:mb-0">Địa chỉ nhận hàng</h3>
             </div>
             <hr />
             <div>
                 {user &&
-                    <div className="flex justify-between items-center">
-                        <div>
+                    <div className="">
+                        <form onSubmit={handleSubmit(submit)}>
                             <p>{user.lastName} {user.firstName}</p>
-                            <p>{user.address}</p>
-                        </div>
-                        <div className="hover:text-accent hover:underline transition-all duration-300 cursor-pointer">Sửa</div>
+                            <Input
+                                type="text"
+                                defaultValue={user.address}
+                                {...register("address", {
+                                    required: true,
+                                })}
+                                error={errors.address}
+                            />
+                            <button className="btn btn-accent btn-sm mt-5" type="submit">Thay đổi</button>
+                        </form>
                     </div>
                 }
             </div>
         </div>
-    )
+    );
 }

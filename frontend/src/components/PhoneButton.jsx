@@ -12,7 +12,7 @@ export default function PhoneButton() {
             <PhoneNotification />
             <button
                 onClick={handlePhoneCall}
-                className="z-50 fixed bottom-20 right-8 bg-green-600 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 flex items-center justify-center"
+                className="z-50 fixed bottom-20 right-8 bg-accent text-white p-3 rounded-full shadow-lg transition-opacity duration-300 flex items-center justify-center"
                 style={{ width: '50px', height: '50px' }}
             >
                 <i className="ri-customer-service-2-fill"></i>

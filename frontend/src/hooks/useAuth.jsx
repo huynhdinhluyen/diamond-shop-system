@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import * as userService from "../service/userService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,24 @@ import "react-toastify/dist/ReactToastify.css";
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(userService.getUser());
+
+  useEffect(() => {
+    const checkTokenExpiry = () => {
+      const user = userService.getUser();
+      if (user) {
+        const tokenExpiry = new Date(user.expiration);
+        const now = new Date();
+        if (now >= tokenExpiry) {
+          toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+          logout();
+        }
+      }
+    };
+
+    const interval = setInterval(checkTokenExpiry, 60000); // Kiểm tra mỗi phút
+    return () => clearInterval(interval);
+  }, []);
+
   const login = async (username, password) => {
     try {
       const user = await userService.login(username, password);
@@ -71,10 +89,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const refreshedUser = await userService.getUserByUsername(user.username);
+      setUser(refreshedUser);
+      userService.setUser(refreshedUser); // Update localStorage
+    } catch (err) {
+      toast.error("Không thể làm mới thông tin người dùng!");
+    }
+  };
+
   return (
-    <AuthContext.Provider
-      value={{ user, login, logout, register, updateProfile, changePassword }}
-    >
+    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, changePassword, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

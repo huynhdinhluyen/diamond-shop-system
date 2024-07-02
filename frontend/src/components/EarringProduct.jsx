@@ -38,7 +38,7 @@ const settings = {
         {
             breakpoint: 480,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
                 slidesToScroll: 1
             }
         }
@@ -71,7 +71,7 @@ function RingProduct() {
 
     return (
         <div className="container mx-auto mt-8">
-            <img src="https://cdn-media.glamira.com/media/catalog/category/product_image_top_banner_pearl_earrings_uk.jpg" alt="" className="h-50" />
+            <img src="https://cdn-media.glamira.com/media/catalog/category/product_image_top_banner_pearl_earrings_uk.jpg" alt="" className="w-full lg:h-96 h-auto object-cover" />
             <div className="flex items-center justify-between my-4 text-center">
                 <h1 className="text-xl text-center font-bold text-nowrap text-accent mx-auto">
                     {categoryName}

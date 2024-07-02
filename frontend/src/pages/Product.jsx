@@ -33,7 +33,7 @@ export default function Product() {
     }, [productId]);
 
     const handleAddToCart = () => {
-        if (user == null) {
+        if (!user) {
             toast.error("Đăng nhập trước khi thêm vào giỏ hàng!");
             return;
         }
@@ -66,7 +66,7 @@ export default function Product() {
     };
 
     const handleBuyNow = () => {
-        if (user == null) {
+        if (!user) {
             toast.error("Đăng nhập trước khi đặt hàng!");
             return;
         }
@@ -77,10 +77,13 @@ export default function Product() {
             return;
         }
 
+        const basePrice = product.discountPrice > 0 ? product.discountPrice : product.salePrice;
+        const discountPrice = basePrice * user.membershipLevel.discountRate;
+
         const order = {
             userId: user.id,
-            discountPrice: 0,
-            totalPrice: product.discountPrice > 0 ? product.discountPrice * quantity : product.salePrice * quantity,
+            discountPrice: discountPrice,
+            totalPrice: discountPrice > 0 ? (basePrice - discountPrice) * quantity : basePrice * quantity,
             createdAt: new Date().toISOString(),
             deliveryFee: product.costPrice * quantity > 50000000 ? 0 : 50000,
             customerName: `${user.lastName} ${user.firstName}`,
@@ -119,17 +122,27 @@ export default function Product() {
         return sizeGuides[category.toLowerCase()] || null;
     };
 
+    const renderSizeGuideImage = (category) => {
+        const sizeGuideImages = {
+            'nhẫn': "https://candyshop88.vn/wp-content/uploads/2022/04/cach-do-size-nhan-2.jpg",
+            'dây chuyền': "https://caohungdiamond.com/wp-content/uploads/2022/06/tham-khao-cac-size-day-chuyen-dep.jpg",
+            'vòng tay': "https://caohungdiamond.com/wp-content/uploads/2022/06/bang-do-kich-thuoc-vong-tay-chuan-nhat.jpg",
+        };
+
+        return sizeGuideImages[category.toLowerCase()] || null;
+    }
+
     return (
-        <div className="mt-10">
+        <div className="lg:mt-16 mt-0">
             {!product ? (
                 <NotFound message="Không tìm thấy sản phẩm!" linkText="Quay lại trang chính" />
             ) : (
                 <div className="container">
-                    <div className="flex justify-center gap-x-5">
-                        <div className="">
-                            <img src={product.imageUrl} alt={product.name} className="h-full object-cover rounded-md" />
+                    <div className="flex lg:flex-row flex-col justify-center gap-x-5 gap-y-5">
+                        <div className="lg:w-1/2 w-full">
+                            <img src={product.imageUrl} alt={product.name} className="object-cover rounded-md max-w-full mx-auto h-96" />
                         </div>
-                        <div className="flex flex-col gap-y-3 ml-4">
+                        <div className="lg:w-1/2 flex flex-col gap-y-3 w-full">
                             <h3 className="h3">{product.name}</h3>
                             <h3 className="h3 text-accent">
                                 {product.discountPrice > 0 ?
@@ -141,27 +154,32 @@ export default function Product() {
                                     </div>
                                     : <Price price={product.salePrice} />}
                             </h3>
-                            <div className="flex">
+                            <div className="flex-col md:flex md:flex-row">
                                 <p className="">Vận chuyển:</p>
                                 <i className="ri-truck-fill text-accent ml-8 mr-2"></i>
                                 <span className="text-black">Miễn phí với hóa đơn trên 50.000.000đ</span>
                             </div>
-                            <div className="flex">
-                                <p className="">Vận chuyển tới:</p>
+                            <div className="flex-col xl:flex xl:flex-row">
+                                <p className="text-nowrap">Vận chuyển tới:</p>
                                 <i className="ri-flag-fill ml-8 mr-2 text-accent"></i>
                                 <span className="text-black text-wrap">{user?.address}</span>
                             </div>
-                            <div className="flex gap-x-3">
-                                <p className="">Số lượng: </p>
+                            <div className="flex-col sm:flex sm:flex-row gap-x-3">
+                                <span className="">Số lượng: </span>
                                 <input
                                     type="number"
                                     min="1"
                                     max={product.stockQuantity}
                                     value={quantity}
                                     onChange={(e) => setQuantity(Number(e.target.value))}
-                                    className="w-16 text-center border rounded"
+                                    className="w-16 text-center border rounded mr-3"
+                                    disabled={product.stockQuantity === 0}
                                 />
-                                <span>(Số lượng có sẵn: {product.stockQuantity})</span>
+                                {product.stockQuantity === 0 ? (
+                                    <span className="text-red-500">(Hết hàng)</span>
+                                ) : (
+                                    <span>(Số lượng có sẵn: {product.stockQuantity})</span>
+                                )}
                             </div>
                             {!isSizeNotRequiredCategory && (
                                 <button className="border border-accent rounded-md uppercase font-semibold text-accent-secondary" onClick={handleClickOpen}>
@@ -170,14 +188,17 @@ export default function Product() {
                             )}
                             {selectedSize && (
                                 <div className="mt-2">
-                                    <strong>Kích thước đã chọn:</strong> {renderSizeText(selectedSize)}
+                                    <span className="text-base">Kích thước đã chọn:</span> {renderSizeText(selectedSize)}
                                 </div>
                             )}
-                            {product.category && renderSizeGuideLink(product.category.name) && (
+                            {product.category && renderSizeGuideLink(product.category.name) && renderSizeGuideImage(product.category.name) && (
                                 <div className="mt-2">
-                                    <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline block">
-                                        Hướng dẫn chọn kích cỡ cho {product.category.name}
-                                    </Link>
+                                    <div className="flex-col xl:flex xl:flex-row gap-x-2 mb-2">
+                                        <Link to={renderSizeGuideLink(product.category.name)} className="text-blue-500 underline text-nowrap">
+                                            Hướng dẫn chọn kích cỡ cho {product.category.name}:
+                                        </Link>
+                                        <img src={renderSizeGuideImage(product.category.name)} alt={`Hướng dẫn chọn kích cỡ cho ${product.category.name}`} className="max-w-80 rounded-md" />
+                                    </div>
                                     <Link to="/privacy-warranty" className="text-blue-500 underline">
                                         Chính sách bảo hành sản phẩm
                                     </Link>
@@ -205,12 +226,25 @@ export default function Product() {
                                     </button>
                                 </DialogActions>
                             </Dialog>
-                            <div className="flex justify-start gap-x-4">
-                                <button onClick={handleAddToCart} className=" bg-accent p-2 text-white hover:bg-accent-secondary w-56 text-[16px] rounded-lg"><i className="ri-shopping-cart-line mr-2"></i>Thêm vào giỏ hàng</button>
-                                <button onClick={handleBuyNow} className=" bg-accent p-2 text-white hover:bg-accent-secondary w-56 rounded-lg text-[16px]">Mua ngay</button>
+                            <div className="flex-col md:flex md:flex-row justify-start gap-x-4 md:mx-0 mx-auto">
+                                <button
+                                    onClick={handleAddToCart}
+                                    className="bg-accent p-2 text-white hover:bg-accent-secondary w-full md:w-56 text-[16px] rounded-lg md:mb-0 mb-2"
+                                    disabled={product.stockQuantity === 0}
+                                >
+                                    <i className="ri-shopping-cart-line mr-2"></i>Thêm vào giỏ hàng
+                                </button>
+                                <button
+                                    onClick={handleBuyNow}
+                                    className="bg-accent p-2 text-white hover:bg-accent-secondary w-full md:w-56 rounded-lg text-[16px]"
+                                    disabled={product.stockQuantity === 0}
+                                >
+                                    Mua ngay
+                                </button>
                             </div>
                         </div>
                     </div>
+
                     <div className="mt-10">
                         <h4 className="h4 text-accent mb-4 uppercase">Chi tiết sản phẩm</h4>
                         <table className="min-w-full bg-white">
@@ -249,14 +283,14 @@ export default function Product() {
                                 <tr>
                                     <td className="py-2 px-4 border-b border-gray-200">Viên phụ</td>
                                     <td className="py-2 px-4 border-b border-gray-200">
-                                        {product.auxiliaryDiamonds ? (
+                                        {product.auxiliaryDiamond ? (
                                             <ul className="ml-4 list-disc">
-                                                <li>Màu: {product.mainDiamond.color}</li>
-                                                <li>Xuất xứ: {product.mainDiamond.origin}</li>
-                                                <li>Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
-                                                <li>Kiểu cắt: {product.mainDiamond.cutType}</li>
-                                                <li>Độ trong: {product.mainDiamond.clarity}</li>
-                                                <li>Chứng chỉ GIA: {product.mainDiamond.giaCertificate}</li>
+                                                <li>Màu: {product.auxiliaryDiamond.color}</li>
+                                                <li>Xuất xứ: {product.auxiliaryDiamond.origin}</li>
+                                                <li>Trọng lượng carat: {product.auxiliaryDiamond.caratWeight}</li>
+                                                <li>Kiểu cắt: {product.auxiliaryDiamond.cutType}</li>
+                                                <li>Độ trong: {product.auxiliaryDiamond.clarity}</li>
+                                                <li>Chứng chỉ GIA: {product.auxiliaryDiamond.giaCertificate}</li>
                                             </ul>
                                         ) : (
                                             "Không có"

@@ -24,6 +24,11 @@ public class UserDTO {
     private String verificationCode;
     private String accessToken;
     private String refreshToken;
+<<<<<<< HEAD
     private String resetPasswordToken;
 //    private boolean enabled;
+=======
+    private Integer points;
+    private MembershipLevelDTO membershipLevel;
+>>>>>>> main
 }

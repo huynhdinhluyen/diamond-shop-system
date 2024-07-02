@@ -2,11 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html{ 
+  scroll-behavior: smooth;
+}
+
 body {
   @apply text-secondary font-primary text-[15px] leading-8;
   font-family: "Poppins", sans-serif;
 }
-
 
 h1,
 h2,
