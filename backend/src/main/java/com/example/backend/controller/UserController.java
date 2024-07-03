@@ -7,11 +7,14 @@ import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.request.ResetPasswordRequest;
+import com.example.backend.request.VerifyAccountRequest;
 import com.example.backend.response.AuthenticationResponse;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.UserService;
+import com.example.backend.util.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +28,13 @@ public class UserController {
     private final AuthenticationService authService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public UserController(AuthenticationService authService, UserService userService, UserRepository userRepository) {
+    public UserController(AuthenticationService authService, UserService userService, UserRepository userRepository, JwtService jwtService) {
         this.authService=authService;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -38,6 +43,15 @@ public class UserController {
     ) throws Exception {
         return ResponseEntity.ok(authService.register(request));
     }
+
+    @PostMapping("/accountVerified")
+    public ResponseEntity<String> verifyAccount(
+            @RequestBody VerifyAccountRequest request
+            ) throws Exception {
+        return ResponseEntity.ok(authService.
+                registerConfirmed(request.getVerificationCode(), request.getAccessToken()));
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
@@ -135,14 +149,13 @@ public class UserController {
 
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
-        //logger.info("Received change password request: {}", passwordChangeRequest);
         authService.changePassword(passwordChangeRequest);
         return ResponseEntity.ok("Password changed successfully");
     }
 
-//    @GetMapping("/get/{username}")
-//    public ResponseEntity<AuthenticationResponse> getUserByUsername(@PathVariable String username) {
-//        return ResponseEntity.ok(authService.getUserByUsername(username));
-//    }
+    @GetMapping("/get/{username}")
+    public ResponseEntity<AuthenticationResponse> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(authService.getUserByUsername(username));
+    }
 
 }

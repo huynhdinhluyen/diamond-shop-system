@@ -1,7 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.UserDTO;
 import com.example.backend.entity.MembershipLevel;
+import com.example.backend.enums.UserVerifyStatus;
 import com.example.backend.exception.MembershipLevelNotFoundException;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.MembershipLevelMapper;
@@ -18,14 +18,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
-import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class AuthenticationService {
@@ -67,7 +65,7 @@ public class AuthenticationService {
             throw new Exception("Số điện thoại đã tồn tại!");
         }
         if (repository.existsByUsername(request.getUsername())) {
-            throw new Exception("Người dùng đã tồn tại!");
+            throw new Exception("Tên người dùng đã tồn tại!");
         }
         if(repository.existsByEmail(request.getEmail())) {
             throw new Exception("Email đã tồn tại!");
@@ -83,29 +81,36 @@ public class AuthenticationService {
             user.setEmail(request.getEmail());
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
-            String token = jwtService.generateAccessToken(user);
-            //user = repository.save(user);
-//            mailservice.sendSimpleMail(user.getEmail(),
-//                    "verifitication",
-//                    "123"); // random
-//            //String token = jwtService.generateAccessToken(user);
-//            return new AuthenticationResponse("sudo token", user);
+            String accessToken = jwtService.generateAccessToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+            user.setAccessToken(accessToken);
+            user.setRefreshToken(refreshToken);
             MembershipLevel membershipLevel = membershipLevelRepository.findByName("BRONZE")
                     .orElseThrow(() -> new MembershipLevelNotFoundException("Not Found"));
             user.setMembershipLevel(membershipLevel);
-            user = repository.save(user);
-            mailservice.sendSimpleMail(user.getEmail(),
-                    "sub",
-                    "123");
-            /*
-            Map<String, Object> tokenResponse = jwtService.generateToken(user);
-            String token = (String) tokenResponse.get("token");
-            Date expiration = (Date) tokenResponse.get("expiration");
-            */
-            Date expiration = jwtService.extractExpiration(token);
-            return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
+            String emailVerifiticationToken = jwtService.generateEmailVerifyToken(user);
+            user.setVerificationCode(emailVerifiticationToken);
+            mailservice.sendSimpleMail(user, emailVerifiticationToken,
+                    "your code: ",
+                    "Register confirmation");
+            Date expiration = jwtService.extractExpiration(accessToken);
+            userRepository.save(user);
+            return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
         } catch (DataIntegrityViolationException e) {
             throw new Exception("Đăng ký thất bại, vui lòng thử lại sau!");
+        }
+    }
+
+    public String registerConfirmed(String emailVerifyToken, String accessToken) throws Exception {
+        User user = userRepository.findByUsername(jwtService.extractUsername(accessToken))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        String sentCode = user.getVerificationCode().substring(16, 21);
+        if (!sentCode.equals(emailVerifyToken)) {
+            return "invalid verification code";
+        } else {
+            user.setAccountStatus(UserVerifyStatus.Verified);
+            userRepository.save(user);
+            return "Registration confirmed. You can now log in";
         }
     }
 
@@ -120,7 +125,8 @@ public class AuthenticationService {
             logger.info("After authenticationManager.authenticate");
             User user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
                     new UsernameNotFoundException("User not found: " + request.getUsername()));
-            String token = jwtService.generateAccessToken(user);
+            String accessToken = jwtService.generateAccessToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
             logger.info("access token generated for user: {}", user.getUsername());
             // --
             /*
@@ -129,11 +135,12 @@ public class AuthenticationService {
             Date expiration = (Date) tokenResponse.get("expiration");
             logger.info("Token generated for user: {}", user.getUsername());
             */
-            // -
-            user.setAccessToken(token);
+            // --
+            user.setAccessToken(accessToken);
+            user.setRefreshToken(refreshToken);
             repository.save(user);
-            Date expiration = jwtService.extractExpiration(token);
-            return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
+            Date expiration = jwtService.extractExpiration(accessToken);
+            return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
         } catch (Exception e) {
             logger.error("Error during authentication", e);
             throw e;
@@ -164,9 +171,9 @@ public class AuthenticationService {
         user.setResetPasswordToken(token);
         repository.save(user);
         logger.info("Reset password token saved: {}", token);
-        mailservice.sendSimpleMail(request.getEmail(),
-                "reset password",
-                "your thing: " +token);
+        mailservice.sendSimpleMail(user, jwtService.generateFogotPasswordToken(user),
+                "your code:  ",
+                "Reset password: ");
         return "check your mail";
     }
 
@@ -206,15 +213,12 @@ public class AuthenticationService {
         }
     }
 
-//    public AuthenticationResponse getUserByUsername(String username) {
-//        User user = repository.findByUsername(username)
-//                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
-//
-//        Map<String, Object> tokenResponse = jwtService.generateToken(user);
-//        String token = (String) tokenResponse.get("token");
-//        Date expiration = (Date) tokenResponse.get("expiration");
-//
-//        return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
-//    }
+    public AuthenticationResponse getUserByUsername(String username) {
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+        String accessToken = user.getAccessToken();
+        Date expiration = jwtService.extractExpiration(accessToken);
+        return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
+    }
 
 }

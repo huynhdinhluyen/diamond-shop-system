@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 import com.example.backend.enums.RoleName;
+import com.example.backend.enums.UserVerifyStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -102,4 +103,10 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "membership_level_id")
     private MembershipLevel membershipLevel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 25)
+    private UserVerifyStatus accountStatus = UserVerifyStatus.Unverified;
+
+
 }

@@ -75,6 +75,10 @@ public class JwtService {
                 .compact();
     }
 
+    public String generateEmailVerifyToken(User user) {
+        return generateToken(user, accessTokenExpiration, TokenType.EmailVerificationToken.name());
+    }
+
     public String generateAccessToken(User user) {
         return generateToken(user, accessTokenExpiration, TokenType.AccessToken.name());
     }
