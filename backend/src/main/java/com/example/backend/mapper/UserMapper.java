@@ -24,8 +24,10 @@ public class UserMapper {
                 user.getVerificationCode(),
                 user.getAccessToken(),
                 user.getRefreshToken(),
+                user.getResetPasswordToken(),
                 user.getPoints(),
-                membershipLevelMapper.toMembershipLevelDTO(user.getMembershipLevel())
+                membershipLevelMapper.toMembershipLevelDTO(user.getMembershipLevel()),
+                user.getAccountStatus()
         );
     }
 
@@ -44,8 +46,10 @@ public class UserMapper {
                 dto.getVerificationCode(),
                 dto.getAccessToken(),
                 dto.getRefreshToken(),
+                dto.getResetPasswordToken(),
                 dto.getPoints(),
-                membershipLevelMapper.toMembershipLevelEntity(dto.getMembershipLevel())
+                membershipLevelMapper.toMembershipLevelEntity(dto.getMembershipLevel()),
+                dto.getAccountStatus()
         );
     }
 }

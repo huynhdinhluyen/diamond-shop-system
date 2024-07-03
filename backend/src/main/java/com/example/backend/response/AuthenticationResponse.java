@@ -11,7 +11,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class AuthenticationResponse {
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private Integer id;
     private String username;
     private String firstName;
@@ -25,8 +26,9 @@ public class AuthenticationResponse {
     private Integer points;
     private Date expiration;
 
-    public AuthenticationResponse(String token, User user, Date expiration, MembershipLevelMapper membershipLevelMapper) {
-        this.token = token;
+    public AuthenticationResponse(String accessToken, User user, Date expiration, MembershipLevelMapper membershipLevelMapper) {
+        this.accessToken = accessToken;
+        this.refreshToken = user.getRefreshToken();
         this.id = user.getId();
         this.username = user.getUsername();
         this.firstName = user.getFirstName();

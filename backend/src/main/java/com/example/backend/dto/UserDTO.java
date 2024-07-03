@@ -1,6 +1,7 @@
 package com.example.backend.dto;
 
 import com.example.backend.enums.RoleName;
+import com.example.backend.enums.UserVerifyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,8 @@ public class UserDTO {
     private String verificationCode;
     private String accessToken;
     private String refreshToken;
+    private String resetPasswordToken;
     private Integer points;
     private MembershipLevelDTO membershipLevel;
+    private UserVerifyStatus accountStatus;
 }
