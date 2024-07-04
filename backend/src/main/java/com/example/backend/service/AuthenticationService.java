@@ -1,17 +1,17 @@
 package com.example.backend.service;
 
 import com.example.backend.entity.MembershipLevel;
+import com.example.backend.entity.User;
 import com.example.backend.enums.UserVerifyStatus;
 import com.example.backend.exception.MembershipLevelNotFoundException;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.MembershipLevelMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.MembershipLevelRepository;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.request.ChangePasswordRequest;
 import com.example.backend.request.ResetPasswordRequest;
 import com.example.backend.response.AuthenticationResponse;
-import com.example.backend.entity.User;
-import com.example.backend.repository.UserRepository;
 import com.example.backend.util.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 
 @Service
@@ -66,7 +67,7 @@ public class AuthenticationService {
         if (repository.existsByUsername(request.getUsername())) {
             throw new Exception("Tên người dùng đã tồn tại!");
         }
-        if(repository.existsByEmail(request.getEmail())) {
+        if (repository.existsByEmail(request.getEmail())) {
             throw new Exception("Email đã tồn tại!");
         }
         try {

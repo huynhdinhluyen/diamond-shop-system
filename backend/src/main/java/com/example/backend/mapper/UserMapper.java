@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserMapper {
     private final MembershipLevelMapper membershipLevelMapper;
+
     public UserDTO maptoUserDTO(User user) {
         return new UserDTO(
                 user.getId(),

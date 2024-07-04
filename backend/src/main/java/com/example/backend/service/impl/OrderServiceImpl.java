@@ -7,7 +7,6 @@ import com.example.backend.exception.OrderStatusNotFoundException;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.repository.*;
-import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final UserRepository userRepository;
@@ -35,7 +35,6 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final MembershipLevelRepository membershipLevelRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     @Override
     @Transactional(readOnly = true)
     public Long getTotalOrders() {

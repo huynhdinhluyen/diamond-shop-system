@@ -15,18 +15,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
+    private static final Logger logger = LoggerFactory.getLogger(PromotionServiceImpl.class);
     private final PromotionRepository promotionRepository;
     private final PromotionMapper promotionMapper;
     @Autowired
     private ProductRepository productRepository;
-    private static final Logger logger = LoggerFactory.getLogger(PromotionServiceImpl.class);
+
     @Override
     public List<PromotionDTO> getAllPromotions() {
         List<Promotion> promotions = promotionRepository.findAll();

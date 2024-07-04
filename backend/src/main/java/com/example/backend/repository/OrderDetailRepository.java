@@ -14,6 +14,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Intege
             "JOIN Product p ON od.productId = p.id " +
             "GROUP BY p.category")
     List<Object[]> getCategoryRevenue();
+
     @Query(value = "SELECT p.id, p.name, p.image_url, SUM(od.quantity) AS totalQuantity, SUM(od.quantity * od.unit_price) AS totalRevenue " +
             "FROM order_detail od " +
             "INNER JOIN product p ON od.product_id = p.id " +

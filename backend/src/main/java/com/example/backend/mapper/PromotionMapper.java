@@ -22,6 +22,7 @@ public class PromotionMapper {
                 promotion.getEndDate()
         );
     }
+
     public Promotion toEntity(PromotionDTO promotionDTO) {
         if (promotionDTO == null) {
             return null;
@@ -37,6 +38,7 @@ public class PromotionMapper {
 
         return promotion;
     }
+
     public List<PromotionDTO> toDtoList(List<Promotion> promotions) {
         return promotions.stream().map(this::toDto).collect(Collectors.toList());
     }
