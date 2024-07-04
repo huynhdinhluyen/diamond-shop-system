@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CircularProgress, Typography } from "@mui/material";
-import { getProductsByCategory, getProductsByPriceRange, getProducts } from "../service/productService";
+import { getProductsByCategory, getProducts } from "../service/productService";
 import { getCategories } from "../service/categoryService";
 import ProductCard from "../components/ProductCard";
 
@@ -17,6 +17,7 @@ export default function Products() {
     const [selectedCategoryName, setSelectedCategoryName] = useState("Tất cả sản phẩm");
     const [totalProductCount, setTotalProductCount] = useState(0);
     const [selectedPriceRange, setSelectedPriceRange] = useState(null);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const query = useQuery();
     const categoryId = query.get("category");
     const searchQuery = query.get("query");
@@ -24,10 +25,10 @@ export default function Products() {
     const navigate = useNavigate();
 
     const priceRanges = [
-        { label: "Dưới 5 triệu", value: "0-5000000" },
-        { label: "5 triệu - 15 triệu", value: "5000000-15000000" },
-        { label: "15 triệu - 30 triệu", value: "15000000-30000000" },
-        { label: "Trên 30 triệu", value: "30000000-" },
+        { label: "Dưới 10 triệu", value: "0-10000000" },
+        { label: "10 triệu - 30 triệu", value: "10000000-30000000" },
+        { label: "30 triệu - 50 triệu", value: "30000000-50000000" },
+        { label: "Trên 50 triệu", value: "50000000-1000000000" },
     ];
 
     useEffect(() => {
@@ -51,22 +52,19 @@ export default function Products() {
         const fetchProducts = async () => {
             setIsLoading(true);
             try {
-                let data;
-                if (priceRangeQuery) {
-                    const [minPrice, maxPrice] = priceRangeQuery.split('-').map(Number);
-                    data = await getProductsByPriceRange(categoryId, minPrice, maxPrice);
-                } else if (searchQuery) {
-                    data = await getProducts();
+                let data = await getProducts();
+                if (categoryId) {
+                    data = data.filter(product => product.category.id === parseInt(categoryId));
+                }
+                if (searchQuery) {
                     data = data.filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
-                } else {
-                    data = categoryId ? await getProductsByCategory(categoryId) : await getProducts();
                 }
                 setProducts(data);
+                setFilteredProducts(data); // Initially, all products are shown
                 setSelectedCategory(categoryId);
 
                 // Tính tổng số lượng sản phẩm
-                const totalCount = await getProducts();
-                setTotalProductCount(totalCount.length);
+                setTotalProductCount(data.length);
 
                 // Thiết lập tên category đã chọn
                 if (categoryId) {
@@ -83,7 +81,20 @@ export default function Products() {
         };
 
         fetchProducts();
-    }, [categoryId, searchQuery, priceRangeQuery, categories]);
+    }, [categoryId, searchQuery, categories]);
+
+    useEffect(() => {
+        if (priceRangeQuery) {
+            const [minPrice, maxPrice] = priceRangeQuery.split('-').map(Number);
+            const filtered = products.filter(product => {
+                const price = product.salePrice;
+                return (!isNaN(minPrice) ? price >= minPrice : true) && (isNaN(maxPrice) ? true : price <= maxPrice);
+            });
+            setFilteredProducts(filtered);
+        } else {
+            setFilteredProducts(products); // Show all products if no price range is selected
+        }
+    }, [priceRangeQuery, products]);
 
     const handleCategoryClick = (id, name) => {
         setSelectedCategory(id);
@@ -145,11 +156,11 @@ export default function Products() {
                         <div className="flex justify-center items-center h-64">
                             <CircularProgress />
                         </div>
-                    ) : products.length === 0 ? (
+                    ) : filteredProducts.length === 0 ? (
                         <Typography variant="body1">Không có sản phẩm</Typography>
                     ) : (
                         <div className="grid grid-cols-3 gap-4">
-                            {products.map((product) => (
+                            {filteredProducts.map((product) => (
                                 <div key={product.id} className="my-3">
                                     <ProductCard product={product} />
                                 </div>

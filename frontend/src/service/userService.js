@@ -16,14 +16,12 @@ export const login = async (username, password) => {
     password,
   });
   localStorage.setItem("user", JSON.stringify(data));
-  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
   return data;
 };
 
 export const register = async (registerData) => {
   const { data } = await axiosInstance.post("api/users/register", registerData);
   localStorage.setItem("user", JSON.stringify(data));
-  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
   return data;
 };
 
