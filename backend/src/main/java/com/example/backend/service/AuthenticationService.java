@@ -91,8 +91,8 @@ public class AuthenticationService {
             String emailVerifiticationToken = jwtService.generateEmailVerifyToken(user);
             user.setVerificationCode(emailVerifiticationToken);
             mailservice.sendSimpleMail(user, emailVerifiticationToken,
-                    "your code: ",
-                    "Register confirmation");
+                    "Register confirmation",
+                    "your code: ");
             Date expiration = jwtService.extractExpiration(accessToken);
             userRepository.save(user);
             return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
@@ -104,11 +104,12 @@ public class AuthenticationService {
     public String registerConfirmed(String emailVerifyToken, String accessToken) throws Exception {
         User user = userRepository.findByUsername(jwtService.extractUsername(accessToken))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        String sentCode = user.getVerificationCode().substring(16, 21);
+        String sentCode = user.getVerificationCode().substring(164, 169);
         if (!sentCode.equals(emailVerifyToken)) {
             return "invalid verification code";
         } else {
             user.setAccountStatus(UserVerifyStatus.Verified);
+            user.setVerificationCode("");
             userRepository.save(user);
             return "Registration confirmed. You can now log in";
         }

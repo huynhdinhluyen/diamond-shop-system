@@ -28,8 +28,6 @@ public class JwtService {
     @Value("${JWT_FORGOT_PASSWORD_TOKEN_EXPIRATION}")
     private long forgotTokenExpiration;
 
-//    @Value("${JWT_REFRESH_TOKEN_EXPIRATION}")
-//    private long refreshTokenExpiration;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -41,7 +39,7 @@ public class JwtService {
     }
 
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -95,20 +93,6 @@ public class JwtService {
     }
 }
 
-//    public Map<String, Object> generateToken(User user) {
-//        Date expirationDate = new Date(System.currentTimeMillis() + 60 * 60 * 1000); // 1 hour
-//        String token = Jwts.
-//                builder()
-//                .subject(user.getUsername())
-//                .issuedAt(new Date(System.currentTimeMillis()))
-//                .expiration(expirationDate)
-//                .signWith(getSigninKey())
-//                .compact();
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("token", token);
-//        response.put("expiration", expirationDate);
-//        return response;
-//    }
 
 
 
