@@ -24,9 +24,9 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) {
-        try{
+        try {
             return ResponseEntity.ok(productService.getProductById(id));
-        }catch (ProductNotFoundException e){
+        } catch (ProductNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }

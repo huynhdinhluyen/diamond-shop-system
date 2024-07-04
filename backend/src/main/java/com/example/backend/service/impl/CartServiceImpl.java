@@ -80,7 +80,7 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ProductNotFoundException(request.getProductId()));
         Cart cart = cartRepository.findByUserAndProductId(user, product.getId()).orElse(null);
-        if(cart != null){
+        if (cart != null) {
             cart.setQuantity(quantity);
             cartRepository.save(cart);
         }
@@ -93,7 +93,7 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ProductNotFoundException(request.getProductId()));
         Cart cart = cartRepository.findByUserAndProductId(user, product.getId()).orElse(null);
-        if(cart != null){
+        if (cart != null) {
             cartRepository.delete(cart);
         }
     }

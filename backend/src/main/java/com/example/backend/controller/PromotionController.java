@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.PromotionDTO;
-import com.example.backend.entity.Promotion;
 import com.example.backend.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ public class PromotionController {
     private final PromotionService promotionService;
 
     @GetMapping
-    public ResponseEntity<List<PromotionDTO>> getAllPromotions(){
+    public ResponseEntity<List<PromotionDTO>> getAllPromotions() {
         return ResponseEntity.ok(promotionService.getAllPromotions());
     }
 
