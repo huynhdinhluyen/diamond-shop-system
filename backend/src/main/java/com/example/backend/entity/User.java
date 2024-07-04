@@ -3,7 +3,10 @@ package com.example.backend.entity;
 import com.example.backend.enums.RoleName;
 import com.example.backend.enums.UserVerifyStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,7 +63,7 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false, length = 20)
     private RoleName roleName = RoleName.CUSTOMER;
 
-    @Column(name = "verification_code", length = 64)
+    @Column(name = "verification_code", columnDefinition = "VARCHAR(MAX)")
     private String verificationCode;
 
     @Column(name = "access_token", length = 1000)
@@ -71,6 +74,17 @@ public class User implements UserDetails {
 
     @Column(name = "reset_password_token", length = 1000)
     private String resetPasswordToken;
+
+    @Column(name = "points", nullable = false, columnDefinition = "int default 0")
+    private Integer points = 0;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "membership_level_id")
+    private MembershipLevel membershipLevel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 25)
+    private UserVerifyStatus accountStatus = UserVerifyStatus.Unverified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -96,17 +110,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    @Column(name = "points", nullable = false, columnDefinition = "int default 0")
-    private Integer points = 0;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "membership_level_id")
-    private MembershipLevel membershipLevel;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 25)
-    private UserVerifyStatus accountStatus = UserVerifyStatus.Unverified;
 
 
 }

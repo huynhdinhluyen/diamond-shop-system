@@ -20,7 +20,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "JOIN FETCH pd.diamond " +
             "WHERE p.id = :id")
     Optional<Product> findByIdWithDetails(Integer id);
+
     Long countByStockQuantityLessThan(Integer threshold);
+
     @Query("SELECT p FROM Product p " +
             "LEFT JOIN FETCH p.category c " +
             "LEFT JOIN FETCH p.diamondCasing dc " +
@@ -29,6 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "LEFT JOIN FETCH pd.diamond d " +
             "WHERE c.id = :categoryId")
     List<Product> findByCategoryId(@Param("categoryId") Integer categoryId);
+
     @Query("SELECT p FROM Product p WHERE (:categoryId IS NULL OR p.category.id = :categoryId) " +
             "AND (:searchQuery IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :searchQuery, '%')))")
     List<Product> findFilteredProducts(@Param("categoryId") Integer categoryId,

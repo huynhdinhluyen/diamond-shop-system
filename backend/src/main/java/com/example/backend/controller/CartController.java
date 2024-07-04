@@ -1,11 +1,10 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.CartDTO;
-import com.example.backend.entity.Cart;
 import com.example.backend.exception.ProductNotFoundException;
-import com.example.backend.request.ChangeQuantityRequest;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.request.ChangeQuantityRequest;
 import com.example.backend.request.RemoveFromCartRequest;
 import com.example.backend.service.CartService;
 import com.example.backend.service.UserService;
