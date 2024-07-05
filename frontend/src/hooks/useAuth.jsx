@@ -4,10 +4,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import * as userService from "../service/userService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(userService.getUser());
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkTokenExpiry = () => {
@@ -30,22 +32,28 @@ export const AuthProvider = ({ children }) => {
     try {
       const user = await userService.login(username, password);
       setUser(user);
-      if (user.role === "ADMIN") {
-        window.location.href = "/admin";
-      } else if (user.role === "MANAGER") {
-        window.location.href = "/manager";
-      } else if (user.role === "SALES_STAFF") {
-        window.location.href = "/sales-staff/orders";
-      } else if (user.role === "DELIVERY_STAFF") {
-        window.location.href = "/delivery";
-      } else {
-        window.location.href = "/";
+
+      switch (user.role) {
+        case "ADMIN":
+          navigate('/admin');
+          break;
+        case "MANAGER":
+          navigate('/manager');
+          break;
+        case "SALES_STAFF":
+          navigate('/sales-staff/orders');
+          break;
+        case "DELIVERY_STAFF":
+          navigate('/delivery');
+          break;
+        default:
+          navigate('/');
+          break;
       }
+
       toast.success("Đăng nhập thành công!");
-      return true;
     } catch (err) {
       toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
-      return false;
     }
   };
 
