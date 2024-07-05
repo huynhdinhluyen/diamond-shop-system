@@ -52,7 +52,6 @@ import DeliveryStaffLayout from "./layouts/DeliveryStaffLayout";
 import DeliveryStaffDashboard from "./pages/DeliveryStaffDashboard";
 import OrderListOfDeliveryStaff from "./pages/OrderListOfDeliveryStaff";
 import OrderHistoryOfDeliveryStaff from "./pages/OrderHistoryOfDeliveryStaff";
-import Profile from "./pages/Profile";
 import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import ProfileStaffLayout from "./layouts/ProfileSaleStaffLayout";
