@@ -12,7 +12,8 @@ export default function ChangePassword() {
     const { user, changePassword } = useAuth();
 
     const submit = (data) => {
-        changePassword(data);
+        const dataWithToken = { ...data, accessToken: user.accessToken };
+        changePassword(dataWithToken);
     }
 
     return (
