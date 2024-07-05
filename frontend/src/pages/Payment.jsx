@@ -55,12 +55,27 @@ const PaymentPage = () => {
 
     const handleOrder = async (transactionStatus = 'INCOMPLETE') => {
         if (paymentMethod === '' || paymentMethod === 'Chọn phương thức thanh toán của bạn') {
-            setError('Vui lòng chọn phương thức thanh toán.');
+            toast.error('Vui lòng chọn phương thức thanh toán.');
             return;
         }
 
         if (paymentMethod === 'Chuyển khoản' && paypalPaymentCompleted === false) {
-            setError('Vui lòng hoàn tất chuyển khoản qua PayPal trước khi đặt hàng.');
+            toast.error('Vui lòng hoàn tất chuyển khoản qua PayPal trước khi đặt hàng.');
+            return;
+        }
+
+        if (!orderDetails.customerName.trim()) {
+            toast.error('Vui lòng nhập họ và tên.');
+            return;
+        }
+
+        if (!orderDetails.phoneNumber.trim()) {
+            toast.error('Vui lòng nhập số điện thoại.');
+            return;
+        }
+
+        if (!orderDetails.shippingAddress.trim()) {
+            toast.error('Vui lòng nhập địa chỉ nhận hàng.');
             return;
         }
 
@@ -86,6 +101,7 @@ const PaymentPage = () => {
             console.error('Failed to process payment:', error);
         }
     };
+
 
     useEffect(() => {
         if (paypalPaymentCompleted) {
@@ -202,7 +218,7 @@ const PaymentPage = () => {
                         <option value="Chuyển khoản">Chuyển khoản</option>
                         <option value="Trả tiền mặt sau khi nhận hàng">Trả tiền mặt sau khi nhận hàng</option>
                     </select>
-                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                    {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
                     {paymentMethod === 'Chuyển khoản' && (
                         <PayPalButtons
                             className='mt-10 flex'
