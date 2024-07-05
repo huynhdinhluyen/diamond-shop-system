@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
       );
       setUser(updatedUser);
       toast.success("Cập nhật hồ sơ thành công!");
+      await refreshUser();
     } catch (err) {
       toast.error("Cập nhật hồ sơ không thành công!");
     }
@@ -91,7 +92,7 @@ export const AuthProvider = ({ children }) => {
 
   const refreshUser = async () => {
     try {
-      const refreshedUser = await userService.getUserByUsername(user.username);
+      const refreshedUser = await userService.getUserById(user.id);
       setUser(refreshedUser);
       userService.setUser(refreshedUser); // Update localStorage
     } catch (err) {

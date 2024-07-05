@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Price from "../components/Price";
 
 function ProductCard({ product }) {
-  console.log(product)
   return (
     <Link
       to={`/product/${product.id}`}
