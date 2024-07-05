@@ -6,7 +6,10 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Layout({ children }) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+  }
   console.log(user);
   return (
     user == null || user.role === 'CUSTOMER' ? (
@@ -20,7 +23,10 @@ export default function Layout({ children }) {
         </div>
       </div>
     ) : (
-      <div className="text-center mt-8 text-red-500 font-bold text-4xl">Bạn không có quyền truy cập trang này!</div>
+      <div className="text-center mt-8 text-red-500 font-bold text-4xl">
+        Bạn không có quyền truy cập trang này!
+        <button className="btn btn-accent btn-lg mx-auto mt-10 text-lg" onClick={handleLogout}>Đăng xuất</button>
+      </div>
     )
 
   );
