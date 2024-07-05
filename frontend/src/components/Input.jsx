@@ -10,19 +10,10 @@ const Input = forwardRef(({
     name,
     error,
     placeholder,
-    value: propValue,
-    disabled,
-    ...rest
+    value,
+    disabled
 }, ref) => {
-    const [localValue, setLocalValue] = useState(propValue ?? '');
-
-    const handleChange = (e) => {
-        setLocalValue(e.target.value);
-        if (onChange) {
-            onChange(e);
-        }
-    };
-
+    const [showPassword, setShowPassword] = useState(false);
     const getErrorMessage = () => {
         if (!error) return;
         if (error.message) return error.message;
@@ -44,8 +35,6 @@ const Input = forwardRef(({
         setShowPassword(!showPassword);
     };
 
-    const [showPassword, setShowPassword] = useState(false);
-
     return (
         <InputContainer>
             <div className="relative w-full">
@@ -56,11 +45,9 @@ const Input = forwardRef(({
                     defaultValue={defaultValue}
                     placeholder={placeholder}
                     name={name}
-                    onChange={handleChange}
-                    value={localValue}
+                    onChange={onChange}
+                    value={value}
                     disabled={disabled}
-                    autoComplete={type === 'password' ? 'new-password' : 'on'}
-                    {...rest}
                 />
                 {type === 'password' && (
                     <button
