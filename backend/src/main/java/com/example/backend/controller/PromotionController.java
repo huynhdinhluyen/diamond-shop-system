@@ -1,15 +1,9 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.CategoryDTO;
 import com.example.backend.dto.PromotionDTO;
-import com.example.backend.exception.CategoryNotFoundException;
 import com.example.backend.exception.PromotionNotFoundException;
-import com.example.backend.exception.UserNotFoundException;
-import com.example.backend.response.PromotionDeleteResponse;
 import com.example.backend.service.PromotionService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
