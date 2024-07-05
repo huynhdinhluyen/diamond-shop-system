@@ -129,14 +129,6 @@ public class AuthenticationService {
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
             logger.info("access token generated for user: {}", user.getUsername());
-            // --
-            /*
-            Map<String, Object> tokenResponse = jwtService.generateToken(user);
-            String token = (String) tokenResponse.get("token");
-            Date expiration = (Date) tokenResponse.get("expiration");
-            logger.info("Token generated for user: {}", user.getUsername());
-            */
-            // --
             user.setAccessToken(accessToken);
             user.setRefreshToken(refreshToken);
             repository.save(user);
@@ -149,12 +141,9 @@ public class AuthenticationService {
     }
 
     public void changePassword(ChangePasswordRequest passwordChangeRequest) {
-        String username = jwtService.extractUsername(passwordChangeRequest.getResetPasswordToken());
+        String username = jwtService.extractUsername(passwordChangeRequest.getAccessToken());
         User user = repository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if (!user.getResetPasswordToken().equalsIgnoreCase(passwordChangeRequest.getResetPasswordToken())) {
-            throw new RuntimeException("Invalid");
-        }
         if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
             throw new RuntimeException("Old password is incorrect");
         }
@@ -199,13 +188,6 @@ public class AuthenticationService {
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
             user = repository.save(user);
-
-            /* duy
-            String token = jwtService.generateAccessToken(user);
-            return new AuthenticationResponse(token, user);
-            */
-
-            // Map<String, Object> tokenResponse = jwtService.generateToken(user);
             String token = jwtService.generateAccessToken(user);
             Date expiration = jwtService.extractExpiration(token);
             return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
