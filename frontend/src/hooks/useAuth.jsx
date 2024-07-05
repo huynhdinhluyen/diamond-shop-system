@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await userService.changePassword(data);
       logout();
+      navigate("/login")
       toast.success("Thay đổi mật khẩu thành công! Mời bạn đăng nhập lại!");
     } catch (err) {
       toast.error("Đổi mật khẩu thất bại!");
