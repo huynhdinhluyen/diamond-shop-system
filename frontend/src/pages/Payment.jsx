@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -29,9 +30,9 @@ const PaymentPage = () => {
     const totalPaymentVND = totalAmount + shippingFee - discountAmount;
     const totalPaymentUSD = (totalPaymentVND / exchangeRate).toFixed(2);
     const [orderDetails, setOrderDetails] = useState({
-        customerName: order.customerName,
-        phoneNumber: order.phoneNumber,
-        shippingAddress: order.shippingAddress,
+        customerName: order.customerName || '',
+        phoneNumber: order.phoneNumber || '',
+        shippingAddress: order.shippingAddress || '',
     });
     const navigate = useNavigate();
 
