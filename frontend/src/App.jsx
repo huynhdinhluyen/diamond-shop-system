@@ -55,6 +55,7 @@ import OrderHistoryOfDeliveryStaff from "./pages/OrderHistoryOfDeliveryStaff";
 import Profile from "./pages/Profile";
 import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import ProfileStaffLayout from "./layouts/ProfileSaleStaffLayout";
 
 function App() {
   return (
@@ -165,7 +166,7 @@ function App() {
           <Route index element={<SalesStaffDashboard />} />
           <Route path="orders" element={<OrderListOfSalesStaff />} />
           <Route path="orders/:orderId" element={<OrderDetailOfSalesStaff />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile" element={<ProfileStaffLayout />} />
         </Route>
 
         <Route path="/delivery" element={<DeliveryStaffLayout />}>
@@ -176,7 +177,7 @@ function App() {
             element={<OrderDetailOfDeliveryStaff />}
           />
           <Route path="history" element={<OrderHistoryOfDeliveryStaff />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile" element={<ProfileStaffLayout />} />
         </Route>
 
         <Route path="/manager" element={<ManagerLayout />}>
