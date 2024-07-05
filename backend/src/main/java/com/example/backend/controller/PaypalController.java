@@ -7,7 +7,9 @@ import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -18,15 +20,15 @@ public class PaypalController {
     private final PaypalService paypalService;
 
     @GetMapping("/api/home")
-    public String home(){
+    public String home() {
         return "index";
     }
 
     ///api/payment/create
 
     @PostMapping("/api/payment/create")
-    public RedirectView createPayment(){
-        try{
+    public RedirectView createPayment() {
+        try {
             String cancelUrl = "http://localhost:8080/api/payment/cancel";
             String successUrl = "http://localhost:8080/api/payment/success";
             Payment payment = paypalService.CreatePayment(
@@ -38,8 +40,8 @@ public class PaypalController {
                     cancelUrl,
                     successUrl
             );
-            for (Links links : payment.getLinks()){
-                if (links.getRel().equals("approval_url")){
+            for (Links links : payment.getLinks()) {
+                if (links.getRel().equals("approval_url")) {
                     return new RedirectView(links.getHref());
                 }
             }
@@ -53,29 +55,27 @@ public class PaypalController {
     public String paymentSuccess(
             @RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId
-    ){
+    ) {
         try {
             Payment payment = paypalService.GetPayment(paymentId, payerId);
-            if (payment.getState().equals("approved")){
+            if (payment.getState().equals("approved")) {
                 return "paymentSuccess";
             }
-        } catch (PayPalRESTException e){
+        } catch (PayPalRESTException e) {
             log.error("PayPal REST Exception", e);
         }
         return "paymentSuccess";
     }
 
     @GetMapping("/api/payment/cancel")
-    public String paymentCancel(){
+    public String paymentCancel() {
         return "paymentCancel";
     }
 
     @GetMapping("/api/payment/error")
-    public String paymentError(){
+    public String paymentError() {
         return "paymentError";
     }
-
-
 
 
 }

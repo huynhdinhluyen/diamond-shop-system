@@ -2,14 +2,19 @@ package com.example.backend.service.impl;
 
 import com.example.backend.dto.DiamondDTO;
 import com.example.backend.dto.ProductDTO;
-import com.example.backend.entity.*;
+import com.example.backend.entity.Diamond;
+import com.example.backend.entity.Product;
+import com.example.backend.entity.ProductDiamond;
 import com.example.backend.exception.ProductNotFoundException;
 import com.example.backend.mapper.ProductMapper;
-import com.example.backend.repository.*;
+import com.example.backend.repository.DiamondRepository;
+import com.example.backend.repository.ProductDiamondRepository;
+import com.example.backend.repository.ProductRepository;
 import com.example.backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -97,6 +102,7 @@ public class ProductServiceImpl implements ProductService {
             productDiamondRepository.delete(pd);
         }
     }
+
     private void updateOrCreateProductDiamond(Product product, List<ProductDiamond> existingProductDiamonds,
                                               Set<Integer> existingDiamondIds, DiamondDTO diamondDTO, boolean isMain) {
         if (diamondDTO == null) {

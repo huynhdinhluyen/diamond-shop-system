@@ -1,9 +1,7 @@
 package com.example.backend.mapper;
 
 import com.example.backend.dto.CartDTO;
-import com.example.backend.dto.OrderDTO;
 import com.example.backend.entity.Cart;
-import com.example.backend.entity.Order;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 

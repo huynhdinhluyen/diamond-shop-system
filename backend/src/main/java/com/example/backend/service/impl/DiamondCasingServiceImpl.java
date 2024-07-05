@@ -52,7 +52,7 @@ public class DiamondCasingServiceImpl implements DiamondCasingService {
 
     @Override
     @Transactional
-    public DiamondCasingDTO updateDiamondCasing(Integer id, DiamondCasingDTO diamondCasingDTO) throws DiamondCasingNotFoundException{
+    public DiamondCasingDTO updateDiamondCasing(Integer id, DiamondCasingDTO diamondCasingDTO) throws DiamondCasingNotFoundException {
         DiamondCasing existingDiamondCasing = diamondCasingRepository.findById(id)
                 .orElseThrow(() -> new DiamondCasingNotFoundException(id));
 

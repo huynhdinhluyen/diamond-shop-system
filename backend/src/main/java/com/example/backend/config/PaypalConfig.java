@@ -17,9 +17,9 @@ public class PaypalConfig {
     private String mode;
 
     @Bean
-    public APIContext apiContext(){
+    public APIContext apiContext() {
         return new APIContext(paypal_client_id,
-                              paypal_client_secret,
-                              mode);
+                paypal_client_secret,
+                mode);
     }
 }

@@ -9,7 +9,10 @@ import java.util.List;
 @Service
 public interface DiamondCasingService {
     List<DiamondCasingDTO> getDiamondCasings();
-    DiamondCasingDTO createDiamondCasing(DiamondCasingDTO diamondCasingDTO)  ;
+
+    DiamondCasingDTO createDiamondCasing(DiamondCasingDTO diamondCasingDTO);
+
     DiamondCasingDTO updateDiamondCasing(Integer id, DiamondCasingDTO diamondCasingDTO) throws DiamondCasingNotFoundException;
+
     void deleteDiamondCasing(Integer id) throws DiamondCasingNotFoundException;
 }

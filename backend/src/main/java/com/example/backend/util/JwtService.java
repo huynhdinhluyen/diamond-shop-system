@@ -3,17 +3,15 @@ package com.example.backend.util;
 import com.example.backend.entity.User;
 import com.example.backend.enums.TokenType;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -30,8 +28,6 @@ public class JwtService {
     @Value("${JWT_FORGOT_PASSWORD_TOKEN_EXPIRATION}")
     private long forgotTokenExpiration;
 
-//    @Value("${JWT_REFRESH_TOKEN_EXPIRATION}")
-//    private long refreshTokenExpiration;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -43,7 +39,7 @@ public class JwtService {
     }
 
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -97,20 +93,6 @@ public class JwtService {
     }
 }
 
-//    public Map<String, Object> generateToken(User user) {
-//        Date expirationDate = new Date(System.currentTimeMillis() + 60 * 60 * 1000); // 1 hour
-//        String token = Jwts.
-//                builder()
-//                .subject(user.getUsername())
-//                .issuedAt(new Date(System.currentTimeMillis()))
-//                .expiration(expirationDate)
-//                .signWith(getSigninKey())
-//                .compact();
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("token", token);
-//        response.put("expiration", expirationDate);
-//        return response;
-//    }
 
 
 
