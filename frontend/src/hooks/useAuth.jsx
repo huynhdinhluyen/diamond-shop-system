@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
       } else if (user.role === "MANAGER") {
         window.location.href = "/manager";
       } else if (user.role === "SALES_STAFF") {
-        window.location.href = "/sales-staff";
+        window.location.href = "/sales-staff/orders";
       } else if (user.role === "DELIVERY_STAFF") {
         window.location.href = "/delivery";
       } else {
