@@ -45,7 +45,6 @@ import {
 import { highlightText } from "../utils/highlightText";
 
 const roleOptions = [
-  { value: "ADMIN", label: "Quản trị viên" },
   { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
   { value: "DELIVERY_STAFF", label: "Nhân viên giao hàng" },
   { value: "CUSTOMER", label: "Khách hàng" },
@@ -442,15 +441,6 @@ export default function AdminUserManagement() {
               {...register("firstName")}
               error={!!errors.firstName}
               helperText={errors?.firstName?.message}
-              className="!my-4"
-            />
-            <TextField
-              label="Thành phố"
-              fullWidth
-              margin="normal"
-              {...register("city")}
-              error={!!errors.city}
-              helperText={errors?.city?.message}
               className="!my-4"
             />
             <TextField

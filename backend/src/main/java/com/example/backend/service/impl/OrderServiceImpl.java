@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime startDateTime = startDate != null
                 ? LocalDate.parse(startDate, formatter).atStartOfDay()
-                : LocalDate.now().minusMonths(11).atStartOfDay();
+                : LocalDate.now().minusMonths(6).atStartOfDay();
         LocalDateTime endDateTime = endDate != null
                 ? LocalDate.parse(endDate, formatter).plusDays(1).atStartOfDay() // Cộng 1 ngày để bao gồm cả endDate
                 : LocalDate.now().plusDays(1).atStartOfDay();
@@ -70,36 +70,6 @@ public class OrderServiceImpl implements OrderService {
         // Điền các tháng còn thiếu bằng 0
         LocalDate startDateWithoutTime = startDateTime.toLocalDate();
         LocalDate endDateWithoutTime = endDateTime.toLocalDate().minusDays(1); // Trừ 1 ngày để loại trừ ngày hiện tại
-        for (LocalDate date = startDateWithoutTime;
-             date.isBefore(endDateWithoutTime);
-             date = date.plusMonths(1)) {
-            String monthYear = String.format("%02d/%d", date.getMonthValue(), date.getYear());
-            monthlySales.putIfAbsent(monthYear, 0L);
-        }
-        return monthlySales;
-    }
-
-    @Override
-    public Map<String, Long> getMonthlySalesOfSalesStaff(Integer staffId, String startDate, String endDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime startDateTime = startDate != null
-                ? LocalDate.parse(startDate, formatter).atStartOfDay()
-                : LocalDate.now().withDayOfMonth(1).atStartOfDay();
-        LocalDateTime endDateTime = endDate != null
-                ? LocalDate.parse(endDate, formatter).plusDays(1).atStartOfDay() // Cộng 1 ngày để bao gồm cả endDate
-                : LocalDate.now().plusDays(1).atStartOfDay();
-        if (startDateTime.isAfter(endDateTime)) {
-            throw new IllegalArgumentException("Start date cannot be after end date");
-        }
-        List<Object[]> results = orderRepository.findMonthlySalesDataByStaff(staffId, startDateTime, endDateTime);
-        Map<String, Long> monthlySales = new LinkedHashMap<>();
-        for (Object[] result : results) {
-            String monthYear = (String) result[0];
-            Long totalSales = ((Number) result[1]).longValue();
-            monthlySales.put(monthYear, totalSales);
-        }
-        LocalDate startDateWithoutTime = startDateTime.toLocalDate();
-        LocalDate endDateWithoutTime = endDateTime.toLocalDate().minusDays(1);
         for (LocalDate date = startDateWithoutTime;
              date.isBefore(endDateWithoutTime);
              date = date.plusMonths(1)) {
