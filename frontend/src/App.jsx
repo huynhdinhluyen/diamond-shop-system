@@ -45,11 +45,9 @@ import OrderDetail from "./pages/OrderDetail";
 import MyOrder from "./components/MyOrder";
 import Products from "./pages/Products";
 import SalesStaffLayout from "./layouts/SalesStaffLayout";
-import SalesStaffDashboard from "./pages/SalesStaffDashboard";
 import OrderListOfSalesStaff from "./pages/OrderListOfSalesStaff";
 import OrderDetailOfSalesStaff from "./pages/OrderDetailOfSalesStaff";
 import DeliveryStaffLayout from "./layouts/DeliveryStaffLayout";
-import DeliveryStaffDashboard from "./pages/DeliveryStaffDashboard";
 import OrderListOfDeliveryStaff from "./pages/OrderListOfDeliveryStaff";
 import OrderHistoryOfDeliveryStaff from "./pages/OrderHistoryOfDeliveryStaff";
 import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
@@ -162,15 +160,13 @@ function App() {
         />
 
         <Route path="/sales-staff" element={<SalesStaffLayout />}>
-          <Route index element={<SalesStaffDashboard />} />
-          <Route path="orders" element={<OrderListOfSalesStaff />} />
+          <Route index path="orders" element={<OrderListOfSalesStaff />} />
           <Route path="orders/:orderId" element={<OrderDetailOfSalesStaff />} />
           <Route path="profile" element={<ProfileStaffLayout />} />
         </Route>
 
         <Route path="/delivery" element={<DeliveryStaffLayout />}>
-          <Route index element={<DeliveryStaffDashboard />} />
-          <Route path="orders" element={<OrderListOfDeliveryStaff />} />
+          <Route index path="orders" element={<OrderListOfDeliveryStaff />} />
           <Route
             path="orders/:orderId"
             element={<OrderDetailOfDeliveryStaff />}

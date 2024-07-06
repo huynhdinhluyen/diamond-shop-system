@@ -11,8 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface OrderAssignmentRepository extends JpaRepository<OrderAssignment, Long> {
-    List<OrderAssignment> findByOrderId(Integer id);
-
     @Query("SELECT oa " +
             "FROM OrderAssignment oa " +
             "WHERE oa.order.id = :orderId AND oa.staff.roleName='SALES_STAFF'")
@@ -45,10 +43,4 @@ public interface OrderAssignmentRepository extends JpaRepository<OrderAssignment
             "FROM OrderAssignment oa " +
             "WHERE oa.staff.id = :staffId ")
     List<OrderAssignment> findOrderAssignmentsByStaff(@Param("staffId") Integer staffId);
-
-    @Query("SELECT COUNT(oa.order) " +
-            "FROM OrderAssignment oa " +
-            "WHERE oa.staff.id = :staffId AND oa.orderStatus.name = 'PENDING' " +
-            "GROUP BY oa.staff")
-    Long countNewOrdersByStaffId(@Param("staffId") Integer staffId);
 }

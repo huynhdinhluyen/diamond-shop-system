@@ -16,7 +16,6 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -71,16 +70,6 @@ export default function DeliveryStaffLayout() {
           <Toolbar />
           <Divider />
           <List>
-            <ListItem
-              component={Link}
-              to="/delivery"
-              className="hover:bg-gray-100"
-            >
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Trang chủ" />
-            </ListItem>
             <ListItem
               component={Link}
               to="/delivery/orders"
