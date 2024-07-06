@@ -4,10 +4,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import * as userService from "../service/userService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(userService.getUser());
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkTokenExpiry = () => {
@@ -30,22 +32,28 @@ export const AuthProvider = ({ children }) => {
     try {
       const user = await userService.login(username, password);
       setUser(user);
-      if (user.role === "ADMIN") {
-        window.location.href = "/admin";
-      } else if (user.role === "MANAGER") {
-        window.location.href = "/manager";
-      } else if (user.role === "SALES_STAFF") {
-        window.location.href = "/sales-staff";
-      } else if (user.role === "DELIVERY_STAFF") {
-        window.location.href = "/delivery";
-      } else {
-        window.location.href = "/";
+
+      switch (user.role) {
+        case "ADMIN":
+          navigate('/admin');
+          break;
+        case "MANAGER":
+          navigate('/manager');
+          break;
+        case "SALES_STAFF":
+          navigate('/sales-staff/orders');
+          break;
+        case "DELIVERY_STAFF":
+          navigate('/delivery');
+          break;
+        default:
+          navigate('/');
+          break;
       }
+
       toast.success("Đăng nhập thành công!");
-      return true;
     } catch (err) {
       toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
-      return false;
     }
   };
 
@@ -74,6 +82,7 @@ export const AuthProvider = ({ children }) => {
       );
       setUser(updatedUser);
       toast.success("Cập nhật hồ sơ thành công!");
+      await refreshUser();
     } catch (err) {
       toast.error("Cập nhật hồ sơ không thành công!");
     }
@@ -83,6 +92,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await userService.changePassword(data);
       logout();
+      navigate("/login")
       toast.success("Thay đổi mật khẩu thành công! Mời bạn đăng nhập lại!");
     } catch (err) {
       toast.error("Đổi mật khẩu thất bại!");
@@ -91,7 +101,7 @@ export const AuthProvider = ({ children }) => {
 
   const refreshUser = async () => {
     try {
-      const refreshedUser = await userService.getUserByUsername(user.username);
+      const refreshedUser = await userService.getUserById(user.id);
       setUser(refreshedUser);
       userService.setUser(refreshedUser); // Update localStorage
     } catch (err) {

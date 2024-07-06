@@ -1,4 +1,3 @@
-/* eslint-disable no-dupe-else-if */
 // import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 // import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
@@ -53,7 +52,8 @@ export default function Login() {
             noValidate
             className="flex flex-col gap-y-4"
           >
-            <Input type="username"
+            <Input
+              type="text"
               name="username"
               placeholder="Tên đăng nhập"
               {...register("username", {

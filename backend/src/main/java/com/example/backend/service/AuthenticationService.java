@@ -196,9 +196,9 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenticationResponse getUserByUsername(String username) {
-        User user = repository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+    public AuthenticationResponse getUserById(Integer id) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         String accessToken = user.getAccessToken();
         Date expiration = jwtService.extractExpiration(accessToken);
         return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);

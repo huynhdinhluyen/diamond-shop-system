@@ -14,7 +14,6 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
@@ -72,12 +71,6 @@ export default function SalesStaffLayout() {
           <Toolbar />
           <Divider />
           <List>
-            <ListItem component={Link} to="/sales-staff" className="hover:bg-gray-100">
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Trang chủ" />
-            </ListItem>
             <ListItem component={Link} to="/sales-staff/orders" className="hover:bg-gray-100">
               <ListItemIcon>
                 <ShoppingCartIcon />
@@ -89,6 +82,12 @@ export default function SalesStaffLayout() {
                 <PeopleIcon />
               </ListItemIcon>
               <ListItemText primary="Khách hàng" />
+            </ListItem>
+            <ListItem component={Link} to="/sales-staff/profile" className="hover:bg-gray-100">
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Chỉnh sửa hồ sơ" />
             </ListItem>
             <ListItem onClick={handleLogout} className="hover:cursor-pointer hover:bg-gray-100">
               <ListItemIcon>

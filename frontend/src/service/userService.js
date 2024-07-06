@@ -96,9 +96,9 @@ export async function getUserByRole(role) {
   }
 }
 
-export async function getUserByUsername(username) {
+export async function getUserById(id) {
   try {
-    const response = await axiosInstance.get(`/api/users/get/${username}`);
+    const response = await axiosInstance.get(`/api/users/get/${id}`);
     return response.data;
   } catch (error) {
     handleError("Error fetching user by role:", error);

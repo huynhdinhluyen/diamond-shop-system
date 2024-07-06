@@ -10,7 +10,8 @@ const Input = forwardRef(({
     name,
     error,
     placeholder,
-    value
+    value,
+    disabled
 }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
     const getErrorMessage = () => {
@@ -46,6 +47,7 @@ const Input = forwardRef(({
                     name={name}
                     onChange={onChange}
                     value={value}
+                    disabled={disabled}
                 />
                 {type === 'password' && (
                     <button

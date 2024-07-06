@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -29,9 +30,9 @@ const PaymentPage = () => {
     const totalPaymentVND = totalAmount + shippingFee - discountAmount;
     const totalPaymentUSD = (totalPaymentVND / exchangeRate).toFixed(2);
     const [orderDetails, setOrderDetails] = useState({
-        customerName: order.customerName,
-        phoneNumber: order.phoneNumber,
-        shippingAddress: order.shippingAddress,
+        customerName: order.customerName || '',
+        phoneNumber: order.phoneNumber || '',
+        shippingAddress: order.shippingAddress || '',
     });
     const navigate = useNavigate();
 
@@ -55,12 +56,27 @@ const PaymentPage = () => {
 
     const handleOrder = async (transactionStatus = 'INCOMPLETE') => {
         if (paymentMethod === '' || paymentMethod === 'Chọn phương thức thanh toán của bạn') {
-            setError('Vui lòng chọn phương thức thanh toán.');
+            toast.error('Vui lòng chọn phương thức thanh toán.');
             return;
         }
 
         if (paymentMethod === 'Chuyển khoản' && paypalPaymentCompleted === false) {
-            setError('Vui lòng hoàn tất chuyển khoản qua PayPal trước khi đặt hàng.');
+            toast.error('Vui lòng hoàn tất chuyển khoản qua PayPal trước khi đặt hàng.');
+            return;
+        }
+
+        if (!orderDetails.customerName || !orderDetails.customerName.trim()) {
+            toast.error('Vui lòng nhập họ và tên.');
+            return;
+        }
+
+        if (!orderDetails.phoneNumber || !orderDetails.phoneNumber.trim()) {
+            toast.error('Vui lòng nhập số điện thoại.');
+            return;
+        }
+
+        if (!orderDetails.shippingAddress || !orderDetails.shippingAddress.trim()) {
+            toast.error('Vui lòng nhập địa chỉ nhận hàng.');
             return;
         }
 
@@ -86,6 +102,7 @@ const PaymentPage = () => {
             console.error('Failed to process payment:', error);
         }
     };
+
 
     useEffect(() => {
         if (paypalPaymentCompleted) {
@@ -158,7 +175,7 @@ const PaymentPage = () => {
                         />
                     </div>
                     <div className='mb-3 text-accent'>
-                        *Bạn đang là thành viên {translateMembershipLevel(user.membershipLevel)} - Giảm giá {user.membershipLevel.discountRate * 100}% trên toàn hóa đơn
+                        *Bạn đang là thành viên {translateMembershipLevel(user.membershipLevel)} - Giảm giá {user.membershipLevel.discountRate}% trên toàn hóa đơn
                     </div>
                     <h4 className='h4 font-semibold mb-4'>Sản phẩm</h4>
                     <div className="overflow-x-auto">
@@ -202,7 +219,7 @@ const PaymentPage = () => {
                         <option value="Chuyển khoản">Chuyển khoản</option>
                         <option value="Trả tiền mặt sau khi nhận hàng">Trả tiền mặt sau khi nhận hàng</option>
                     </select>
-                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                    {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
                     {paymentMethod === 'Chuyển khoản' && (
                         <PayPalButtons
                             className='mt-10 flex'
