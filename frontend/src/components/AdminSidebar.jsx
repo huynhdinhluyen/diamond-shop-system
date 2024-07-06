@@ -85,6 +85,14 @@ function AdminSidebar({ open, onClose }) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
+          <ListItemButton component={Link} to="/admin/profile">
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Chỉnh sửa hồ sơ" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
           <ListItemButton component={Link} to="/admin/settings">
             <ListItemIcon>
               <SettingsIcon />

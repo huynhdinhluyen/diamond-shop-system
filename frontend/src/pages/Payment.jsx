@@ -26,8 +26,8 @@ const PaymentPage = () => {
     const [paypalPaymentCompleted, setPaypalPaymentCompleted] = useState(false);
     const totalAmount = products.reduce((total, product) => total + product.unitPrice * product.quantity, 0);
     const shippingFee = totalAmount >= 50000000 ? 0 : 50000;
-    const discountAmount = order.discountPrice || (totalAmount * user.membershipLevel.discountRate);
-    const totalPaymentVND = totalAmount - discountAmount;
+    const discountAmount = order.discountPrice;
+    const totalPaymentVND = order.totalPrice;
     const totalPaymentUSD = (totalPaymentVND / exchangeRate).toFixed(2);
     const [orderDetails, setOrderDetails] = useState({
         customerName: order.customerName || '',

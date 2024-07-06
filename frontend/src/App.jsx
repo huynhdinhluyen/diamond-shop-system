@@ -186,6 +186,10 @@ function App() {
             path="delivery-staffs-management"
             element={<DeliveryStaffManagement />}
           />
+          <Route
+            path="profile"
+            element={<ProfileStaffLayout />}
+          />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
@@ -198,6 +202,7 @@ function App() {
           />
           <Route path="diamonds" element={<AdminDiamondManagement />} />
           <Route path="users" element={<AdminUserManagement />} />
+          <Route path="profile" element={<ProfileStaffLayout />} />
         </Route>
 
         <Route
