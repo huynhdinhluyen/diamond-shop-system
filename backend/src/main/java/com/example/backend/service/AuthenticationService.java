@@ -91,8 +91,8 @@ public class AuthenticationService {
             String emailVerifiticationToken = jwtService.generateEmailVerifyToken(user);
             user.setVerificationCode(emailVerifiticationToken);
             mailservice.sendSimpleMail(user, emailVerifiticationToken,
-                    "your code: ",
-                    "Register confirmation");
+                    "Register confirmation",
+                    "your code: ");
             Date expiration = jwtService.extractExpiration(accessToken);
             userRepository.save(user);
             return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
@@ -104,11 +104,12 @@ public class AuthenticationService {
     public String registerConfirmed(String emailVerifyToken, String accessToken) throws Exception {
         User user = userRepository.findByUsername(jwtService.extractUsername(accessToken))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        String sentCode = user.getVerificationCode().substring(16, 21);
+        String sentCode = user.getVerificationCode().substring(164, 169);
         if (!sentCode.equals(emailVerifyToken)) {
             return "invalid verification code";
         } else {
             user.setAccountStatus(UserVerifyStatus.Verified);
+            user.setVerificationCode("");
             userRepository.save(user);
             return "Registration confirmed. You can now log in";
         }
@@ -128,14 +129,6 @@ public class AuthenticationService {
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
             logger.info("access token generated for user: {}", user.getUsername());
-            // --
-            /*
-            Map<String, Object> tokenResponse = jwtService.generateToken(user);
-            String token = (String) tokenResponse.get("token");
-            Date expiration = (Date) tokenResponse.get("expiration");
-            logger.info("Token generated for user: {}", user.getUsername());
-            */
-            // --
             user.setAccessToken(accessToken);
             user.setRefreshToken(refreshToken);
             repository.save(user);
@@ -148,12 +141,9 @@ public class AuthenticationService {
     }
 
     public void changePassword(ChangePasswordRequest passwordChangeRequest) {
-        String username = jwtService.extractUsername(passwordChangeRequest.getResetPasswordToken());
+        String username = jwtService.extractUsername(passwordChangeRequest.getAccessToken());
         User user = repository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if (!user.getResetPasswordToken().equalsIgnoreCase(passwordChangeRequest.getResetPasswordToken())) {
-            throw new RuntimeException("Invalid");
-        }
         if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
             throw new RuntimeException("Old password is incorrect");
         }
@@ -198,13 +188,6 @@ public class AuthenticationService {
             user.setAddress(request.getAddress());
             user.setCity(request.getCity());
             user = repository.save(user);
-
-            /* duy
-            String token = jwtService.generateAccessToken(user);
-            return new AuthenticationResponse(token, user);
-            */
-
-            // Map<String, Object> tokenResponse = jwtService.generateToken(user);
             String token = jwtService.generateAccessToken(user);
             Date expiration = jwtService.extractExpiration(token);
             return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
@@ -213,9 +196,9 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenticationResponse getUserByUsername(String username) {
-        User user = repository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+    public AuthenticationResponse getUserById(Integer id) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         String accessToken = user.getAccessToken();
         Date expiration = jwtService.extractExpiration(accessToken);
         return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);

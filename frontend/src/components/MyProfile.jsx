@@ -18,7 +18,7 @@ export default function MyProfile() {
         }
     });
 
-    const submit = (user) => {
+    const submit = async (user) => {
         updateProfile(user);
     }
 
@@ -69,7 +69,16 @@ export default function MyProfile() {
                     </div>
                     <div className="mt-5 flex-grow items-center">
                         <label htmlFor="" className="mr-5 text-nowrap">Email:</label>
-                        <Input
+                        {user.role === 'SALES_STAFF' || user.role === 'DELIVERY_STAFF' ? <Input
+                            type="email"
+                            defaultValue={user.email}
+                            disabled
+                            {...register("email", {
+                                required: true,
+                                pattern: EMAIL
+                            })}
+                            error={errors.email}
+                        /> : <Input
                             type="email"
                             defaultValue={user.email}
                             {...register("email", {
@@ -77,7 +86,7 @@ export default function MyProfile() {
                                 pattern: EMAIL
                             })}
                             error={errors.email}
-                        />
+                        />}
                     </div>
                     <div className="mt-5 flex-grow items-center">
                         <label htmlFor="" className="mr-5 text-nowrap">Số điện thoại:</label>

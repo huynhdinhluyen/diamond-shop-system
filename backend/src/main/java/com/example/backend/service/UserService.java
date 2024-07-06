@@ -14,7 +14,6 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
-    //User login(String email, String password);
     User getUserById(Integer id);
 
     User updateUser(Integer userId, User updatedUser);

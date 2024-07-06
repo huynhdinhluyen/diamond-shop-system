@@ -151,9 +151,9 @@ public class UserController {
         return ResponseEntity.ok("Password changed successfully");
     }
 
-    @GetMapping("/get/{username}")
-    public ResponseEntity<AuthenticationResponse> getUserByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(authService.getUserByUsername(username));
+    @GetMapping("/get/{id}")
+    public ResponseEntity<AuthenticationResponse> getUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(authService.getUserById(id));
     }
 
 }

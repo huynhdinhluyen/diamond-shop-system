@@ -78,8 +78,7 @@ export default function Product() {
         }
 
         const basePrice = product.discountPrice > 0 ? product.discountPrice : product.salePrice;
-        const discountPrice = basePrice * user.membershipLevel.discountRate;
-
+        const discountPrice = basePrice * quantity * user.membershipLevel.discountRate / 100;
         const order = {
             userId: user.id,
             discountPrice: discountPrice,
@@ -98,7 +97,6 @@ export default function Product() {
                 }
             ]
         };
-
         navigate('/payment', { state: { order } });
     };
 
