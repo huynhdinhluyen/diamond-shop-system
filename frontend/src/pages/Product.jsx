@@ -78,13 +78,14 @@ export default function Product() {
         }
 
         const basePrice = product.discountPrice > 0 ? product.discountPrice : product.salePrice;
-        const discountPrice = basePrice * quantity * user.membershipLevel.discountRate / 100;
+        const deliveryFee = basePrice * quantity > 50000000 ? 0 : 50000;
+        const discountPrice = (basePrice * quantity + deliveryFee) * user.membershipLevel.discountRate / 100;
         const order = {
             userId: user.id,
             discountPrice: discountPrice,
+            deliveryFee: deliveryFee,
             totalPrice: discountPrice > 0 ? (basePrice - discountPrice) * quantity : basePrice * quantity,
             createdAt: new Date().toISOString(),
-            deliveryFee: product.costPrice * quantity > 50000000 ? 0 : 50000,
             customerName: `${user.lastName} ${user.firstName}`,
             shippingAddress: user.address,
             phoneNumber: user.phoneNumber,

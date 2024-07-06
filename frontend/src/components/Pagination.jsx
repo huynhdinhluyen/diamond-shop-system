@@ -1,3 +1,4 @@
+import ScrollToTop from "./ScrollToTop"
 /* eslint-disable react/prop-types */
 const Pagination = ({
   totalPosts,
@@ -31,18 +32,19 @@ const Pagination = ({
     (page, index) => page !== "..." || pages[index - 1] !== "..."
   );
 
+
   return (
     <div className="w-full text-center">
       {pages.map((page, index) => (
         <button
           key={index}
           onClick={() => page !== "..." && setCurrentPage(page)}
-          className={`mt-5 px-4 py-2 border rounded mx-1 ${
-            currentPage === page ? "bg-accent text-white" : "bg-white"
-          } $${page === "..." ? "cursor-default border-none" : "border"}`}
+          className={`mt-5 px-4 py-2 border rounded mx-1 ${currentPage === page ? "bg-accent text-white" : "bg-white"
+            } $${page === "..." ? "cursor-default border-none" : "border"}`}
           disabled={page === "..."}
         >
           {page}
+          <ScrollToTop />
         </button>
       ))}
     </div>
