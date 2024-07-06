@@ -84,7 +84,7 @@ export default function Product() {
             userId: user.id,
             discountPrice: discountPrice,
             deliveryFee: deliveryFee,
-            totalPrice: discountPrice > 0 ? (basePrice - discountPrice) * quantity : basePrice * quantity,
+            totalPrice: discountPrice > 0 ? (basePrice + deliveryFee - discountPrice) * quantity : basePrice + deliveryFee * quantity,
             createdAt: new Date().toISOString(),
             customerName: `${user.lastName} ${user.firstName}`,
             shippingAddress: user.address,
