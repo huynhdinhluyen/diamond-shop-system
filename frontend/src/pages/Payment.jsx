@@ -27,7 +27,7 @@ const PaymentPage = () => {
     const totalAmount = products.reduce((total, product) => total + product.unitPrice * product.quantity, 0);
     const shippingFee = totalAmount >= 50000000 ? 0 : 50000;
     const discountAmount = order.discountPrice || (totalAmount * user.membershipLevel.discountRate);
-    const totalPaymentVND = totalAmount + shippingFee - discountAmount;
+    const totalPaymentVND = totalAmount - discountAmount;
     const totalPaymentUSD = (totalPaymentVND / exchangeRate).toFixed(2);
     const [orderDetails, setOrderDetails] = useState({
         customerName: order.customerName || '',
@@ -260,7 +260,7 @@ const PaymentPage = () => {
                             <span><Price price={shippingFee} /></span>
                         </div>
                         <div className="flex justify-between flex-wrap">
-                            <span>Giảm giá:</span>
+                            <span>Giảm giá(đã bao gồm phí ship):</span>
                             <span>-<Price price={discountAmount} /></span>
                         </div>
                         <div className="flex justify-between font-semibold flex-wrap">
