@@ -69,10 +69,9 @@ export default function MyProfile() {
                     </div>
                     <div className="mt-5 flex-grow items-center">
                         <label htmlFor="" className="mr-5 text-nowrap">Email:</label>
-                        {user.role === 'SALES_STAFF' || user.role === 'DELIVERY_STAFF' ? <Input
+                        {user.role === 'CUSTOMER' ? <Input
                             type="email"
                             defaultValue={user.email}
-                            disabled
                             {...register("email", {
                                 required: true,
                                 pattern: EMAIL
@@ -81,6 +80,7 @@ export default function MyProfile() {
                         /> : <Input
                             type="email"
                             defaultValue={user.email}
+                            disabled
                             {...register("email", {
                                 required: true,
                                 pattern: EMAIL

@@ -28,7 +28,7 @@ export default function ManagerSidebar({ onClose }) {
       <ListItem disablePadding>
         <ListItemButton component={Link} to="/manager/customers-management" onClick={onClose}>
           <ListItemIcon>
-            <PersonIcon /> 
+            <PersonIcon />
           </ListItemIcon>
           <ListItemText primary="Khách hàng" />
         </ListItemButton>
@@ -47,6 +47,14 @@ export default function ManagerSidebar({ onClose }) {
             <GroupIcon />
           </ListItemIcon>
           <ListItemText primary="Nhân viên giao hàng" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton component={Link} to="/manager/profile" onClick={onClose}>
+          <ListItemIcon>
+            <PersonIcon />
+          </ListItemIcon>
+          <ListItemText primary="Chỉnh sửa hồ sơ" />
         </ListItemButton>
       </ListItem>
     </List>
