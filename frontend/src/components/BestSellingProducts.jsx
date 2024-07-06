@@ -9,7 +9,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 
 export default function BestSellingProducts() {
@@ -29,7 +28,7 @@ export default function BestSellingProducts() {
   }, []);
   return (
     <div>
-      <Typography variant="h6">Sản phẩm bán chạy nhất</Typography>
+      <h2 className="font-bold text-xl">Sản Phẩm Bán Chạy</h2>
       <TableContainer
         component={Paper}
         className="mt-4 max-h-[500px] overflow-y-auto"
@@ -37,9 +36,13 @@ export default function BestSellingProducts() {
         <Table stickyHeader>
           <TableHead>
             <TableRow className="sticky top-0 z-10 bg-white">
-              <TableCell>Sản phẩm</TableCell>
-              <TableCell align="right">Số lượng đã bán</TableCell>
-              <TableCell align="right">Doanh thu</TableCell>
+              <TableCell className="!font-bold">Sản Phẩm</TableCell>
+              <TableCell align="right" className="!font-bold">
+                Số Lượng Đã Bán
+              </TableCell>
+              <TableCell align="right" className="!font-bold">
+                Doanh Thu
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
