@@ -4,7 +4,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupIcon from "@mui/icons-material/Group";
 import { Link } from "react-router-dom";
-
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+import DiscountIcon from '@mui/icons-material/Discount';
 // eslint-disable-next-line react/prop-types
 export default function ManagerSidebar({ onClose }) {
   return (
@@ -50,9 +51,17 @@ export default function ManagerSidebar({ onClose }) {
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
+        <ListItemButton component={Link} to="/manager/promotions">
+          <ListItemIcon>
+            <DiscountIcon />
+          </ListItemIcon>
+          <ListItemText primary="Khuyến mãi" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
         <ListItemButton component={Link} to="/manager/profile" onClick={onClose}>
           <ListItemIcon>
-            <PersonIcon />
+            <ContactPageIcon />
           </ListItemIcon>
           <ListItemText primary="Chỉnh sửa hồ sơ" />
         </ListItemButton>

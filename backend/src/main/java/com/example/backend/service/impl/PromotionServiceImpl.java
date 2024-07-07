@@ -51,6 +51,7 @@ public class PromotionServiceImpl implements PromotionService {
                     .orElseThrow(() -> new RuntimeException("Promotion not found"));
             promotion.setName(updatedPromotionDTO.getName());
             promotion.setDescription(updatedPromotionDTO.getDescription());
+            promotion.setDiscountRate(updatedPromotionDTO.getDiscountRate());
             promotion.setStartDate(updatedPromotionDTO.getStartDate());
             promotion.setEndDate(updatedPromotionDTO.getEndDate());
             promotionRepository.save(promotion);

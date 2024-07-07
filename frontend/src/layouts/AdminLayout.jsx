@@ -1,13 +1,19 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import AdminHeader from "../components/AdminHeader";
 import AdminSidebar from "../components/AdminSidebar";
 import { useAuth } from "../hooks/useAuth";
 
 function AdminLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+
+  }
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
@@ -24,7 +30,11 @@ function AdminLayout() {
         </div>
       </div>
     ) : (
-      <div className="text-center mt-8 text-red-500 font-bold text-4xl">Bạn không có quyền truy cập trang này!</div>
+      <div className="text-center mt-8 text-red-500 font-bold text-4xl">
+        Bạn không có quyền truy cập trang này!
+        <button className="btn btn-accent btn-lg mx-auto mt-10 text-lg" onClick={handleLogout}>Đăng xuất</button>
+      </div>
+
     )
   );
 }
