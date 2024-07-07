@@ -224,7 +224,7 @@ export default function OrderListOfSalesStaff() {
                   {order.order.transaction.status === "INCOMPLETE" && (
                     <TableCell>Chưa thanh toán</TableCell>
                   )}
-                  {order.order.transaction.status === "COMPLETED" && (
+                  {order.order.transaction.status === "COMPLETE" && (
                     <TableCell>Đã thanh toán</TableCell>
                   )}
                   <TableCell className="!italic">
