@@ -10,9 +10,8 @@ export default function Layout({ children }) {
   const handleLogout = () => {
     logout();
   }
-  console.log(user);
   return (
-    user == null || user.role === 'CUSTOMER' ? (
+    user == null || user.role === 'CUSTOMER' || user.role === 'ADMIN' ? (
       <div className="relative flex flex-col min-h-screen">
         <Header />
         <div className="container mx-auto flex-1 py-10 md:py-0">{children}</div>

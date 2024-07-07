@@ -53,6 +53,7 @@ import OrderHistoryOfDeliveryStaff from "./pages/OrderHistoryOfDeliveryStaff";
 import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import ProfileStaffLayout from "./layouts/ProfileSaleStaffLayout";
+import AdminPromotionManagement from "./pages/AdminPromotionManagement";
 
 function App() {
   return (
@@ -190,6 +191,10 @@ function App() {
             path="profile"
             element={<ProfileStaffLayout />}
           />
+          <Route
+            path="promotions"
+            element={<AdminPromotionManagement />}
+          />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
@@ -203,6 +208,7 @@ function App() {
           <Route path="diamonds" element={<AdminDiamondManagement />} />
           <Route path="users" element={<AdminUserManagement />} />
           <Route path="profile" element={<ProfileStaffLayout />} />
+          <Route path="promotions" element={<AdminPromotionManagement />} />
         </Route>
 
         <Route
