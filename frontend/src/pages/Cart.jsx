@@ -129,7 +129,7 @@ export default function Cart() {
             userId: user.id,
             transaction_id: null,
             discountPrice: discountPrice,
-            totalPrice: totalPrice,
+            totalPrice: totalPrice + deliveryFee - discountPrice,
             deliveryFee: deliveryFee,
             createdAt: new Date().toISOString(),
             customerName: user.lastName + " " + user.firstName,
