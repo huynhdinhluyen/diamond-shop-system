@@ -261,7 +261,6 @@ export default function Signup() {
                     <option key={district.id} value={district.id}>{district.name}</option>
                   ))}
                 </select>
-                <input type="hidden" value={selectedDistrictName} {...register("city")} />
                 <select className="border px-3 py-4 text-sm italic text-gray-400 rounded-lg" value={selectedWard} onChange={handleWardChange}>
                   <option value="">Chọn phường/xã</option>
                   {wards.map(ward => (

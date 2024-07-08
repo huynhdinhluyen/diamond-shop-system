@@ -52,10 +52,6 @@ public class User implements UserDetails {
     private String lastName;
 
     @Nationalized
-    @Column(name = "city", length = 50)
-    private String city;
-
-    @Nationalized
     @Column(name = "address")
     private String address;
 
