@@ -36,7 +36,6 @@ public class AuthenticationResponse {
         this.email = user.getEmail();
         this.phoneNumber = user.getPhoneNumber();
         this.address = user.getAddress();
-        this.city = user.getCity();
         this.role = String.valueOf(user.getRoleName());
         this.membershipLevel = membershipLevelMapper.toMembershipLevelDTO(user.getMembershipLevel());
         this.points = user.getPoints();

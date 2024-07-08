@@ -80,7 +80,6 @@ public class AuthenticationService {
             user.setPhoneNumber(request.getPhoneNumber());
             user.setEmail(request.getEmail());
             user.setAddress(request.getAddress());
-            user.setCity(request.getCity());
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
             user.setAccessToken(accessToken);
@@ -186,7 +185,6 @@ public class AuthenticationService {
             user.setPhoneNumber(request.getPhoneNumber());
             user.setEmail(request.getEmail());
             user.setAddress(request.getAddress());
-            user.setCity(request.getCity());
             user = repository.save(user);
             String token = jwtService.generateAccessToken(user);
             Date expiration = jwtService.extractExpiration(token);
