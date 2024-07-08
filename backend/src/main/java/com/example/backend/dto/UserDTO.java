@@ -19,7 +19,6 @@ public class UserDTO {
     private String phoneNumber;
     private String firstName;
     private String lastName;
-    private String city;
     private String address;
     private RoleName role;
     private String verificationCode;
