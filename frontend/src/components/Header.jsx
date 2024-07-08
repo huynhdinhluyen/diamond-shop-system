@@ -57,7 +57,9 @@ export default function Header() {
           <div className="text-secondary cursor-pointer flex items-center gap-x-2">
             {user ? (
               <div className="text-nowrap flex items-center gap-x-2 relative group">
-                <AccountCircleOutlinedIcon /> {user.lastName} {user.firstName}
+                <Link to="/profile">
+                  <AccountCircleOutlinedIcon /> {user.lastName} {user.firstName}
+                </Link>
                 <div className="shadow-lg absolute bg-white hidden group-hover:flex w-[200px] top-12 flex-col rounded-lg z-50">
                   <Link
                     to="/profile"
