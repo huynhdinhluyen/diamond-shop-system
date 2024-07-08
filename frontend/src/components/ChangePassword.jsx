@@ -18,8 +18,8 @@ export default function ChangePassword() {
 
     return (
         <div className="ml-5">
-            <h3 className="h3">Thay đổi mật khẩu</h3>
-            <p className='text-gray-400'>Đổi mật khẩu nếu bạn muốn</p>
+            <h3 className="h3 text-center lg:text-left">Thay đổi mật khẩu</h3>
+            <p className='text-gray-400 text-center lg:text-left'>Đổi mật khẩu nếu bạn muốn</p>
             <hr />
             <form onSubmit={handleSubmit(submit)}>
                 <Input

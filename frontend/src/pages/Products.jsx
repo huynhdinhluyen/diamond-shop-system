@@ -6,7 +6,6 @@ import { getCategories } from "../service/categoryService";
 import ProductCard from "../components/ProductCard";
 import { CircularProgress, Typography } from "@mui/material";
 import Pagination from "../components/Pagination";
-
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 };
@@ -36,6 +35,10 @@ export default function Products() {
     const searchQuery = query.get("query");
     const priceRangeQuery = query.get("priceRange");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [currentPage])
 
     const priceRanges = [
         { label: "Dưới 10 triệu", value: "0-10000000" },
@@ -150,7 +153,6 @@ export default function Products() {
 
         setFilteredProducts(filtered);
     }, [priceRangeQuery, selectedColor, selectedCaratWeight, selectedCut, selectedClarity, products, selectedDiamondCasingMaterial]);
-
 
     const handleCategoryChange = (event) => {
         const selectedCategoryId = event.target.value;

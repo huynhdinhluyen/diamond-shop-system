@@ -34,13 +34,13 @@ export default function MyOrder() {
     const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return (
-        <div className="w-full ml-5 mt-10">
+        <div className="w-full lg:ml-5">
             <div>
-                <h3 className="h3 mb-3">Đơn hàng của tôi</h3>
+                <h3 className="h3 mb-3 text-center lg:text-left">Đơn hàng của tôi</h3>
             </div>
             <hr className="w-full text-gray-300" />
             {!sortedOrders || sortedOrders.length === 0 ? (
-                <div className="mt-10">
+                <div className="mt-10 text-center">
                     <NotFound message="Bạn chưa có đơn hàng nào" />
                 </div>
             ) : (
@@ -83,10 +83,10 @@ export default function MyOrder() {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div className="flex justify-end text-gray-500 mt-2">
+                                    <div className="flex flex-wrap justify-end text-gray-500 mt-2">
                                         Tổng tiền: <span className="font-semibold ml-2"> <Price price={order.totalPrice} /> </span>
                                     </div>
-                                    <div className="flex justify-end items-center text-gray-500 mt-2">
+                                    <div className="flex flex-col ml-auto sm:flex sm:flex-row justify-end items-center text-gray-500 mt-2">
                                         <p className="mr-3">Trạng thái đơn hàng:</p>
                                         {order.status.name === "PENDING" && (<p className='px-3 py-2 bg-gray-400 text-white text-center rounded-md'>Đang chờ xác nhận</p>)}
                                         {order.status.name === "CONFIRMED" && (<p className='px-3 py-2 bg-accent text-white text-center rounded-md'>Đã xác nhận đơn hàng</p>)}
