@@ -1,4 +1,3 @@
-import ScrollToTop from "./ScrollToTop"
 /* eslint-disable react/prop-types */
 const Pagination = ({
   totalPosts,
@@ -44,7 +43,6 @@ const Pagination = ({
           disabled={page === "..."}
         >
           {page}
-          <ScrollToTop />
         </button>
       ))}
     </div>

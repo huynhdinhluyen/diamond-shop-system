@@ -25,8 +25,8 @@ export default function MyProfile() {
     return (
         <div className="w-full lg:ml-5">
             <div>
-                <h3 className="h3">Hồ sơ của tôi</h3>
-                <p className="text-gray-400">Quản lý thông tin hồ sơ cá nhân</p>
+                <h3 className="h3 text-center lg:text-left">Hồ sơ của tôi</h3>
+                <p className="text-gray-400 text-center lg:text-left">Quản lý thông tin hồ sơ cá nhân</p>
             </div>
             <hr className="w-full text-gray-300" />
             <div className="mt-5">
@@ -69,7 +69,7 @@ export default function MyProfile() {
                     </div>
                     <div className="mt-5 flex-grow items-center">
                         <label htmlFor="" className="mr-5 text-nowrap">Email:</label>
-                        {user.role === 'CUSTOMER' ? <Input
+                        {user.role === 'CUSTOMER' || user.role === 'ADMIN' ? <Input
                             type="email"
                             defaultValue={user.email}
                             {...register("email", {
