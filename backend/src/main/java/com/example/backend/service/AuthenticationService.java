@@ -4,7 +4,6 @@ import com.example.backend.entity.MembershipLevel;
 import com.example.backend.entity.User;
 import com.example.backend.enums.UserVerifyStatus;
 import com.example.backend.exception.MembershipLevelNotFoundException;
-import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.MembershipLevelMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.MembershipLevelRepository;
@@ -171,27 +170,6 @@ public class AuthenticationService {
         logger.info("User found: {}", username);
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-    }
-
-    public AuthenticationResponse updateUser(Integer userId, User request) throws Exception {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-        try {
-            user.setFirstName(request.getFirstName());
-            user.setLastName(request.getLastName());
-            user.setUsername(request.getUsername());
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setRoleName(request.getRoleName());
-            user.setPhoneNumber(request.getPhoneNumber());
-            user.setEmail(request.getEmail());
-            user.setAddress(request.getAddress());
-            user = repository.save(user);
-            String token = jwtService.generateAccessToken(user);
-            Date expiration = jwtService.extractExpiration(token);
-            return new AuthenticationResponse(token, user, expiration, membershipLevelMapper);
-        } catch (DataIntegrityViolationException e) {
-            throw new Exception("Cập nhật nguời dùng thất bại, vui lòng thử lại!");
-        }
     }
 
     public AuthenticationResponse getUserById(Integer id) {

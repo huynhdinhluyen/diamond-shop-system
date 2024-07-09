@@ -7,7 +7,7 @@ export const getUser = () =>
     : null;
 
 export const setUser = (user) => {
-  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem("user", JSON.stringify(user));
 };
 
 export const login = async (username, password) => {
@@ -59,14 +59,9 @@ export async function getUsers() {
   }
 }
 
-
 export async function createUser(userData) {
-  try {
-    const response = await axiosInstance.post("/api/users", userData);
-    return response.data;
-  } catch (error) {
-    handleError("Error creating user:", error);
-  }
+  const { response } = await axiosInstance.post("/api/users", userData);
+  return response;
 }
 
 export async function updateUser(userId, userData) {

@@ -50,7 +50,6 @@ public class UserController {
                 registerConfirmed(request.getVerificationCode(), request.getAccessToken()));
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody User request
@@ -87,7 +86,6 @@ public class UserController {
 //        return ResponseEntity.badRequest().build();
 //    }
 
-
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam Integer userId, @RequestBody User updatedUser) {
         try {
@@ -112,15 +110,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuthenticationResponse> updateUserByAdmin(@PathVariable Integer id,
+    public ResponseEntity<User> updateUserByAdmin(@PathVariable Integer id,
                                                                     @RequestBody User request) {
         try {
-            AuthenticationResponse user = authService.updateUser(id, request);
+            User user = userService.updateUserByAdmin(id, request);
             return ResponseEntity.ok(user);
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
