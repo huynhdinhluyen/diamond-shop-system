@@ -5,7 +5,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 import MobileNav from "./MobileNav";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useCart } from "../hooks/useCart";
 
@@ -22,6 +22,8 @@ export default function Header() {
   const { user, logout } = useAuth();
   const { cart } = useCart();
   const [cartCount, setCartCount] = useState(0);
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (cart.items) {
       const totalItems = cart.items.reduce(
@@ -34,6 +36,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    navigate("/");
   };
 
   return (
