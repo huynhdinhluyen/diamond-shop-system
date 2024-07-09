@@ -40,7 +40,7 @@ export default function SalesStaffLayout() {
   };
 
   return user && user.role === "SALES_STAFF" ? (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen p-4 bg-gray-100">
       <AppBar position="fixed" className="!z-10 !bg-slate-800">
         <Toolbar>
           <IconButton
@@ -100,7 +100,7 @@ export default function SalesStaffLayout() {
       </Drawer>
       <Box
         component="main"
-        className="flex-grow p-4 overflow-y-auto bg-gray-100"
+        className="container flex-grow mx-auto"
       >
         <Toolbar />
         <Outlet />

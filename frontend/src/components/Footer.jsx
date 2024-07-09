@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
-import Map from "../components/Map.jsx";
 
 export default function Footer() {
   return (
@@ -41,7 +40,7 @@ export default function Footer() {
           </div>
           {/* about */}
           <div className="flex-1">
-            <h4 className="h4 mb-5 uppercase text-accent">Về chúng tôi</h4>
+            <h4 className="text-[20px] font-semibold mb-5 uppercase text-accent">Về chúng tôi</h4>
             <hr className="w-[20%] border-2 mb-3" />
             <ul className="flex-1 flex-col gap-y-5">
               <li>
@@ -79,7 +78,7 @@ export default function Footer() {
           </div>
           {/* policy */}
           <div className="flex-1">
-            <h4 className="h4 mb-5 uppercase text-accent">Các chính sách</h4>
+            <h4 className="text-[20px] font-semibold mb-5 uppercase text-accent">Các chính sách</h4>
             <ul className="flex-1 flex-col gap-y-5">  <hr className="w-[20%] border-2 mb-3" />
               <li>
                 <Link to="/exchange-and-return" className="hover:text-accent transition-all">
@@ -125,7 +124,7 @@ export default function Footer() {
           </div>
           {/* instruction */}
           <div className="flex-1">
-            <h4 className="h4 mb-5 uppercase text-accent">Kiến thức và hướng dẫn</h4>
+            <h4 className="text-[20px] font-semibold mb-5 uppercase text-accent">Kiến thức và hướng dẫn</h4>
             <ul className="flex-1 flex-col gap-y-5">  <hr className="w-[20%] border-2 mb-3" />
               <li>
                 <Link to="/knowledge" className="hover:text-accent transition-all">
@@ -161,7 +160,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <Map />
       <div className="py-[30px] border-t">
         <div className="container mx-auto text-center">
           <div className="font-light text-accent">

@@ -30,7 +30,7 @@ export default function ManagerLayout() {
     setDrawerOpen(false);
   };
   return user && user.role === "MANAGER" ? (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <AppBar position="static" className="!bg-slate-800 !shadow-md">
         <Toolbar>
           <IconButton
@@ -55,7 +55,7 @@ export default function ManagerLayout() {
         <ManagerSidebar onClose={handleDrawerClose} />
       </Drawer>
 
-      <main className="container mx-auto mt-8">
+      <main className="container mx-auto p-4">
         <Outlet />
       </main>
     </div>
