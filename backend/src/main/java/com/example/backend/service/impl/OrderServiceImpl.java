@@ -4,6 +4,7 @@ import com.example.backend.dto.*;
 import com.example.backend.entity.*;
 import com.example.backend.exception.OrderNotFoundException;
 import com.example.backend.exception.OrderStatusNotFoundException;
+import com.example.backend.exception.TransactionNotFoundException;
 import com.example.backend.exception.UserNotFoundException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.repository.*;
@@ -314,6 +315,12 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
         orderAssignment.setOrderStatus(orderStatus);
         orderAssignment.setUpdateAt(LocalDateTime.now());
+        Integer transactionId = order.getTransaction().getId();
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new TransactionNotFoundException(transactionId));
+        String transactionStatus = "COMPLETE";
+        transaction.setStatus(transactionStatus);
+        transactionRepository.save(transaction);
         return orderAssignmentRepository.save(orderAssignment);
     }
 
