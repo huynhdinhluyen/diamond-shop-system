@@ -32,10 +32,10 @@ const MobileNav = ({ pages }) => {
   return (
     <div>
       <div
-        className={`fixed ${isNavOpen ? "left-0" : "-left-[300px]"
-          } bg-white w-[80%] top-0 h-screen shadow-2xl lg:hidden transition-all duration-300 z-20`}
+        className={`fixed ${isNavOpen ? "left-0" : "-left-[90%]"
+          } bg-white w-[90%] top-0 h-screen shadow-2xl lg:hidden transition-all duration-300 z-20`}
       >
-        <div className="bg-primary w-8 h-8 relative -right-full top-8 flex justify-center items-center rounded-tr-lg rounded-br-lg cursor-pointer transition-all">
+        <div className="bg-accent w-8 h-8 relative -right-full top-8 flex justify-center items-center rounded-tr-lg rounded-br-lg cursor-pointer transition-all">
           {isNavOpen ? (
             <ArrowLeftIcon
               className="text-2xl text-white"
@@ -50,13 +50,13 @@ const MobileNav = ({ pages }) => {
         </div>
         <div className="px-12 flex flex-col gap-y-9 h-full">
           {user ? <div className="flex flex-col items-center">
-            <Link to="/profile" className="flex gap-x-2 hover:text-accent cursor-pointer font-semibold text-center items-center">
+            <Link to="/profile" className="flex flex-col gap-x-2 hover:text-accent cursor-pointer font-semibold text-center items-center">
               <i className="ri-user-line"></i>
               <p>Xin chào {user.firstName}</p>
             </Link>
             <div
               onClick={handleLogout}
-              className="p-0 cursor-pointer hover:bg-slate-50 hover:text-accent transition-all duration-300 text-sm"
+              className="p-0 cursor-pointer hover:bg-slate-50 hover:text-accent transition-all duration-300 text-sm text-center"
             >
               Đăng xuất
             </div>
