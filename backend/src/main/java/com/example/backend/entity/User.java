@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", nullable = false, length = 24)
     private String username;
 
     @Column(name = "password", nullable = false)
@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Column(name = "phone_number", nullable = false, length = 20)
+    @Column(name = "phone_number", nullable = false, length = 10)
     private String phoneNumber;
 
     @Nationalized

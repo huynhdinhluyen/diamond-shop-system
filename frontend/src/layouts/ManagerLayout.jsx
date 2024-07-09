@@ -43,7 +43,7 @@ export default function ManagerLayout() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Quản lý cửa hàng
+            Diamond Shop System
           </Typography>
           <IconButton color="inherit" onClick={handleLogout}>
             <LogoutIcon />

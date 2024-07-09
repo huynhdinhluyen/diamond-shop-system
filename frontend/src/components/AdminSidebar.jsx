@@ -4,7 +4,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import StoreIcon from '@mui/icons-material/Store';
 import DiscountIcon from '@mui/icons-material/Discount';
-import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -34,7 +33,7 @@ function AdminSidebar({ open, onClose }) {
             <ListItemIcon>
               <StoreIcon />
             </ListItemIcon>
-            <ListItemText primary="Sản phẩm" />
+            <ListItemText primary="Sản Phẩm" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -42,7 +41,7 @@ function AdminSidebar({ open, onClose }) {
             <ListItemIcon>
               <DiamondOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Vỏ kim cương" />
+            <ListItemText primary="Vỏ Kim Cương" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -50,7 +49,7 @@ function AdminSidebar({ open, onClose }) {
             <ListItemIcon>
               <DiamondOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Kim cương" />
+            <ListItemText primary="Kim Cương" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -58,7 +57,7 @@ function AdminSidebar({ open, onClose }) {
             <ListItemIcon>
               <InventoryIcon />
             </ListItemIcon>
-            <ListItemText primary="Danh mục" />
+            <ListItemText primary="Danh Mục" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -66,7 +65,7 @@ function AdminSidebar({ open, onClose }) {
             <ListItemIcon>
               <DiscountIcon />
             </ListItemIcon>
-            <ListItemText primary="Khuyến mãi" />
+            <ListItemText primary="Khuyến Mãi" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -74,15 +73,23 @@ function AdminSidebar({ open, onClose }) {
             <ListItemIcon>
               <ShoppingCartIcon />
             </ListItemIcon>
-            <ListItemText primary="Đơn hàng" />
+            <ListItemText primary="Đơn Hàng" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/admin/users">
+          <ListItemButton component={Link} to="/admin/customers-management">
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Người dùng" />
+            <ListItemText primary="Khách Hàng" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/admin/staffs-management">
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Nhân Viên" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -90,15 +97,7 @@ function AdminSidebar({ open, onClose }) {
             <ListItemIcon>
               <ContactPageIcon />
             </ListItemIcon>
-            <ListItemText primary="Chỉnh sửa hồ sơ" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to="/admin/settings">
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Cài đặt" />
+            <ListItemText primary="Chỉnh Sửa Hồ Sơ" />
           </ListItemButton>
         </ListItem>
       </List>

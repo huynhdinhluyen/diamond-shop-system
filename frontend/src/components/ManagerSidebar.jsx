@@ -23,7 +23,7 @@ export default function ManagerSidebar({ onClose }) {
           <ListItemIcon>
             <ShoppingCartIcon />
           </ListItemIcon>
-          <ListItemText primary="Đơn hàng" />
+          <ListItemText primary="Đơn Hàng" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
@@ -31,7 +31,7 @@ export default function ManagerSidebar({ onClose }) {
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText primary="Khách hàng" />
+          <ListItemText primary="Khách Hàng" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
@@ -39,7 +39,7 @@ export default function ManagerSidebar({ onClose }) {
           <ListItemIcon>
             <GroupIcon />
           </ListItemIcon>
-          <ListItemText primary="Nhân viên bán hàng" />
+          <ListItemText primary="Nhân Viên Bán Hàng" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
@@ -47,7 +47,7 @@ export default function ManagerSidebar({ onClose }) {
           <ListItemIcon>
             <GroupIcon />
           </ListItemIcon>
-          <ListItemText primary="Nhân viên giao hàng" />
+          <ListItemText primary="Nhân Viên Giao Hàng" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
@@ -55,7 +55,7 @@ export default function ManagerSidebar({ onClose }) {
           <ListItemIcon>
             <DiscountIcon />
           </ListItemIcon>
-          <ListItemText primary="Khuyến mãi" />
+          <ListItemText primary="Khuyến Mãi" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
@@ -63,7 +63,7 @@ export default function ManagerSidebar({ onClose }) {
           <ListItemIcon>
             <ContactPageIcon />
           </ListItemIcon>
-          <ListItemText primary="Chỉnh sửa hồ sơ" />
+          <ListItemText primary="Chỉnh Sửa Hồ Sơ" />
         </ListItemButton>
       </ListItem>
     </List>
