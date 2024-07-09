@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import Map from "../components/Map.jsx";
 import emailjs from "@emailjs/browser";
 import { toast } from "react-toastify";
 
@@ -25,13 +24,13 @@ export default function Contact() {
       );
   };
   return (
-    <div className="container bg-gray-50 p-10 lg:mt-10">
+    <div className="container lg:p-10 lg:mt-10 mb-10">
       <img
         src="https://images.unsplash.com/photo-1586466618167-882f878971ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt=""
         className="lg:hidden w-full h-[300px] object-cover mb-5" />
-      <div className="flex flex-col gap-y-4 text-center w-full lg:w-[60%] mx-auto mb-5">
-        <h3 className="h3 text-accent">
+      <div className="flex flex-col gap-y-4 text-center w-full lg:w-full mx-auto mb-5">
+        <h3 className="h3 text-accent uppercase">
           Nơi tinh hoa của cái đẹp và nghệ thuật trang sức được tạo ra
         </h3>
         <p className="text-md text-gray-400">
@@ -99,12 +98,6 @@ export default function Contact() {
             className="h-[90%] w-full object-cover"
           />
         </div>
-      </div>
-      <div className="w-full border-t-2 border-gray-200 pt-5 my-5">
-        <h3 className="h3 text-center text-accent mb-4 uppercase">
-          Vị trí của chúng tôi
-        </h3>
-        <Map />
       </div>
       <div className="mt-4 w-full mx-auto pt-5">
         <h3 className="h3 text-accent uppercase text-center my-5">

@@ -335,6 +335,12 @@ public class OrderServiceImpl implements OrderService {
         return orderAssignmentRepository.save(orderAssignment);
     }
 
+    @Override
+    public List<OrderDTO> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream().map(orderMapper::toOrderDTO).collect(Collectors.toList());
+    }
+
     private void assignTaskToSalesStaff(Order order) {
         Integer result = orderAssignmentRepository.findSalesStaffWithLeastTasks();
         User staff = new User();

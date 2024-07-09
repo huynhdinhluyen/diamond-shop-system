@@ -13,17 +13,17 @@ function AdminLayout() {
   };
 
   return user && user.role === "ADMIN" ? (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen bg-gray-100">
       <AdminSidebar open={drawerOpen} onClose={toggleDrawer} />
       <div className="flex flex-col w-full">
         <AdminHeader onToggleSidebar={toggleDrawer} />
-        <main className="container flex-grow p-4 mx-auto">
+        <main className="container p-4 flex-grow mx-auto">
           <Outlet />
         </main>
       </div>
     </div>
   ) : (
-    <div className="text-center mt-8 text-red-500 font-bold text-4xl">
+    <div className="text-center text-red-500 font-bold text-4xl">
       Bạn không có quyền truy cập trang này!
     </div>
   );

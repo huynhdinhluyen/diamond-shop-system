@@ -2,9 +2,9 @@ import { Fade, Slide } from "@mui/material";
 
 export default function About() {
   return (
-    <div className="container bg-gray-50 mt-10 p-8 rounded-xl">
+    <div className="container bg-gray-50 lg:mt-10 p-8 rounded-xl">
       <Fade in={true} timeout={1000}>
-        <h1 className="font-semibold text-2xl text-center mb-4">GIỚI THIỆU</h1>
+        <h1 className="font-semibold text-2xl text-center mb-4 text-accent">GIỚI THIỆU</h1>
       </Fade>
       <Fade in={true} timeout={1000}>
         <p className="italic">

@@ -55,4 +55,8 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/get/all")
+    public ResponseEntity<List<OrderDTO>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
 }

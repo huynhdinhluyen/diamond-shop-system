@@ -54,6 +54,9 @@ import ScrollToTopButton from "./components/ScrollToTopButton";
 import ProfileStaffLayout from "./layouts/ProfileSaleStaffLayout";
 import AdminPromotionManagement from "./pages/AdminPromotionManagement";
 import StaffsManagement from "./pages/StaffsManagement";
+import OrderListOfAdmin from "./pages/OrderListOfAdmin";
+import OrderDetailOfAdmin from "./pages/OrderDetailOfAdmin";
+import OrderListOfManager from "./pages/OrderListOfManager";
 
 function App() {
   return (
@@ -189,6 +192,8 @@ function App() {
           />
           <Route path="profile" element={<ProfileStaffLayout />} />
           <Route path="promotions" element={<AdminPromotionManagement />} />
+          <Route path="orders" element={<OrderListOfManager />} />
+          <Route path="orders/:orderId" element={<OrderDetailOfAdmin />} />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
@@ -204,6 +209,11 @@ function App() {
           <Route path="staffs-management" element={<StaffsManagement />} />
           <Route path="profile" element={<ProfileStaffLayout />} />
           <Route path="promotions" element={<AdminPromotionManagement />} />
+          <Route path="orders" element={<OrderListOfAdmin />} />
+          <Route
+            path="orders/:orderId"
+            element={<OrderDetailOfAdmin />}
+          />
         </Route>
 
         <Route
