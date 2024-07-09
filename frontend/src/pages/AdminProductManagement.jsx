@@ -70,9 +70,12 @@ const productSchema = yup.object({
       id: yup.number().required("Vỏ kim cương không được để trống"),
     }),
   promotion: yup.object().nullable(),
-  mainDiamond: yup.object().nullable().shape({
-    id: yup.number().required("Kim cương chính không được để trống"),
-  }),
+  mainDiamond: yup
+    .object()
+    .nullable()
+    .shape({
+      id: yup.number().required("Kim cương chính không được để trống"),
+    }),
   auxiliaryDiamond: yup.object().nullable(),
   category: yup
     .object()
@@ -332,6 +335,7 @@ export default function AdminProductManagement() {
                     active={sortBy === "id"}
                     direction={sortOrder}
                     onClick={() => handleSort("id")}
+                    className="!font-semibold"
                   >
                     ID
                   </TableSortLabel>
@@ -341,6 +345,7 @@ export default function AdminProductManagement() {
                     active={sortBy === "name"}
                     direction={sortOrder}
                     onClick={() => handleSort("name")}
+                    className="!font-semibold"
                   >
                     Tên sản phẩm
                   </TableSortLabel>
@@ -351,6 +356,7 @@ export default function AdminProductManagement() {
                     active={sortBy === "laborCost"}
                     direction={sortOrder}
                     onClick={() => handleSort("laborCost")}
+                    className="!font-semibold"
                   >
                     Chi phí gia công
                   </TableSortLabel>
@@ -360,6 +366,7 @@ export default function AdminProductManagement() {
                     active={sortBy === "costPrice"}
                     direction={sortOrder}
                     onClick={() => handleSort("costPrice")}
+                    className="!font-semibold"
                   >
                     Giá gốc
                   </TableSortLabel>
@@ -369,6 +376,7 @@ export default function AdminProductManagement() {
                     active={sortBy === "salePrice"}
                     direction={sortOrder}
                     onClick={() => handleSort("salePrice")}
+                    className="!font-semibold"
                   >
                     Giá bán
                   </TableSortLabel>
@@ -378,6 +386,7 @@ export default function AdminProductManagement() {
                     active={sortBy === "profitMargin"}
                     direction={sortOrder}
                     onClick={() => handleSort("profitMargin")}
+                    className="!font-semibold"
                   >
                     Tỉ lệ áp giá
                   </TableSortLabel>
@@ -387,6 +396,7 @@ export default function AdminProductManagement() {
                     active={sortBy === "stockQuantity"}
                     direction={sortOrder}
                     onClick={() => handleSort("stockQuantity")}
+                    className="!font-semibold"
                   >
                     Số lượng tồn kho
                   </TableSortLabel>
@@ -584,7 +594,11 @@ export default function AdminProductManagement() {
                     {...field}
                     label="Khuyến mãi"
                     error={!!errors.promotion}
-                    onChange={(event) => field.onChange(event.target.value === "" ? null : event.target.value)}
+                    onChange={(event) =>
+                      field.onChange(
+                        event.target.value === "" ? null : event.target.value
+                      )
+                    }
                     value={field.value || ""}
                   >
                     <MenuItem value="">None</MenuItem>
