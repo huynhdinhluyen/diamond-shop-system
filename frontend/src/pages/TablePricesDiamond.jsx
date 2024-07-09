@@ -6,12 +6,8 @@ import { useEffect } from "react";
 export default function TablePricesDiamond() {
     const [activeSize, setActiveSize] = useState(prices[0].size);
     const sectionRefs = useRef([]);
-    const currentDate = new Date().toLocaleString('en-US', {
-        timeZone: 'Asia/Ho_Chi_Minh',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    const currentDate = new Date().toLocaleString('vi-VN', options);
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -47,7 +43,7 @@ export default function TablePricesDiamond() {
     };
 
     return (
-        <div className="lg:mt-10 container bg-gray-50 p-10">
+        <div className="lg:mt-10 container bg-gray-50 lg:p-10">
             <img
                 src="https://images.unsplash.com/photo-1584377334016-464803e03b80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt=""
