@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.OrderDTO;
 import com.example.backend.dto.ProductSalesDTO;
+import com.example.backend.entity.Order;
 import com.example.backend.entity.OrderAssignment;
 import org.springframework.stereotype.Service;
 
@@ -41,4 +42,6 @@ public interface OrderService {
     OrderAssignment completeOrder(Integer orderId);
 
     OrderAssignment cancelOrder(Integer orderId);
+
+    List<OrderDTO> getAllOrders();
 }

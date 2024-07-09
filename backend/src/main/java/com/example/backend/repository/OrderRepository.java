@@ -1,5 +1,6 @@
 package com.example.backend.repository;
 
+import com.example.backend.dto.OrderDTO;
 import com.example.backend.entity.Order;
 import com.example.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
