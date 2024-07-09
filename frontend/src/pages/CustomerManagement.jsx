@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import {
-  createUser,
-  deleteUser,
-  getUserByRole,
-  updateUser,
-} from "../service/userService";
+import { createUser, deleteUser, getUserByRole } from "../service/userService";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -17,15 +12,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
-  FormHelperText,
   IconButton,
   InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
   Paper,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -37,22 +26,23 @@ import {
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import BronzeIcon from "@mui/icons-material/EmojiEvents"; // Bronze icon
+import SilverIcon from "@mui/icons-material/MilitaryTech"; // Silver icon
+import GoldIcon from "@mui/icons-material/EmojiEvents"; // Gold icon
+import DiamondIcon from "@mui/icons-material/Star"; // Diamond icon
+import PlatinumIcon from "@mui/icons-material/EmojiEvents"; // Platinum icon
 import { highlightText } from "../utils/highlightText";
 
-const roleOptions = [
-  { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
-  { value: "DELIVERY_STAFF", label: "Nhân viên giao hàng" },
-  { value: "CUSTOMER", label: "Khách hàng" },
-  { value: "MANAGER", label: "Quản lý" },
-];
-
 const customerSchema = yup.object({
-  username: yup.string().required("Tên người dùng không được để trống"),
+  username: yup
+    .string()
+    .min(4, "Tên người dùng phải có ít nhất 4 ký tự")
+    .max(24, "Tên người dùng không được quá 24 ký tự")
+    .required("Vui lòng nhập tên người dùng"),
   password: yup.string().required("Mật khẩu không được để trống"),
   email: yup
     .string()
@@ -60,11 +50,16 @@ const customerSchema = yup.object({
     .required("Email không được để trống"),
   phoneNumber: yup
     .string()
-    .matches(/^[0-9]+$/, "Số điện thoại phải là số")
+    .matches(/^0\d{9}$/, "Số điện thoại không hợp lệ")
     .required("Số điện thoại không được để trống"),
-  firstName: yup.string().required("Họ không được để trống"),
-  lastName: yup.string().required("Tên không được để trống"),
-  city: yup.string().optional(),
+  firstName: yup
+    .string()
+    .max(50, "Họ không được quá 50 ký tự")
+    .required("Vui lòng nhập tên"),
+  lastName: yup
+    .string()
+    .max(50, "Tên không được quá 50 ký tự")
+    .required("Vui lòng nhập họ"),
   address: yup.string().optional(),
   roleName: yup.string().optional(),
 });
@@ -72,7 +67,6 @@ const customerSchema = yup.object({
 export default function CustomerManagement() {
   const [customers, setCustomers] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -80,8 +74,18 @@ export default function CustomerManagement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
-  const [sortBy, setSortBy] = useState("id");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortBy, setSortBy] = useState("points");
+  const [sortOrder, setSortOrder] = useState("desc");
+
+  const [defaultUser, setDefaultUser] = useState({
+    username: "",
+    password: "",
+    email: "",
+    phoneNumber: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+  });
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -130,28 +134,30 @@ export default function CustomerManagement() {
   }, []);
 
   const handleOpenDialog = (customer = null) => {
-    setSelectedCustomer(customer);
-    reset(customer || {});
+    reset(customer || defaultUser);
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setSelectedCustomer(null);
     reset();
+    setDefaultUser({
+      username: "",
+      password: "",
+      email: "",
+      phoneNumber: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+    });
     fetchData();
   };
 
   const handleFormSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      if (selectedCustomer) {
-        await updateUser(selectedCustomer.id, data);
-        toast.success("Cập nhật thành công");
-      } else {
-        await createUser(data);
-        toast.success("Tạo tài khoản khách hàng thành công");
-      }
+      await createUser(data);
+      toast.success("Tạo tài khoản thành công");
       fetchData();
       handleCloseDialog();
     } catch (error) {
@@ -204,7 +210,7 @@ export default function CustomerManagement() {
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
-        Quản lý khách hàng
+        Quản Lý Khách Hàng
       </Typography>
 
       <TextField
@@ -228,7 +234,7 @@ export default function CustomerManagement() {
         onClick={() => handleOpenDialog()}
         className="!mt-4"
       >
-        Thêm khách hàng
+        Thêm Khách Hàng
       </Button>
 
       {isLoading ? (
@@ -244,12 +250,13 @@ export default function CustomerManagement() {
         >
           <Table stickyHeader>
             <TableHead>
-              <TableRow className="sticky top-0 z-10 bg-white">
+              <TableRow className="!sticky !top-0 !z-10">
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "id"}
                     direction={sortOrder}
                     onClick={() => handleSort("id")}
+                    className="!font-semibold"
                   >
                     ID
                   </TableSortLabel>
@@ -259,33 +266,18 @@ export default function CustomerManagement() {
                     active={sortBy === "username"}
                     direction={sortOrder}
                     onClick={() => handleSort("username")}
+                    className="!font-semibold"
                   >
                     Username
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={sortBy === "email"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("email")}
-                  >
-                    Email
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={sortBy === "phoneNumber"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("phoneNumber")}
-                  >
-                    Số điện thoại
-                  </TableSortLabel>
-                </TableCell>
+
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "lastName"}
                     direction={sortOrder}
                     onClick={() => handleSort("lastName")}
+                    className="!font-semibold"
                   >
                     Họ
                   </TableSortLabel>
@@ -295,10 +287,42 @@ export default function CustomerManagement() {
                     active={sortBy === "firstName"}
                     direction={sortOrder}
                     onClick={() => handleSort("firstName")}
+                    className="!font-semibold"
                   >
                     Tên
                   </TableSortLabel>
                 </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "email"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("email")}
+                    className="!font-semibold"
+                  >
+                    Email
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "phoneNumber"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("phoneNumber")}
+                    className="!font-semibold"
+                  >
+                    Số Điện Thoại
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "points"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("points")}
+                    className="!font-semibold"
+                  >
+                    Điểm Tích Luỹ
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell className="!font-semibold">Xếp Hạng</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -310,24 +334,46 @@ export default function CustomerManagement() {
                     {highlightText(customer.username, searchTerm)}
                   </TableCell>
                   <TableCell>
-                    {highlightText(customer.email, searchTerm)}
-                  </TableCell>
-                  <TableCell>
-                    {highlightText(customer.phoneNumber, searchTerm)}
-                  </TableCell>
-                  <TableCell>
                     {highlightText(customer.lastName, searchTerm)}
                   </TableCell>
                   <TableCell>
                     {highlightText(customer.firstName, searchTerm)}
                   </TableCell>
+                  <TableCell>
+                    {highlightText(customer.email, searchTerm)}
+                  </TableCell>
+                  <TableCell>
+                    {highlightText(customer.phoneNumber, searchTerm)}
+                  </TableCell>
+                  <TableCell>{customer.points}</TableCell>
+                  <TableCell>
+                    {customer.membershipLevel.name === "BRONZE" && (
+                      <span>
+                        <BronzeIcon style={{ color: "#cd7f32" }} /> Đồng
+                      </span>
+                    )}
+                    {customer.membershipLevel.name === "SILVER" && (
+                      <span>
+                        <SilverIcon style={{ color: "#c0c0c0" }} /> Bạc
+                      </span>
+                    )}
+                    {customer.membershipLevel.name === "GOLD" && (
+                      <span>
+                        <GoldIcon style={{ color: "#ffd700" }} /> Vàng
+                      </span>
+                    )}
+                    {customer.membershipLevel.name === "DIAMOND" && (
+                      <span>
+                        <DiamondIcon style={{ color: "#b9f2ff" }} /> Kim Cương
+                      </span>
+                    )}
+                    {customer.membershipLevel.name === "PLANTIUM" && (
+                      <span>
+                        <PlatinumIcon style={{ color: "#e5e4e2" }} /> Bạch Kim
+                      </span>
+                    )}
+                  </TableCell>
                   <TableCell className="!flex !justify-evenly">
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleOpenDialog(customer)}
-                    >
-                      <EditIcon />
-                    </IconButton>
                     <IconButton
                       color="error"
                       onClick={() => handleDeleteUser(customer.id)}
@@ -343,231 +389,97 @@ export default function CustomerManagement() {
       )}
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>
-          {selectedCustomer
-            ? "Chỉnh sửa thông tin khách hàng"
-            : "Thêm khách hàng"}
-        </DialogTitle>
+        <DialogTitle>Thêm khách hàng</DialogTitle>
         <DialogContent>
-          {selectedCustomer ? (
-            <form onSubmit={handleSubmit(handleFormSubmit)}>
-              <TextField
-                label="Username"
-                fullWidth
-                margin="normal"
-                {...register("username")}
-                error={!!errors.username}
-                helperText={errors?.username?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Mật khẩu"
-                fullWidth
-                margin="normal"
-                type={showPassword ? "text" : "password"}
-                {...register("password")}
-                error={!!errors.password}
-                helperText={errors?.password?.message}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleTogglePasswordVisibility}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                label="Email"
-                fullWidth
-                margin="normal"
-                {...register("email")}
-                error={!!errors.email}
-                helperText={errors?.email?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Số điện thoại"
-                fullWidth
-                margin="normal"
-                {...register("phoneNumber")}
-                error={!!errors.phoneNumber}
-                helperText={errors?.phoneNumber?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Họ"
-                fullWidth
-                margin="normal"
-                {...register("lastName")}
-                error={!!errors.lastName}
-                helperText={errors?.lastName?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Tên"
-                fullWidth
-                margin="normal"
-                {...register("firstName")}
-                error={!!errors.firstName}
-                helperText={errors?.firstName?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Thành phố"
-                fullWidth
-                margin="normal"
-                {...register("city")}
-                error={!!errors.city}
-                helperText={errors?.city?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Địa chỉ"
-                fullWidth
-                margin="normal"
-                {...register("address")}
-                error={!!errors.address}
-                helperText={errors?.address?.message}
-                className="!my-4"
-              />
-              <FormControl fullWidth>
-                <InputLabel id="roleName-label">Vai trò</InputLabel>
-                <Select
-                  labelId="roleName-label"
-                  id="roleName"
-                  {...register("roleName")}
-                  defaultValue={selectedCustomer?.role || ""}
-                  input={<OutlinedInput label="Vai trò" />}
-                  error={!!errors.roleName}
-                >
-                  {roleOptions.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText error={!!errors.roleName}>
-                  {errors?.roleName?.message}
-                </FormHelperText>
-              </FormControl>
-              <DialogActions>
-                <Button onClick={handleCloseDialog}>Hủy</Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? <CircularProgress size={24} /> : "Lưu"}
-                </Button>
-              </DialogActions>
-            </form>
-          ) : (
-            <form onSubmit={handleSubmit(handleFormSubmit)}>
-              <TextField
-                label="Username"
-                fullWidth
-                margin="normal"
-                {...register("username")}
-                error={!!errors.username}
-                helperText={errors?.username?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Mật khẩu"
-                fullWidth
-                margin="normal"
-                type={showPassword ? "text" : "password"}
-                {...register("password")}
-                error={!!errors.password}
-                helperText={errors?.password?.message}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleTogglePasswordVisibility}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                label="Email"
-                fullWidth
-                margin="normal"
-                {...register("email")}
-                error={!!errors.email}
-                helperText={errors?.email?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Số điện thoại"
-                fullWidth
-                margin="normal"
-                {...register("phoneNumber")}
-                error={!!errors.phoneNumber}
-                helperText={errors?.phoneNumber?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Họ"
-                fullWidth
-                margin="normal"
-                {...register("lastName")}
-                error={!!errors.lastName}
-                helperText={errors?.lastName?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Tên"
-                fullWidth
-                margin="normal"
-                {...register("firstName")}
-                error={!!errors.firstName}
-                helperText={errors?.firstName?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Thành phố"
-                fullWidth
-                margin="normal"
-                {...register("city")}
-                error={!!errors.city}
-                helperText={errors?.city?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Địa chỉ"
-                fullWidth
-                margin="normal"
-                {...register("address")}
-                error={!!errors.address}
-                helperText={errors?.address?.message}
-                className="!my-4"
-              />
-              <DialogActions>
-                <Button onClick={handleCloseDialog}>Hủy</Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? <CircularProgress size={24} /> : "Thêm"}
-                </Button>
-              </DialogActions>
-            </form>
-          )}
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <TextField
+              label="Username"
+              fullWidth
+              margin="normal"
+              {...register("username")}
+              error={!!errors.username}
+              helperText={errors?.username?.message}
+              className="!my-4"
+            />
+            <TextField
+              label="Mật khẩu"
+              fullWidth
+              margin="normal"
+              type={showPassword ? "text" : "password"}
+              {...register("password")}
+              error={!!errors.password}
+              helperText={errors?.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleTogglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              label="Email"
+              fullWidth
+              margin="normal"
+              {...register("email")}
+              error={!!errors.email}
+              helperText={errors?.email?.message}
+              className="!my-4"
+            />
+            <TextField
+              label="Số điện thoại"
+              fullWidth
+              margin="normal"
+              {...register("phoneNumber")}
+              error={!!errors.phoneNumber}
+              helperText={errors?.phoneNumber?.message}
+              className="!my-4"
+            />
+            <TextField
+              label="Họ"
+              fullWidth
+              margin="normal"
+              {...register("lastName")}
+              error={!!errors.lastName}
+              helperText={errors?.lastName?.message}
+              className="!my-4"
+            />
+            <TextField
+              label="Tên"
+              fullWidth
+              margin="normal"
+              {...register("firstName")}
+              error={!!errors.firstName}
+              helperText={errors?.firstName?.message}
+              className="!my-4"
+            />
+            <TextField
+              label="Địa chỉ"
+              fullWidth
+              margin="normal"
+              {...register("address")}
+              error={!!errors.address}
+              helperText={errors?.address?.message}
+              className="!my-4"
+            />
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Hủy</Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? <CircularProgress size={24} /> : "Thêm"}
+              </Button>
+            </DialogActions>
+          </form>
         </DialogContent>
       </Dialog>
       <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
