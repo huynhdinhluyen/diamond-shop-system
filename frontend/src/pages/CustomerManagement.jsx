@@ -214,7 +214,7 @@ export default function CustomerManagement() {
       </Typography>
 
       <TextField
-        label="Tìm kiếm khách hàng"
+        label="Tìm Kiếm Khách Hàng"
         variant="outlined"
         value={searchTerm}
         onChange={handleSearchChange}
@@ -389,7 +389,7 @@ export default function CustomerManagement() {
       )}
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Thêm khách hàng</DialogTitle>
+        <DialogTitle>Thêm Khách Hàng</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             <TextField

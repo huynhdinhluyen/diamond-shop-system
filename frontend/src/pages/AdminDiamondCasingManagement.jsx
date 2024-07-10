@@ -217,6 +217,7 @@ export default function AdminDiamondCasingManagement() {
                     active={sortBy === "id"}
                     direction={sortOrder}
                     onClick={() => handleSort("id")}
+                    className="!font-semibold"
                   >
                     ID
                   </TableSortLabel>
@@ -226,6 +227,7 @@ export default function AdminDiamondCasingManagement() {
                     active={sortBy === "material"}
                     direction={sortOrder}
                     onClick={() => handleSort("material")}
+                    className="!font-semibold"
                   >
                     Chất liệu
                   </TableSortLabel>
@@ -235,11 +237,12 @@ export default function AdminDiamondCasingManagement() {
                     active={sortBy === "price"}
                     direction={sortOrder}
                     onClick={() => handleSort("price")}
+                    className="!font-semibold"
                   >
                     Giá (VNĐ)
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!text-center">Hành động</TableCell>
+                <TableCell className="!text-center !font-semibold">Hành động</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

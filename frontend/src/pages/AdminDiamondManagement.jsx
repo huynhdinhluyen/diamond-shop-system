@@ -208,7 +208,7 @@ export default function AdminDiamondManagement() {
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" className="!mt-4" gutterBottom>
-        Quản lý kim cương
+        Quản Lý Kim Cương
       </Typography>
 
       <TextField
@@ -254,6 +254,7 @@ export default function AdminDiamondManagement() {
                     active={sortBy === "color"}
                     direction={sortOrder}
                     onClick={() => handleSort("color")}
+                    className="!font-semibold"
                   >
                     Cấp màu
                   </TableSortLabel>
@@ -263,6 +264,7 @@ export default function AdminDiamondManagement() {
                     active={sortBy === "origin"}
                     direction={sortOrder}
                     onClick={() => handleSort("origin")}
+                    className="!font-semibold"
                   >
                     Nguồn gốc
                   </TableSortLabel>
@@ -272,6 +274,7 @@ export default function AdminDiamondManagement() {
                     active={sortBy === "cutType"}
                     direction={sortOrder}
                     onClick={() => handleSort("cutType")}
+                    className="!font-semibold"
                   >
                     Chế tác
                   </TableSortLabel>
@@ -281,6 +284,7 @@ export default function AdminDiamondManagement() {
                     active={sortBy === "clarity"}
                     direction={sortOrder}
                     onClick={() => handleSort("clarity")}
+                    className="!font-semibold"
                   >
                     Độ tinh khiết
                   </TableSortLabel>
@@ -290,6 +294,7 @@ export default function AdminDiamondManagement() {
                     active={sortBy === "caratWeight"}
                     direction={sortOrder}
                     onClick={() => handleSort("caratWeight")}
+                    className="!font-semibold"
                   >
                     Trọng lượng (carat)
                   </TableSortLabel>
@@ -299,6 +304,7 @@ export default function AdminDiamondManagement() {
                     active={sortBy === "size"}
                     direction={sortOrder}
                     onClick={() => handleSort("size")}
+                    className="!font-semibold"
                   >
                     Kích thước (mm)
                   </TableSortLabel>
@@ -308,6 +314,7 @@ export default function AdminDiamondManagement() {
                     active={sortBy === "price"}
                     direction={sortOrder}
                     onClick={() => handleSort("price")}
+                    className="!font-semibold"
                   >
                     Giá
                   </TableSortLabel>

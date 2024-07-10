@@ -350,7 +350,7 @@ export default function AdminProductManagement() {
                     Tên sản phẩm
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!text-center">Hình ảnh</TableCell>
+                <TableCell className="!text-center !font-semibold">Hình ảnh</TableCell>
                 <TableCell className="!text-right">
                   <TableSortLabel
                     active={sortBy === "laborCost"}
