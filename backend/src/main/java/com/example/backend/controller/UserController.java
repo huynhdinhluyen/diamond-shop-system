@@ -152,4 +152,8 @@ public class UserController {
         return ResponseEntity.ok(authService.getUserById(id));
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<AuthenticationResponse> googleLogin(@RequestBody User googleUser) {
+        return ResponseEntity.ok(authService.loginGoogle(googleUser));
+    }
 }
