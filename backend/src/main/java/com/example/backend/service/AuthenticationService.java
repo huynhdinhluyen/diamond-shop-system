@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.entity.MembershipLevel;
 import com.example.backend.entity.User;
+import com.example.backend.enums.RoleName;
 import com.example.backend.enums.UserVerifyStatus;
 import com.example.backend.exception.MembershipLevelNotFoundException;
 import com.example.backend.mapper.MembershipLevelMapper;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -88,9 +90,9 @@ public class AuthenticationService {
             user.setMembershipLevel(membershipLevel);
             String emailVerifiticationToken = jwtService.generateEmailVerifyToken(user);
             user.setVerificationCode(emailVerifiticationToken);
-            mailservice.sendSimpleMail(user, emailVerifiticationToken,
-                    "Register confirmation",
-                    "your code: ");
+//            mailservice.sendSimpleMail(user, emailVerifiticationToken,
+//                    "Register confirmation",
+//                    "your code: ");
             Date expiration = jwtService.extractExpiration(accessToken);
             userRepository.save(user);
             return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
@@ -180,4 +182,33 @@ public class AuthenticationService {
         return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
     }
 
+    public AuthenticationResponse loginGoogle(User googleUser) {
+        Optional<User> optionalUser = userRepository.findByEmail(googleUser.getEmail());
+        User user;
+        if (optionalUser.isEmpty()) {
+            user = new User();
+            user.setEmail(googleUser.getEmail());
+            user.setFirstName(googleUser.getFirstName());
+            user.setLastName(googleUser.getLastName());
+            user.setUsername(googleUser.getLastName());
+            user.setRoleName(RoleName.CUSTOMER);
+
+            // Gán membership level cho người dùng mới
+            MembershipLevel membershipLevel = membershipLevelRepository.findByName("BRONZE")
+                    .orElseThrow(() -> new MembershipLevelNotFoundException("Membership level not found"));
+            user.setMembershipLevel(membershipLevel);
+
+            userRepository.save(user);
+        } else {
+            user = optionalUser.get();
+        }
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        user.setAccessToken(accessToken);
+        user.setRefreshToken(refreshToken);
+        Date expiration = jwtService.extractExpiration(accessToken);
+
+        return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
+    }
 }
