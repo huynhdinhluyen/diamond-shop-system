@@ -99,3 +99,36 @@ export async function getUserById(id) {
     handleError("Error fetching user by role:", error);
   }
 }
+
+export const loginWithGoogle = async (userObject) => {
+  try {
+    const { data } = await axiosInstance.post("api/users/google", {
+      email: userObject.email,
+      firstName: userObject.given_name,
+      lastName: userObject.family_name,
+    });
+    localStorage.setItem("user", JSON.stringify(data));
+    return data;
+  } catch (error) {
+    handleError("Failed to login with Google:", error);
+    throw error;
+  }
+};
+
+export const blockUser = async (userId) => {
+  try {
+    const { data } = await axiosInstance.put(`/api/users/${userId}/block`);
+    return data;
+  } catch (error) {
+    handleError("Error blocking user:", error);
+  }
+};
+
+export const unblockUser = async (userId) => {
+  try {
+    const { data } = await axiosInstance.put(`/api/users/${userId}/unblock`);
+    return data;
+  } catch (error) {
+    handleError("Error unblocking user:", error);
+  }
+};

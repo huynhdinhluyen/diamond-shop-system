@@ -29,7 +29,7 @@ export default function ManagerLayout() {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
-  return user && user.role === "MANAGER" ? (
+  return user && user.role === "MANAGER" && !user.blocked ? (
     <div className="min-h-screen bg-gray-100">
       <AppBar position="static" className="!bg-slate-800 !shadow-md">
         <Toolbar>
@@ -60,8 +60,10 @@ export default function ManagerLayout() {
       </main>
     </div>
   ) : (
-    <div className="text-center mt-8 text-red-500 font-bold text-4xl">
+    <h2 className="text-center mt-8 text-red-500 font-bold text-4xl">
       Bạn không có quyền truy cập trang này!
-    </div>
+      {user && user.blocked && <h3 className="text-center mt-8 text-red-500 font-bold text-3xl">Tài khoản của bạn đã bị chặn</h3>}
+      <button className="btn btn-accent btn-lg mx-auto mt-10 text-lg" onClick={handleLogout}>Đăng xuất</button>
+    </h2>
   );
 }
