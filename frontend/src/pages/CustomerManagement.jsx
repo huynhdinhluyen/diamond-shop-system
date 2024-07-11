@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { createUser, deleteUser, getUserByRole, blockUser, unblockUser } from "../service/userService";
+import {
+  createUser,
+  // deleteUser,
+  getUserByRole,
+  blockUser,
+  unblockUser,
+} from "../service/userService";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -26,7 +32,7 @@ import {
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
@@ -36,7 +42,7 @@ import GoldIcon from "@mui/icons-material/EmojiEvents"; // Gold icon
 import DiamondIcon from "@mui/icons-material/Star"; // Diamond icon
 import PlatinumIcon from "@mui/icons-material/EmojiEvents"; // Platinum icon
 import { highlightText } from "../utils/highlightText";
-import BlockIcon from '@mui/icons-material/Block';
+import BlockIcon from "@mui/icons-material/Block";
 
 const customerSchema = yup.object({
   username: yup
@@ -73,12 +79,13 @@ export default function CustomerManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  // const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  // const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [sortBy, setSortBy] = useState("points");
   const [sortOrder, setSortOrder] = useState("desc");
   const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
-  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
+  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] =
+    useState(false);
   const [userIdToBlock, setUserIdToBlock] = useState(null);
   const [userIdToUnblock, setUserIdToUnblock] = useState(null);
 
@@ -172,33 +179,33 @@ export default function CustomerManagement() {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    setUserIdToDelete(userId);
-    setOpenConfirmDialog(true);
-  };
+  // const handleDeleteUser = async (userId) => {
+  //   setUserIdToDelete(userId);
+  //   setOpenConfirmDialog(true);
+  // };
 
-  const handleConfirmDelete = async () => {
-    try {
-      await deleteUser(userIdToDelete);
-      fetchData();
-      toast.success("Xóa khách hàng thành công");
-    } catch (error) {
-      toast.error("Lỗi khi xóa khách hàng");
-    } finally {
-      setOpenConfirmDialog(false);
-      setUserIdToDelete(null);
-    }
-  };
+  // const handleConfirmDelete = async () => {
+  //   try {
+  //     await deleteUser(userIdToDelete);
+  //     fetchData();
+  //     toast.success("Xóa khách hàng thành công");
+  //   } catch (error) {
+  //     toast.error("Lỗi khi xóa khách hàng");
+  //   } finally {
+  //     setOpenConfirmDialog(false);
+  //     setUserIdToDelete(null);
+  //   }
+  // };
 
   const handleBlockUser = async (userId) => {
     setUserIdToBlock(userId);
     setOpenConfirmBlockDialog(true);
-  }
+  };
 
   const handleUnblockUser = async (userId) => {
     setUserIdToUnblock(userId);
     setOpenConfirmUnblockDialog(true);
-  }
+  };
 
   const handleConfirmBlock = async () => {
     try {
@@ -211,7 +218,7 @@ export default function CustomerManagement() {
       setOpenConfirmBlockDialog(false);
       setUserIdToBlock(null);
     }
-  }
+  };
 
   const handleConfirmUnblock = async () => {
     try {
@@ -224,7 +231,7 @@ export default function CustomerManagement() {
       setOpenConfirmUnblockDialog(false);
       setUserIdToUnblock(null);
     }
-  }
+  };
 
   const sortedUsers = [...filteredCustomers].sort((a, b) => {
     const aValue = a[sortBy];
@@ -363,7 +370,9 @@ export default function CustomerManagement() {
                     Điểm Tích Luỹ
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!font-semibold text-nowrap">Xếp Hạng</TableCell>
+                <TableCell className="!font-semibold text-nowrap">
+                  Xếp Hạng
+                </TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "blocked"}
@@ -425,20 +434,25 @@ export default function CustomerManagement() {
                     )}
                   </TableCell>
                   <TableCell className="text-nowrap">
-                    {highlightText(customer.blocked === true ? "Đã chặn" : "Không", searchTerm)}
+                    {highlightText(
+                      customer.blocked === true ? "Đã chặn" : "Không",
+                      searchTerm
+                    )}
                   </TableCell>
                   <TableCell className="!flex !justify-evenly">
-                    <IconButton
+                    {/* <IconButton
                       color="error"
                       onClick={() => handleDeleteUser(customer.id)}
                     >
                       <DeleteIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton
                       color="error"
-                      onClick={customer.blocked === true
-                        ? () => handleUnblockUser(customer.id)
-                        : () => handleBlockUser(customer.id)}
+                      onClick={
+                        customer.blocked === true
+                          ? () => handleUnblockUser(customer.id)
+                          : () => handleBlockUser(customer.id)
+                      }
                     >
                       <BlockIcon />
                     </IconButton>
@@ -544,8 +558,8 @@ export default function CustomerManagement() {
           </form>
         </DialogContent>
       </Dialog>
-      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Xác nhận xóa</DialogTitle>
+      {/* <Dialog open={openConfirmDialog} onClose={handleCloseDialog}> */}
+      {/* <DialogTitle>Xác nhận xóa</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Bạn có chắc chắn muốn xóa người dùng này?
@@ -558,49 +572,19 @@ export default function CustomerManagement() {
           <Button onClick={handleConfirmDelete} color="error" autoFocus>
             Xóa
           </Button>
-        </DialogActions>
-        <Dialog open={openConfirmBlockDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Xác nhận chặn</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Bạn có chắc chắn muốn chặn người dùng này?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenConfirmBlockDialog(false)} color="primary">
-              Hủy
-            </Button>
-            <Button onClick={handleConfirmBlock} color="error" autoFocus>
-              Chặn
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog open={openConfirmUnblockDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Xác nhận hủy chặn</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Bạn có chắc chắn muốn hủy chặn người dùng này?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenConfirmUnblockDialog(false)} color="primary">
-              Hủy
-            </Button>
-            <Button onClick={handleConfirmUnblock} color="error" autoFocus>
-              Hủy Chặn
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Dialog>
+        </DialogActions> */}
       <Dialog open={openConfirmBlockDialog} onClose={handleCloseDialog}>
         <DialogTitle>Xác nhận chặn</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Bạn có chắc chắn muốn chặn nhân viên này?
+            Bạn có chắc chắn muốn chặn người dùng này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmBlockDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenConfirmBlockDialog(false)}
+            color="primary"
+          >
             Hủy
           </Button>
           <Button onClick={handleConfirmBlock} color="error" autoFocus>
@@ -612,11 +596,14 @@ export default function CustomerManagement() {
         <DialogTitle>Xác nhận hủy chặn</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Bạn có chắc chắn muốn hủy chặn nhân viên này?
+            Bạn có chắc chắn muốn hủy chặn người dùng này?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmUnblockDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenConfirmUnblockDialog(false)}
+            color="primary"
+          >
             Hủy
           </Button>
           <Button onClick={handleConfirmUnblock} color="error" autoFocus>
@@ -624,6 +611,7 @@ export default function CustomerManagement() {
           </Button>
         </DialogActions>
       </Dialog>
+      {/* </Dialog> */}
     </div>
   );
 }
