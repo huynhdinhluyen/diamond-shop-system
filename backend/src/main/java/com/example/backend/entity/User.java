@@ -82,7 +82,7 @@ public class User implements UserDetails {
     @Column(name = "status", nullable = false, length = 25)
     private UserVerifyStatus accountStatus = UserVerifyStatus.Unverified;
 
-    @Column(name = "is_blocked", nullable = false, columnDefinition = "boolean default false")
+    @Column(name = "is_blocked", nullable = false, columnDefinition = "bit default 0")
     private boolean isBlocked = false;
 
     @Override
