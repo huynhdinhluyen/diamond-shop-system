@@ -25,6 +25,7 @@ public class AuthenticationResponse {
     private MembershipLevelDTO membershipLevel;
     private Integer points;
     private Date expiration;
+    private boolean isBlocked;
 
     public AuthenticationResponse(String accessToken, User user, Date expiration, MembershipLevelMapper membershipLevelMapper) {
         this.accessToken = accessToken;
@@ -40,5 +41,6 @@ public class AuthenticationResponse {
         this.membershipLevel = membershipLevelMapper.toMembershipLevelDTO(user.getMembershipLevel());
         this.points = user.getPoints();
         this.expiration = expiration;
+        this.isBlocked = user.isBlocked();
     }
 }

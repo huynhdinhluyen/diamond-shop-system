@@ -156,4 +156,16 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> googleLogin(@RequestBody User googleUser) {
         return ResponseEntity.ok(authService.loginGoogle(googleUser));
     }
+
+    @PutMapping("/{userId}/block")
+    public ResponseEntity<User> blockUser(@PathVariable Integer userId) {
+        User blockedUser = userService.blockUser(userId);
+        return ResponseEntity.ok(blockedUser);
+    }
+
+    @PutMapping("/{userId}/unblock")
+    public ResponseEntity<User> unblockUser(@PathVariable Integer userId) {
+        User unblockedUser = userService.unblockUser(userId);
+        return ResponseEntity.ok(unblockedUser);
+    }
 }
