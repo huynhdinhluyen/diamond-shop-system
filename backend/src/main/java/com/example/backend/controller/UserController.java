@@ -120,15 +120,15 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+//        try {
+//            userService.deleteUser(id);
+//            return ResponseEntity.noContent().build();
+//        } catch (UserNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @GetMapping("/role")
     public ResponseEntity<List<UserDTO>> findUsersByRole(@RequestParam RoleName role) {

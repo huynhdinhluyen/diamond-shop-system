@@ -29,7 +29,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
@@ -40,7 +40,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import * as yup from "yup";
 import {
   createUser,
-  deleteUser,
+  // deleteUser,
   getUsers,
   updateUser,
   blockUser,
@@ -90,8 +90,8 @@ export default function StaffsManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  // const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  // const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [sortBy, setSortBy] = useState("role");
   const [sortOrder, setSortOrder] = useState("asc");
   const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
@@ -197,23 +197,23 @@ export default function StaffsManagement() {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    setUserIdToDelete(userId);
-    setOpenConfirmDialog(true);
-  };
+  // const handleDeleteUser = async (userId) => {
+  //   setUserIdToDelete(userId);
+  //   setOpenConfirmDialog(true);
+  // };
 
-  const handleConfirmDelete = async () => {
-    try {
-      await deleteUser(userIdToDelete);
-      fetchData();
-      toast.success("Xóa người dùng thành công");
-    } catch (error) {
-      toast.error("Lỗi khi xóa người dùng");
-    } finally {
-      setOpenConfirmDialog(false);
-      setUserIdToDelete(null);
-    }
-  };
+  // const handleConfirmDelete = async () => {
+  //   try {
+  //     await deleteUser(userIdToDelete);
+  //     fetchData();
+  //     toast.success("Xóa người dùng thành công");
+  //   } catch (error) {
+  //     toast.error("Lỗi khi xóa người dùng");
+  //   } finally {
+  //     setOpenConfirmDialog(false);
+  //     setUserIdToDelete(null);
+  //   }
+  // };
 
   const handleBlockUser = async (userId) => {
     setUserIdToBlock(userId);
@@ -447,14 +447,14 @@ export default function StaffsManagement() {
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Xóa">
+                    {/* <Tooltip title="Xóa">
                       <IconButton
                         color="error"
                         onClick={() => handleDeleteUser(user.id)}
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip>
                       <IconButton
                         color="error"
@@ -679,7 +679,7 @@ export default function StaffsManagement() {
           )}
         </DialogContent>
       </Dialog>
-      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+      {/* <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
         <DialogTitle>Xác nhận xóa</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -694,7 +694,7 @@ export default function StaffsManagement() {
             Xóa
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
       <Dialog open={openConfirmBlockDialog} onClose={handleCloseDialog}>
         <DialogTitle>Xác nhận chặn</DialogTitle>
         <DialogContent>

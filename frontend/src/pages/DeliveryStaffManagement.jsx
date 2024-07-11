@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import {
   createUser,
-  deleteUser,
+  // deleteUser,
   getUserByRole,
   updateUser,
   blockUser,
@@ -40,7 +40,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
@@ -89,10 +89,10 @@ export default function DeliveryStaffManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  // const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
   const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
-  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  // const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [userIdToBlock, setUserIdToBlock] = useState(null);
   const [userIdToUnblock, setUserIdToUnblock] = useState(null);
   const [sortBy, setSortBy] = useState("id");
@@ -199,23 +199,23 @@ export default function DeliveryStaffManagement() {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    setUserIdToDelete(userId);
-    setOpenConfirmDialog(true);
-  };
+  // const handleDeleteUser = async (userId) => {
+  //   setUserIdToDelete(userId);
+  //   setOpenConfirmDialog(true);
+  // };
 
-  const handleConfirmDelete = async () => {
-    try {
-      await deleteUser(userIdToDelete);
-      fetchData();
-      toast.success("Xóa nhân viên thành công");
-    } catch (error) {
-      toast.error("Lỗi khi xóa nhân viên");
-    } finally {
-      setOpenConfirmDialog(false);
-      setUserIdToDelete(null);
-    }
-  };
+  // const handleConfirmDelete = async () => {
+  //   try {
+  //     await deleteUser(userIdToDelete);
+  //     fetchData();
+  //     toast.success("Xóa nhân viên thành công");
+  //   } catch (error) {
+  //     toast.error("Lỗi khi xóa nhân viên");
+  //   } finally {
+  //     setOpenConfirmDialog(false);
+  //     setUserIdToDelete(null);
+  //   }
+  // };
 
   const handleBlockUser = async (userId) => {
     setUserIdToBlock(userId);
@@ -422,12 +422,12 @@ export default function DeliveryStaffManagement() {
                     >
                       <EditIcon />
                     </IconButton>
-                    <IconButton
+                    {/* <IconButton
                       color="error"
                       onClick={() => handleDeleteUser(deliveryStaff.id)}
                     >
                       <DeleteIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton
                       color="error"
                       onClick={deliveryStaff.blocked === true
@@ -632,7 +632,7 @@ export default function DeliveryStaffManagement() {
           )}
         </DialogContent>
       </Dialog>
-      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+      {/* <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
         <DialogTitle>Xác nhận xóa</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -647,7 +647,7 @@ export default function DeliveryStaffManagement() {
             Xóa
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
       <Dialog open={openConfirmBlockDialog} onClose={handleCloseDialog}>
         <DialogTitle>Xác nhận chặn</DialogTitle>
         <DialogContent>
