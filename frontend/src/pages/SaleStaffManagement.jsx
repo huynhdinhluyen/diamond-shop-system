@@ -7,6 +7,8 @@ import {
   deleteUser,
   getUserByRole,
   updateUser,
+  blockUser,
+  unblockUser
 } from "../service/userService";
 import { toast } from "react-toastify";
 import {
@@ -43,6 +45,7 @@ import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import { highlightText } from "../utils/highlightText";
+import BlockIcon from '@mui/icons-material/Block';
 
 const roleOptions = [
   { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
@@ -90,6 +93,10 @@ export default function SaleStaffManagement() {
   const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [sortBy, setSortBy] = useState("id");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
+  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
+  const [userIdToBlock, setUserIdToBlock] = useState(null);
+  const [userIdToUnblock, setUserIdToUnblock] = useState(null);
 
   const [defaultUser, setDefaultUser] = useState({
     username: "",
@@ -205,6 +212,42 @@ export default function SaleStaffManagement() {
       setUserIdToDelete(null);
     }
   };
+
+  const handleBlockUser = async (userId) => {
+    setUserIdToBlock(userId);
+    setOpenConfirmBlockDialog(true);
+  }
+
+  const handleUnblockUser = async (userId) => {
+    setUserIdToUnblock(userId);
+    setOpenConfirmUnblockDialog(true);
+  }
+
+  const handleConfirmBlock = async () => {
+    try {
+      await blockUser(userIdToBlock);
+      fetchData();
+      toast.success("Chặn nhân viên thành công");
+    } catch (error) {
+      toast.error("Lỗi khi chặn nhân viên");
+    } finally {
+      setOpenConfirmBlockDialog(false);
+      setUserIdToBlock(null);
+    }
+  }
+
+  const handleConfirmUnblock = async () => {
+    try {
+      await unblockUser(userIdToUnblock);
+      fetchData();
+      toast.success("Hủy chặn nhân viên thành công");
+    } catch (error) {
+      toast.error("Lỗi khi hủy chặn nhân viên");
+    } finally {
+      setOpenConfirmUnblockDialog(false);
+      setUserIdToUnblock(null);
+    }
+  }
 
   const sortedUsers = [...filteredSalesStaffs].sort((a, b) => {
     const aValue = a[sortBy];
@@ -333,6 +376,16 @@ export default function SaleStaffManagement() {
                     Số Điện Thoại
                   </TableSortLabel>
                 </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "blocked"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("blocked")}
+                    className="!font-semibold"
+                  >
+                    Đã chặn
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -357,6 +410,9 @@ export default function SaleStaffManagement() {
                   <TableCell>
                     {highlightText(salesStaff.phoneNumber, searchTerm)}
                   </TableCell>
+                  <TableCell>
+                    {highlightText(salesStaff.blocked === true ? "Đã chặn" : "Không", searchTerm)}
+                  </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <IconButton
                       color="primary"
@@ -369,6 +425,14 @@ export default function SaleStaffManagement() {
                       onClick={() => handleDeleteUser(salesStaff.id)}
                     >
                       <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      color="error"
+                      onClick={salesStaff.blocked === true
+                        ? () => handleUnblockUser(salesStaff.id)
+                        : () => handleBlockUser(salesStaff.id)}
+                    >
+                      <BlockIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -579,6 +643,38 @@ export default function SaleStaffManagement() {
           </Button>
           <Button onClick={handleConfirmDelete} color="error" autoFocus>
             Xóa
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openConfirmBlockDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận chặn</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn chặn nhân viên này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmBlockDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmBlock} color="error" autoFocus>
+            Chặn
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openConfirmUnblockDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận hủy chặn</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn hủy chặn nhân viên này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmUnblockDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmUnblock} color="error" autoFocus>
+            Hủy Chặn
           </Button>
         </DialogActions>
       </Dialog>

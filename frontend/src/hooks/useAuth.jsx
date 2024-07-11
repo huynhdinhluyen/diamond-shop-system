@@ -109,8 +109,28 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const blockUser = async (userId) => {
+    try {
+      await userService.blockUser(userId);
+      toast.success("Đã chặn người dùng thành công!");
+      await refreshUser();
+    } catch (err) {
+      toast.error("Chặn người dùng không thành công!");
+    }
+  };
+
+  const unblockUser = async (userId) => {
+    try {
+      await userService.unblockUser(userId);
+      toast.success("Đã bỏ chặn người dùng thành công!");
+      await refreshUser();
+    } catch (err) {
+      toast.error("Bỏ chặn người dùng không thành công!");
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, changePassword, refreshUser, setUser }}>
+    <AuthContext.Provider value={{ user, login, logout, register, updateProfile, changePassword, refreshUser, setUser, blockUser, unblockUser }}>
       {children}
     </AuthContext.Provider>
   );
