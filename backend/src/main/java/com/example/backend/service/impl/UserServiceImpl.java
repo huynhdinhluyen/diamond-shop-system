@@ -85,4 +85,20 @@ public class UserServiceImpl implements UserService {
         return users.stream().map(userMapper::maptoUserDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public User blockUser(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setBlocked(true);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User unblockUser(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setBlocked(false);
+        return userRepository.save(user);
+    }
 }

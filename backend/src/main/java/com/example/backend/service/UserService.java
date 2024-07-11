@@ -23,4 +23,8 @@ public interface UserService {
     void deleteUser(Integer userId) throws UserNotFoundException;
 
     List<UserDTO> findByRole(RoleName roleName);
+
+    User blockUser(Integer userId);
+
+    User unblockUser(Integer userId);
 }

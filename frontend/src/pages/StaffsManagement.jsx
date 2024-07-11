@@ -36,12 +36,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import BlockIcon from '@mui/icons-material/Block';
 import * as yup from "yup";
 import {
   createUser,
   deleteUser,
   getUsers,
   updateUser,
+  blockUser,
+  unblockUser
 } from "../service/userService";
 import { highlightText } from "../utils/highlightText";
 
@@ -91,6 +94,10 @@ export default function StaffsManagement() {
   const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [sortBy, setSortBy] = useState("role");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
+  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
+  const [userIdToBlock, setUserIdToBlock] = useState(null);
+  const [userIdToUnblock, setUserIdToUnblock] = useState(null);
 
   const [defaultUser, setDefaultUser] = useState({
     username: "",
@@ -207,6 +214,42 @@ export default function StaffsManagement() {
       setUserIdToDelete(null);
     }
   };
+
+  const handleBlockUser = async (userId) => {
+    setUserIdToBlock(userId);
+    setOpenConfirmBlockDialog(true);
+  }
+
+  const handleUnblockUser = async (userId) => {
+    setUserIdToUnblock(userId);
+    setOpenConfirmUnblockDialog(true);
+  }
+
+  const handleConfirmBlock = async () => {
+    try {
+      await blockUser(userIdToBlock);
+      fetchData();
+      toast.success("Chặn nhân viên thành công");
+    } catch (error) {
+      toast.error("Lỗi khi chặn nhân viên");
+    } finally {
+      setOpenConfirmBlockDialog(false);
+      setUserIdToBlock(null);
+    }
+  }
+
+  const handleConfirmUnblock = async () => {
+    try {
+      await unblockUser(userIdToUnblock);
+      fetchData();
+      toast.success("Hủy chặn nhân viên thành công");
+    } catch (error) {
+      toast.error("Lỗi khi hủy chặn nhân viên");
+    } finally {
+      setOpenConfirmUnblockDialog(false);
+      setUserIdToUnblock(null);
+    }
+  }
 
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     const aValue = a[sortBy];
@@ -335,7 +378,6 @@ export default function StaffsManagement() {
                     Số Điện Thoại
                   </TableSortLabel>
                 </TableCell>
-
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "role"}
@@ -344,6 +386,16 @@ export default function StaffsManagement() {
                     className="!font-bold"
                   >
                     Vai Trò
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "blocked"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("blocked")}
+                    className="!font-semibold"
+                  >
+                    Đã chặn
                   </TableSortLabel>
                 </TableCell>
                 <TableCell></TableCell>
@@ -383,6 +435,9 @@ export default function StaffsManagement() {
                       searchTerm
                     )}
                   </TableCell>
+                  <TableCell>
+                    {highlightText(user.blocked === true ? "Đã chặn" : "Không", searchTerm)}
+                  </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <Tooltip title="Chỉnh sửa">
                       <IconButton
@@ -398,6 +453,16 @@ export default function StaffsManagement() {
                         onClick={() => handleDeleteUser(user.id)}
                       >
                         <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip>
+                      <IconButton
+                        color="error"
+                        onClick={user.blocked === true
+                          ? () => handleUnblockUser(user.id)
+                          : () => handleBlockUser(user.id)}
+                      >
+                        <BlockIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -627,6 +692,38 @@ export default function StaffsManagement() {
           </Button>
           <Button onClick={handleConfirmDelete} color="error" autoFocus>
             Xóa
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openConfirmBlockDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận chặn</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn chặn nhân viên này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmBlockDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmBlock} color="error" autoFocus>
+            Chặn
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openConfirmUnblockDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận hủy chặn</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn hủy chặn nhân viên này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmUnblockDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmUnblock} color="error" autoFocus>
+            Hủy Chặn
           </Button>
         </DialogActions>
       </Dialog>

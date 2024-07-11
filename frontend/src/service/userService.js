@@ -114,3 +114,21 @@ export const loginWithGoogle = async (userObject) => {
     throw error;
   }
 };
+
+export const blockUser = async (userId) => {
+  try {
+    const { data } = await axiosInstance.put(`/api/users/${userId}/block`);
+    return data;
+  } catch (error) {
+    handleError("Error blocking user:", error);
+  }
+};
+
+export const unblockUser = async (userId) => {
+  try {
+    const { data } = await axiosInstance.put(`/api/users/${userId}/unblock`);
+    return data;
+  } catch (error) {
+    handleError("Error unblocking user:", error);
+  }
+};
