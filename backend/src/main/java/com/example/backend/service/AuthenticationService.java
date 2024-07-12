@@ -185,29 +185,44 @@ public class AuthenticationService {
     public AuthenticationResponse loginGoogle(User googleUser) {
         Optional<User> optionalUser = userRepository.findByEmail(googleUser.getEmail());
         User user;
+        String accessToken = "";
+        String refreshToken;
+        Date expiration = null;
+
         if (optionalUser.isEmpty()) {
             user = new User();
             user.setEmail(googleUser.getEmail());
             user.setFirstName(googleUser.getFirstName());
             user.setLastName(googleUser.getLastName());
-            user.setUsername(googleUser.getLastName());
+            user.setUsername(googleUser.getEmail());
             user.setRoleName(RoleName.CUSTOMER);
 
-            // Gán membership level cho người dùng mới
+            accessToken = jwtService.generateAccessToken(user);
+            refreshToken = jwtService.generateRefreshToken(user);
+            String emailVerificationToken = jwtService.generateEmailVerifyToken(user);
+
+            user.setVerificationCode(emailVerificationToken);
+            user.setAccessToken(accessToken);
+            user.setRefreshToken(refreshToken);
+
             MembershipLevel membershipLevel = membershipLevelRepository.findByName("BRONZE")
                     .orElseThrow(() -> new MembershipLevelNotFoundException("Membership level not found"));
             user.setMembershipLevel(membershipLevel);
 
             userRepository.save(user);
+
+            expiration = jwtService.extractExpiration(accessToken);
         } else {
             user = optionalUser.get();
-        }
+            accessToken = jwtService.generateAccessToken(user);
+            refreshToken = jwtService.generateRefreshToken(user);
+            user.setAccessToken(accessToken);
+            user.setRefreshToken(refreshToken);
 
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        user.setAccessToken(accessToken);
-        user.setRefreshToken(refreshToken);
-        Date expiration = jwtService.extractExpiration(accessToken);
+            userRepository.save(user);
+
+            expiration = jwtService.extractExpiration(accessToken);
+        }
 
         return new AuthenticationResponse(accessToken, user, expiration, membershipLevelMapper);
     }

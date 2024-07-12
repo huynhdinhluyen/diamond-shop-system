@@ -40,7 +40,7 @@ export default function Product() {
         const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
 
         if (!isSizeNotRequiredCategory && !selectedSize) {
-            alert("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng");
+            toast.error("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng");
             return;
         }
 
@@ -73,7 +73,7 @@ export default function Product() {
         const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
 
         if (!isSizeNotRequiredCategory && !selectedSize) {
-            alert("Vui lòng chọn kích thước trước khi mua hàng");
+            toast.error("Vui lòng chọn kích thước trước khi mua hàng");
             return;
         }
 

@@ -105,7 +105,6 @@ export const AuthProvider = ({ children }) => {
       setUser(refreshedUser);
       userService.setUser(refreshedUser); // Update localStorage
     } catch (err) {
-      toast.error("Không thể làm mới thông tin người dùng!");
     }
   };
 
