@@ -48,7 +48,6 @@ import OrderListOfSalesStaff from "./pages/OrderListOfSalesStaff";
 import OrderDetailOfSalesStaff from "./pages/OrderDetailOfSalesStaff";
 import DeliveryStaffLayout from "./layouts/DeliveryStaffLayout";
 import OrderListOfDeliveryStaff from "./pages/OrderListOfDeliveryStaff";
-import OrderHistoryOfDeliveryStaff from "./pages/OrderHistoryOfDeliveryStaff";
 import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import ProfileStaffLayout from "./layouts/ProfileSaleStaffLayout";
@@ -175,7 +174,6 @@ function App() {
             path="orders/:orderId"
             element={<OrderDetailOfDeliveryStaff />}
           />
-          <Route path="history" element={<OrderHistoryOfDeliveryStaff />} />
           <Route path="profile" element={<ProfileStaffLayout />} />
         </Route>
 
