@@ -45,7 +45,8 @@ import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import { highlightText } from "../utils/highlightText";
-import BlockIcon from '@mui/icons-material/Block';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 
 const roleOptions = [
   { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
@@ -426,14 +427,17 @@ export default function SaleStaffManagement() {
                     >
                       <DeleteIcon />
                     </IconButton> */}
-                    <IconButton
+                    {salesStaff.blocked === true ? <IconButton
                       color="error"
-                      onClick={salesStaff.blocked === true
-                        ? () => handleUnblockUser(salesStaff.id)
-                        : () => handleBlockUser(salesStaff.id)}
+                      onClick={() => handleUnblockUser(salesStaff.id)}
                     >
-                      <BlockIcon />
-                    </IconButton>
+                      <LockOutlinedIcon />
+                    </IconButton> : <IconButton
+                      color="error"
+                      onClick={() => handleBlockUser(salesStaff.id)}
+                    >
+                      <LockOpenOutlinedIcon />
+                    </IconButton>}
                   </TableCell>
                 </TableRow>
               ))}
