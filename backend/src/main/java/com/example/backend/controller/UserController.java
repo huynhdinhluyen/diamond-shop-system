@@ -57,34 +57,6 @@ public class UserController {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    /* HEAD
-    @GetMapping("/get-user-token")
-    public ResponseEntity<UserDetails> getUserDetails(@RequestHeader("Authorization") String token) {
-        if (token != null && token.startsWith("Bearer")) {
-            String jwtToken = token.substring(7);
-            UserDetails userDetails = authService.getUserDetailsFromToken(jwtToken);
-            return ResponseEntity.ok(userDetails);
-        }
-        return ResponseEntity.badRequest().build();
-    }
-     */
-
-//    @PostMapping("/change-password")
-//    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordChangeRequest) {
-//        //logger.info("Received change password request: {}", passwordChangeRequest);
-//        authService.changePassword(passwordChangeRequest);
-//        return ResponseEntity.ok("Password changed successfully");
-//    }
-
-//    @GetMapping("/get-user-token")
-//    public ResponseEntity<UserDetails> getUserDetails(@RequestHeader("Authorization") String token) {
-//        if (token != null && token.startsWith("Bearer")) {
-//            String jwtToken = token.substring(7);
-//            UserDetails userDetails = authService.getUserDetailsFromToken(jwtToken);
-//            return ResponseEntity.ok(userDetails);
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
 
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam Integer userId, @RequestBody User updatedUser) {
@@ -120,15 +92,6 @@ public class UserController {
         }
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-//        try {
-//            userService.deleteUser(id);
-//            return ResponseEntity.noContent().build();
-//        } catch (UserNotFoundException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     @GetMapping("/role")
     public ResponseEntity<List<UserDTO>> findUsersByRole(@RequestParam RoleName role) {
