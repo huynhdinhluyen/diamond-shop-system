@@ -73,14 +73,14 @@ export async function updateUser(userId, userData) {
   }
 }
 
-export async function deleteUser(userId) {
-  try {
-    const response = await axiosInstance.delete(`/api/users/${userId}`);
-    return response.data;
-  } catch (error) {
-    handleError("Error deleting user:", error);
-  }
-}
+// export async function deleteUser(userId) {
+//   try {
+//     const response = await axiosInstance.delete(`/api/users/${userId}`);
+//     return response.data;
+//   } catch (error) {
+//     handleError("Error deleting user:", error);
+//   }
+// }
 
 export async function getUserByRole(role) {
   try {

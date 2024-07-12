@@ -178,7 +178,7 @@ export default function AdminCategoryManagement() {
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" className="!mt-4" gutterBottom>
-        Quản lý danh mục
+        Quản Lí Danh Mục
       </Typography>
 
       <Button
@@ -201,10 +201,14 @@ export default function AdminCategoryManagement() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Tên</TableCell>
-                <TableCell className="!text-center">Ảnh</TableCell>
-                <TableCell className="!text-center">Hành động</TableCell>
+                <TableCell className="!font-semibold">ID</TableCell>
+                <TableCell className="!font-semibold">Tên</TableCell>
+                <TableCell className="!text-center !font-semibold">
+                  Ảnh
+                </TableCell>
+                <TableCell className="!text-center !font-semibold">
+                  Hành động
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
