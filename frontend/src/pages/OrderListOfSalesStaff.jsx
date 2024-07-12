@@ -164,7 +164,7 @@ export default function OrderListOfSalesStaff() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className="!font-bold">Mã đơn hàng</TableCell>
+                <TableCell className="!font-bold">Mã Đơn Hàng</TableCell>
                 <TableCell className="!font-bold">
                   {" "}
                   <TableSortLabel
@@ -172,29 +172,29 @@ export default function OrderListOfSalesStaff() {
                     direction={sortOrder}
                     onClick={() => handleSort("createdAt")}
                   >
-                    Thời gian đặt hàng
+                    Thời Gian Đặt Hàng
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!font-bold">Tên khách hàng</TableCell>
-                <TableCell className="!font-bold">Số điện thoại</TableCell>
+                <TableCell className="!font-bold">Tên Khách Hàng</TableCell>
+                <TableCell className="!font-bold">Số Điện Thoại</TableCell>
                 <TableCell className="!text-right !font-bold">
-                  Tổng tiền
+                  Tổng Tiền
                 </TableCell>
                 <TableCell className="!font-bold">
-                  Trạng thái giao dịch
+                  Trạng Thái Giao Dịch
                 </TableCell>
-                <TableCell className="!font-bold">Ghi chú</TableCell>
+                <TableCell className="!font-bold">Ghi Chú</TableCell>
                 <TableCell className="!font-bold">
                   <TableSortLabel
                     active={sortBy === "orderStatus.name"}
                     direction={sortOrder}
                     onClick={() => handleSort("orderStatus.name")}
                   >
-                    Trạng thái đơn hàng
+                    Trạng Thái Đơn Hàng
                   </TableSortLabel>
                 </TableCell>
                 <TableCell className="!text-center !font-bold">
-                  Hành động
+                  Hành Động
                 </TableCell>
               </TableRow>
             </TableHead>

@@ -406,7 +406,7 @@ export default function CustomerManagement() {
                   <TableCell className="text-nowrap">
                     {highlightText(customer.phoneNumber, searchTerm)}
                   </TableCell>
-                  <TableCell>{customer.points}</TableCell>
+                  <TableCell className="!text-right">{customer.points}</TableCell>
                   <TableCell>
                     {customer.membershipLevel.name === "BRONZE" && (
                       <span>

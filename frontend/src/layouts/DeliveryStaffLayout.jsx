@@ -78,17 +78,7 @@ export default function DeliveryStaffLayout() {
               <ListItemIcon>
                 <LocalShippingIcon />
               </ListItemIcon>
-              <ListItemText primary="Đơn hàng cần giao" />
-            </ListItem>
-            <ListItem
-              component={Link}
-              to="/delivery/history"
-              className="hover:bg-gray-100"
-            >
-              <ListItemIcon>
-                <LocalShippingIcon />
-              </ListItemIcon>
-              <ListItemText primary="Lịch sử giao hàng" />
+              <ListItemText primary="Đơn hàng" />
             </ListItem>
             <ListItem
               component={Link}

@@ -160,22 +160,33 @@ export default function OrderListOfDeliveryStaff() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Mã đơn hàng</TableCell>
-                <TableCell>Tên khách hàng</TableCell>
-                <TableCell>Địa chỉ giao hàng</TableCell>
-                <TableCell>Số điện thoại khách hàng</TableCell>
-                <TableCell>Thời gian đặt hàng</TableCell>
-                <TableCell className="!text-right">Tổng tiền</TableCell>
+                <TableCell className="!font-semibold">Mã Đơn Hàng</TableCell>
+                <TableCell className="!font-semibold">Tên Khách Hàng</TableCell>
+                <TableCell className="!font-semibold">
+                  Địa Chỉ Giao Hàng
+                </TableCell>
+                <TableCell className="!font-semibold">
+                  Số Điện Thoại Khách Hàng
+                </TableCell>
+                <TableCell className="!font-semibold">
+                  Thời Gian Đặt Hàng
+                </TableCell>
+                <TableCell className="!text-right !font-semibold">
+                  Tổng Tiền
+                </TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "orderStatus.name"}
                     direction={sortOrder}
                     onClick={() => handleSort("orderStatus.name")}
+                    className="!font-semibold"
                   >
-                    Trạng thái đơn hàng
+                    Trạng Thái Đơn Hàng
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!text-center">Hành động</TableCell>
+                <TableCell className="!text-center !font-semibold">
+               
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
