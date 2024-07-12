@@ -25,7 +25,7 @@ public interface OrderAssignmentRepository extends JpaRepository<OrderAssignment
             "FROM [user] as u " +
             "LEFT JOIN order_assignment as oa ON u.id = oa.staff_id " +
             "AND oa.order_status_id = (SELECT id FROM order_status WHERE name = 'PENDING') " +
-            "WHERE u.role = 'SALES_STAFF' " +
+            "WHERE u.role = 'SALES_STAFF' AND u.is_blocked = '0' " +
             "GROUP BY u.id " +
             "ORDER BY COUNT(oa.staff_id) ", nativeQuery = true)
     Integer findSalesStaffWithLeastTasks();
@@ -34,7 +34,7 @@ public interface OrderAssignmentRepository extends JpaRepository<OrderAssignment
             "FROM [user] as u " +
             "LEFT JOIN order_assignment as oa ON u.id = oa.staff_id " +
             "AND oa.order_status_id = (SELECT id FROM order_status WHERE name = 'WAITING_FOR_PICKUP') " +
-            "WHERE u.role = 'DELIVERY_STAFF' " +
+            "WHERE u.role = 'DELIVERY_STAFF' AND u.is_blocked = '0' " +
             "GROUP BY u.id " +
             "ORDER BY COUNT(oa.staff_id) ", nativeQuery = true)
     Integer findDeliveryStaffWithLeastTasks();
@@ -43,4 +43,11 @@ public interface OrderAssignmentRepository extends JpaRepository<OrderAssignment
             "FROM OrderAssignment oa " +
             "WHERE oa.staff.id = :staffId ")
     List<OrderAssignment> findOrderAssignmentsByStaff(@Param("staffId") Integer staffId);
+
+    @Query("SELECT oa " +
+            "FROM OrderAssignment oa " +
+            "WHERE oa.staff.id = :staffId " +
+            "AND oa.order.id = :orderId ")
+    OrderAssignment findOrderAssignmentsByStaffAndOrder(@Param("staffId") Integer staffId,
+                                                        @Param("orderId") Integer orderId);
 }

@@ -315,6 +315,7 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
         orderAssignment.setOrderStatus(orderStatus);
         orderAssignment.setUpdateAt(LocalDateTime.now());
+        // sau khi nhân viên giao hàng nhấn hoàn thành thì update transaction status
         Integer transactionId = order.getTransaction().getId();
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new TransactionNotFoundException(transactionId));
@@ -346,6 +347,19 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(orderMapper::toOrderDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderAssignment reassignOrdersToAnotherSalesStaff(Integer orderId, Integer oldStaffId, Integer newStaffId) {
+        OrderAssignment orderAssignment = orderAssignmentRepository.findOrderAssignmentsByStaffAndOrder(oldStaffId, orderId);
+        User newStaff = userRepository.findById(newStaffId).orElseThrow(() -> new UserNotFoundException(newStaffId));
+        orderAssignment.setStaff(newStaff);
+        return orderAssignmentRepository.save(orderAssignment);
+    }
+
+    @Override
+    public List<OrderAssignment> getAllOrderAssignments() {
+        return orderAssignmentRepository.findAll();
     }
 
     private void assignTaskToSalesStaff(Order order) {
