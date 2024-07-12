@@ -23,7 +23,7 @@ function AdminLayout() {
       </div>
     </div>
   ) : (
-    <div className="text-center text-red-500 font-bold text-4xl">
+    <div className="mt-8 text-center text-red-500 font-bold text-4xl">
       Bạn không có quyền truy cập trang này!
     </div>
   );
