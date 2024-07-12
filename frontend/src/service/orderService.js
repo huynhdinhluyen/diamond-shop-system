@@ -59,3 +59,8 @@ export const cancelOrder = async (orderId, reason) => {
     const response = await axiosInstance.post(`/api/order/${orderId}/cancel`, { reason });
     return response.data;
 };
+
+export const getAllOrder = async () => {
+    const response = await axiosInstance.get('/api/order/get/all');
+    return response.data;
+}

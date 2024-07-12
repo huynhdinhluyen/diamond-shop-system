@@ -1,51 +1,52 @@
-import { useEffect, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import {
-  createUser,
-  // deleteUser,
-  getUserByRole,
-  updateUser,
-  blockUser,
-  unblockUser
-} from "../service/userService";
-import { toast } from "react-toastify";
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Paper,
-  Select,
+  Typography,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  TableSortLabel,
+  Paper,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   TextField,
-  Typography,
+  CircularProgress,
+  IconButton,
+  FormHelperText,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  DialogContentText,
+  TableSortLabel,
+  Tooltip,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import EditIcon from "@mui/icons-material/Edit";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
-import { highlightText } from "../utils/highlightText";
+import EditIcon from "@mui/icons-material/Edit";
+import SearchIcon from "@mui/icons-material/Search";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import BlockIcon from '@mui/icons-material/Block';
+import * as yup from "yup";
+import {
+  createUser,
+  // deleteUser,
+  getUsers,
+  updateUser,
+  blockUser,
+  unblockUser
+} from "../service/userService";
+import { highlightText } from "../utils/highlightText";
 
 const roleOptions = [
   { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
@@ -53,7 +54,7 @@ const roleOptions = [
   { value: "MANAGER", label: "Quản lý" },
 ];
 
-const deliveryStaffSchema = yup.object({
+const userSchema = yup.object({
   username: yup
     .string()
     .min(4, "Tên người dùng phải có ít nhất 4 ký tự")
@@ -77,26 +78,26 @@ const deliveryStaffSchema = yup.object({
     .max(50, "Tên không được quá 50 ký tự")
     .required("Vui lòng nhập họ"),
   address: yup.string().optional(),
-  roleName: yup.string().default("DELIVERY_STAFF"),
+  roleName: yup.string().required("Vai trò không được để trống"),
 });
 
-export default function DeliveryStaffManagement() {
-  const [deliveryStaffs, setDeliveryStaffs] = useState([]);
+export default function StaffsManagement() {
+  const [users, setUsers] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedDeliveryStaff, setSelectedDeliveryStaff] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  // const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [sortBy, setSortBy] = useState("role");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
   const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
-  // const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [userIdToBlock, setUserIdToBlock] = useState(null);
   const [userIdToUnblock, setUserIdToUnblock] = useState(null);
-  const [sortBy, setSortBy] = useState("id");
-  const [sortOrder, setSortOrder] = useState("asc");
 
   const [defaultUser, setDefaultUser] = useState({
     username: "",
@@ -112,43 +113,39 @@ export default function DeliveryStaffManagement() {
     setShowPassword(!showPassword);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.role !== "ADMIN" &&
+      user.role !== "CUSTOMER" &&
+      (user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.role.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(deliveryStaffSchema),
-    defaultValues: {
-      roleName: "DELIVERY_STAFF",
-    },
+    resolver: yupResolver(userSchema),
   });
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const filteredDeliveryStaffs = deliveryStaffs.filter(
-    (deliveryStaff) =>
-      deliveryStaff.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      deliveryStaff.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      deliveryStaff.phoneNumber
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      deliveryStaff.firstName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      deliveryStaff.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const deliveryStaffData = await getUserByRole("DELIVERY_STAFF");
-      setDeliveryStaffs(deliveryStaffData);
+      const userData = await getUsers();
+      setUsers(userData);
     } catch (error) {
       setError(error);
-      toast.error("Lỗi khi tải dữ liệu nhân viên giao hàng!");
+      toast.error("Lỗi khi tải dữ liệu người dùng");
     } finally {
       setIsLoading(false);
     }
@@ -158,15 +155,15 @@ export default function DeliveryStaffManagement() {
     fetchData();
   }, []);
 
-  const handleOpenDialog = (deliveryStaff = null) => {
-    setSelectedDeliveryStaff(deliveryStaff);
-    reset(deliveryStaff || defaultUser);
+  const handleOpenDialog = (user = null) => {
+    setSelectedUser(user);
+    reset(user || defaultUser);
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setSelectedDeliveryStaff(null);
+    setSelectedUser(null);
     reset();
     setDefaultUser({
       username: "",
@@ -183,17 +180,18 @@ export default function DeliveryStaffManagement() {
   const handleFormSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      if (selectedDeliveryStaff) {
-        await updateUser(selectedDeliveryStaff.id, data);
-        toast.success("Cập nhật thành công");
+      if (selectedUser) {
+        await updateUser(selectedUser.id, data);
+        toast.success("Cập nhật người dùng thành công");
       } else {
         await createUser(data);
-        toast.success("Tạo tài khoản nhân viên giao hàng thành công");
+        toast.success("Tạo người dùng thành công");
       }
       fetchData();
       handleCloseDialog();
     } catch (error) {
-      toast.error("Lỗi khi lưu thông tin");
+      console.error(error);
+      toast.error("Lỗi khi lưu người dùng");
     } finally {
       setIsSubmitting(false);
     }
@@ -208,9 +206,9 @@ export default function DeliveryStaffManagement() {
   //   try {
   //     await deleteUser(userIdToDelete);
   //     fetchData();
-  //     toast.success("Xóa nhân viên thành công");
+  //     toast.success("Xóa người dùng thành công");
   //   } catch (error) {
-  //     toast.error("Lỗi khi xóa nhân viên");
+  //     toast.error("Lỗi khi xóa người dùng");
   //   } finally {
   //     setOpenConfirmDialog(false);
   //     setUserIdToDelete(null);
@@ -253,7 +251,7 @@ export default function DeliveryStaffManagement() {
     }
   }
 
-  const sortedUsers = [...filteredDeliveryStaffs].sort((a, b) => {
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
     const aValue = a[sortBy];
     const bValue = b[sortBy];
 
@@ -278,14 +276,15 @@ export default function DeliveryStaffManagement() {
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
-        Quản Lý Nhân Viên Giao Hàng
+        Quản Lý Nhân Viên
       </Typography>
 
       <TextField
-        label="Tìm kiếm nhân viên giao hàng"
+        label="Tìm Kiếm Người Dùng"
         variant="outlined"
         value={searchTerm}
         onChange={handleSearchChange}
+        placeholder="Nhập tên người dùng, email, số điện thoại..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -300,9 +299,9 @@ export default function DeliveryStaffManagement() {
         variant="contained"
         startIcon={<AddIcon />}
         onClick={() => handleOpenDialog()}
-        className="!mt-4"
+        className="!my-4"
       >
-        Thêm Nhân Viên
+        Thêm Người Dùng
       </Button>
 
       {isLoading ? (
@@ -318,13 +317,13 @@ export default function DeliveryStaffManagement() {
         >
           <Table stickyHeader>
             <TableHead>
-              <TableRow className="sticky top-0 z-10 bg-white">
+              <TableRow className="!sticky !top-0 !z-10">
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "id"}
                     direction={sortOrder}
                     onClick={() => handleSort("id")}
-                    className="!font-semibold"
+                    className="!font-bold"
                   >
                     ID
                   </TableSortLabel>
@@ -334,18 +333,17 @@ export default function DeliveryStaffManagement() {
                     active={sortBy === "username"}
                     direction={sortOrder}
                     onClick={() => handleSort("username")}
-                    className="!font-semibold"
+                    className="!font-bold"
                   >
                     Username
                   </TableSortLabel>
                 </TableCell>
-
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "lastName"}
                     direction={sortOrder}
                     onClick={() => handleSort("lastName")}
-                    className="!font-semibold"
+                    className="!font-bold"
                   >
                     Họ
                   </TableSortLabel>
@@ -355,7 +353,7 @@ export default function DeliveryStaffManagement() {
                     active={sortBy === "firstName"}
                     direction={sortOrder}
                     onClick={() => handleSort("firstName")}
-                    className="!font-semibold"
+                    className="!font-bold"
                   >
                     Tên
                   </TableSortLabel>
@@ -365,7 +363,7 @@ export default function DeliveryStaffManagement() {
                     active={sortBy === "email"}
                     direction={sortOrder}
                     onClick={() => handleSort("email")}
-                    className="!font-semibold"
+                    className="!font-bold"
                   >
                     Email
                   </TableSortLabel>
@@ -375,9 +373,19 @@ export default function DeliveryStaffManagement() {
                     active={sortBy === "phoneNumber"}
                     direction={sortOrder}
                     onClick={() => handleSort("phoneNumber")}
-                    className="!font-semibold"
+                    className="!font-bold"
                   >
                     Số Điện Thoại
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "role"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("role")}
+                    className="!font-bold"
+                  >
+                    Vai Trò
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
@@ -394,48 +402,69 @@ export default function DeliveryStaffManagement() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {sortedUsers.map((deliveryStaff) => (
-                <TableRow key={deliveryStaff.id}>
-                  <TableCell>{deliveryStaff.id}</TableCell>
+              {sortedUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
                   <TableCell>
-                    {highlightText(deliveryStaff.username, searchTerm)}
+                    {highlightText(user.username, searchTerm)}
                   </TableCell>
                   <TableCell>
-                    {highlightText(deliveryStaff.lastName, searchTerm)}
+                    {highlightText(user.lastName, searchTerm)}
                   </TableCell>
                   <TableCell>
-                    {highlightText(deliveryStaff.firstName, searchTerm)}
+                    {highlightText(user.firstName, searchTerm)}
+                  </TableCell>
+                  <TableCell>{highlightText(user.email, searchTerm)}</TableCell>
+                  <TableCell>
+                    {highlightText(user.phoneNumber, searchTerm)}
                   </TableCell>
                   <TableCell>
-                    {highlightText(deliveryStaff.email, searchTerm)}
+                    {highlightText(
+                      (() => {
+                        switch (user.role) {
+                          case "SALES_STAFF":
+                            return "Nhân viên bán hàng";
+                          case "DELIVERY_STAFF":
+                            return "Nhân viên giao hàng";
+                          case "MANAGER":
+                            return "Quản lý";
+                          default:
+                            return user.role;
+                        }
+                      })(),
+                      searchTerm
+                    )}
                   </TableCell>
                   <TableCell>
-                    {highlightText(deliveryStaff.phoneNumber, searchTerm)}
-                  </TableCell>
-                  <TableCell>
-                    {highlightText(deliveryStaff.blocked === true ? "Đã chặn" : "Không", searchTerm)}
+                    {highlightText(user.blocked === true ? "Đã chặn" : "Không", searchTerm)}
                   </TableCell>
                   <TableCell className="!flex !justify-evenly">
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleOpenDialog(deliveryStaff)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    {/* <IconButton
-                      color="error"
-                      onClick={() => handleDeleteUser(deliveryStaff.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton> */}
-                    <IconButton
-                      color="error"
-                      onClick={deliveryStaff.blocked === true
-                        ? () => handleUnblockUser(deliveryStaff.id)
-                        : () => handleBlockUser(deliveryStaff.id)}
-                    >
-                      <BlockIcon />
-                    </IconButton>
+                    <Tooltip title="Chỉnh sửa">
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleOpenDialog(user)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    {/* <Tooltip title="Xóa">
+                      <IconButton
+                        color="error"
+                        onClick={() => handleDeleteUser(user.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip> */}
+                    <Tooltip>
+                      <IconButton
+                        color="error"
+                        onClick={user.blocked === true
+                          ? () => handleUnblockUser(user.id)
+                          : () => handleBlockUser(user.id)}
+                      >
+                        <BlockIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
@@ -446,19 +475,17 @@ export default function DeliveryStaffManagement() {
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>
-          {selectedDeliveryStaff
-            ? "Chỉnh Sửa Thông Tin Nhân Viên"
-            : "Thêm Nhân Viên"}
+          {selectedUser ? "Chỉnh sửa người dùng" : "Thêm người dùng"}
         </DialogTitle>
         <DialogContent>
-          {selectedDeliveryStaff ? (
+          {selectedUser ? (
             <form onSubmit={handleSubmit(handleFormSubmit)}>
               <TextField
                 label="Username"
                 fullWidth
                 margin="normal"
                 {...register("username")}
-                error={!!errors.username}
+                error={errors.username}
                 helperText={errors?.username?.message}
                 className="!my-4"
               />
@@ -467,7 +494,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("email")}
-                error={!!errors.email}
+                error={errors.email}
                 helperText={errors?.email?.message}
                 className="!my-4"
               />
@@ -476,7 +503,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("phoneNumber")}
-                error={!!errors.phoneNumber}
+                error={errors.phoneNumber}
                 helperText={errors?.phoneNumber?.message}
                 className="!my-4"
               />
@@ -485,7 +512,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("lastName")}
-                error={!!errors.lastName}
+                error={errors.lastName}
                 helperText={errors?.lastName?.message}
                 className="!my-4"
               />
@@ -494,7 +521,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("firstName")}
-                error={!!errors.firstName}
+                error={errors.firstName}
                 helperText={errors?.firstName?.message}
                 className="!my-4"
               />
@@ -503,7 +530,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("address")}
-                error={!!errors.address}
+                error={errors.address}
                 helperText={errors?.address?.message}
                 className="!my-4"
               />
@@ -513,9 +540,9 @@ export default function DeliveryStaffManagement() {
                   labelId="roleName-label"
                   id="roleName"
                   {...register("roleName")}
-                  defaultValue={selectedDeliveryStaff?.role || ""}
+                  defaultValue={selectedUser?.role || ""}
                   input={<OutlinedInput label="Vai trò" />}
-                  error={!!errors.roleName}
+                  error={errors.roleName}
                 >
                   {roleOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -546,7 +573,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("username")}
-                error={!!errors.username}
+                error={errors.username}
                 helperText={errors?.username?.message}
                 className="!my-4"
               />
@@ -554,9 +581,9 @@ export default function DeliveryStaffManagement() {
                 label="Mật khẩu"
                 fullWidth
                 margin="normal"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? "text" : "password"} // Chuyển đổi kiểu input
                 {...register("password")}
-                error={!!errors.password}
+                error={errors.password}
                 helperText={errors?.password?.message}
                 InputProps={{
                   endAdornment: (
@@ -577,7 +604,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("email")}
-                error={!!errors.email}
+                error={errors.email}
                 helperText={errors?.email?.message}
                 className="!my-4"
               />
@@ -586,7 +613,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("phoneNumber")}
-                error={!!errors.phoneNumber}
+                error={errors.phoneNumber}
                 helperText={errors?.phoneNumber?.message}
                 className="!my-4"
               />
@@ -595,7 +622,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("lastName")}
-                error={!!errors.lastName}
+                error={errors.lastName}
                 helperText={errors?.lastName?.message}
                 className="!my-4"
               />
@@ -604,7 +631,7 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("firstName")}
-                error={!!errors.firstName}
+                error={errors.firstName}
                 helperText={errors?.firstName?.message}
                 className="!my-4"
               />
@@ -613,10 +640,30 @@ export default function DeliveryStaffManagement() {
                 fullWidth
                 margin="normal"
                 {...register("address")}
-                error={!!errors.address}
+                error={errors.address}
                 helperText={errors?.address?.message}
                 className="!my-4"
               />
+              <FormControl fullWidth>
+                <InputLabel id="roleName-label">Vai trò</InputLabel>
+                <Select
+                  labelId="roleName-label"
+                  id="roleName"
+                  {...register("roleName")}
+                  defaultValue={selectedUser?.role || ""}
+                  input={<OutlinedInput label="Vai trò" />}
+                  error={errors.roleName}
+                >
+                  {roleOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText error={!!errors.roleName}>
+                  {errors?.roleName?.message}
+                </FormHelperText>
+              </FormControl>
               <DialogActions>
                 <Button onClick={handleCloseDialog}>Hủy</Button>
                 <Button
@@ -625,7 +672,7 @@ export default function DeliveryStaffManagement() {
                   color="primary"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? <CircularProgress size={24} /> : "Thêm"}
+                  {isSubmitting ? <CircularProgress size={24} /> : "Lưu"}
                 </Button>
               </DialogActions>
             </form>

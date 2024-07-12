@@ -7,7 +7,7 @@ export const getUser = () =>
     : null;
 
 export const setUser = (user) => {
-  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem("user", JSON.stringify(user));
 };
 
 export const login = async (username, password) => {
@@ -59,14 +59,9 @@ export async function getUsers() {
   }
 }
 
-
 export async function createUser(userData) {
-  try {
-    const response = await axiosInstance.post("/api/users", userData);
-    return response.data;
-  } catch (error) {
-    handleError("Error creating user:", error);
-  }
+  const { response } = await axiosInstance.post("/api/users", userData);
+  return response;
 }
 
 export async function updateUser(userId, userData) {
@@ -78,14 +73,14 @@ export async function updateUser(userId, userData) {
   }
 }
 
-export async function deleteUser(userId) {
-  try {
-    const response = await axiosInstance.delete(`/api/users/${userId}`);
-    return response.data;
-  } catch (error) {
-    handleError("Error deleting user:", error);
-  }
-}
+// export async function deleteUser(userId) {
+//   try {
+//     const response = await axiosInstance.delete(`/api/users/${userId}`);
+//     return response.data;
+//   } catch (error) {
+//     handleError("Error deleting user:", error);
+//   }
+// }
 
 export async function getUserByRole(role) {
   try {
@@ -104,3 +99,36 @@ export async function getUserById(id) {
     handleError("Error fetching user by role:", error);
   }
 }
+
+export const loginWithGoogle = async (userObject) => {
+  try {
+    const { data } = await axiosInstance.post("api/users/google", {
+      email: userObject.email,
+      firstName: userObject.given_name,
+      lastName: userObject.family_name,
+    });
+    localStorage.setItem("user", JSON.stringify(data));
+    return data;
+  } catch (error) {
+    handleError("Failed to login with Google:", error);
+    throw error;
+  }
+};
+
+export const blockUser = async (userId) => {
+  try {
+    const { data } = await axiosInstance.put(`/api/users/${userId}/block`);
+    return data;
+  } catch (error) {
+    handleError("Error blocking user:", error);
+  }
+};
+
+export const unblockUser = async (userId) => {
+  try {
+    const { data } = await axiosInstance.put(`/api/users/${userId}/unblock`);
+    return data;
+  } catch (error) {
+    handleError("Error unblocking user:", error);
+  }
+};

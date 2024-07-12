@@ -39,8 +39,8 @@ export default function SalesStaffLayout() {
     setDrawerOpen(!drawerOpen);
   };
 
-  return user && user.role === "SALES_STAFF" ? (
-    <div className="flex h-screen">
+  return user && user.role === "SALES_STAFF" && !user.blocked ? (
+    <div className="flex min-h-screen p-4 bg-gray-100">
       <AppBar position="fixed" className="!z-10 !bg-slate-800">
         <Toolbar>
           <IconButton
@@ -100,15 +100,17 @@ export default function SalesStaffLayout() {
       </Drawer>
       <Box
         component="main"
-        className="flex-grow p-4 overflow-y-auto bg-gray-100"
+        className="container flex-grow mx-auto"
       >
         <Toolbar />
         <Outlet />
       </Box>
     </div>
   ) : (
-    <div className="text-center mt-8 text-red-500 font-bold text-4xl">
+    <h2 className="text-center mt-8 text-red-500 font-bold text-4xl">
       Bạn không có quyền truy cập trang này!
-    </div>
+      {user && user.blocked && <h3 className="text-center mt-8 text-red-500 font-bold text-3xl">Tài khoản của bạn đã bị chặn</h3>}
+      <button className="btn btn-accent btn-lg mx-auto mt-10 text-lg" onClick={handleLogout}>Đăng xuất</button>
+    </h2>
   );
 }

@@ -50,7 +50,6 @@ public class UserController {
                 registerConfirmed(request.getVerificationCode(), request.getAccessToken()));
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody User request
@@ -87,7 +86,6 @@ public class UserController {
 //        return ResponseEntity.badRequest().build();
 //    }
 
-
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam Integer userId, @RequestBody User updatedUser) {
         try {
@@ -112,27 +110,25 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuthenticationResponse> updateUserByAdmin(@PathVariable Integer id,
+    public ResponseEntity<User> updateUserByAdmin(@PathVariable Integer id,
                                                                     @RequestBody User request) {
         try {
-            AuthenticationResponse user = authService.updateUser(id, request);
+            User user = userService.updateUserByAdmin(id, request);
             return ResponseEntity.ok(user);
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+//        try {
+//            userService.deleteUser(id);
+//            return ResponseEntity.noContent().build();
+//        } catch (UserNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @GetMapping("/role")
     public ResponseEntity<List<UserDTO>> findUsersByRole(@RequestParam RoleName role) {
@@ -156,4 +152,20 @@ public class UserController {
         return ResponseEntity.ok(authService.getUserById(id));
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<AuthenticationResponse> googleLogin(@RequestBody User googleUser) {
+        return ResponseEntity.ok(authService.loginGoogle(googleUser));
+    }
+
+    @PutMapping("/{userId}/block")
+    public ResponseEntity<User> blockUser(@PathVariable Integer userId) {
+        User blockedUser = userService.blockUser(userId);
+        return ResponseEntity.ok(blockedUser);
+    }
+
+    @PutMapping("/{userId}/unblock")
+    public ResponseEntity<User> unblockUser(@PathVariable Integer userId) {
+        User unblockedUser = userService.unblockUser(userId);
+        return ResponseEntity.ok(unblockedUser);
+    }
 }

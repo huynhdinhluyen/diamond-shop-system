@@ -100,6 +100,19 @@ export default function MyProfile() {
                             error={errors.phoneNumber}
                         />
                     </div>
+                    {user.role === 'MANAGER' || user.role === 'SALES_STAFF' || user.role === 'DELIVERY_STAFF'
+                        ? <div className="mt-5 flex-grow items-center">
+                            <label htmlFor="" className="mr-5 text-nowrap">Địa chỉ</label>
+                            <Input
+                                type="text"
+                                defaultValue={user.address}
+                                {...register("address", {
+                                    required: true,
+                                })}
+                                error={errors.address}
+                            />
+                        </div> : <div></div>
+                    }
                     <button className="btn btn-accent btn-sm mt-5" type="submit">Lưu</button>
                 </form>
             </div>

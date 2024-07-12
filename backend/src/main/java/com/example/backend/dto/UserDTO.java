@@ -28,4 +28,5 @@ public class UserDTO {
     private Integer points;
     private MembershipLevelDTO membershipLevel;
     private UserVerifyStatus accountStatus;
+    private boolean isBlocked;
 }

@@ -27,7 +27,8 @@ public class UserMapper {
                 user.getResetPasswordToken(),
                 user.getPoints(),
                 membershipLevelMapper.toMembershipLevelDTO(user.getMembershipLevel()),
-                user.getAccountStatus()
+                user.getAccountStatus(),
+                user.isBlocked()
         );
     }
 
@@ -48,7 +49,8 @@ public class UserMapper {
                 dto.getResetPasswordToken(),
                 dto.getPoints(),
                 membershipLevelMapper.toMembershipLevelEntity(dto.getMembershipLevel()),
-                dto.getAccountStatus()
+                dto.getAccountStatus(),
+                dto.isBlocked()
         );
     }
 }

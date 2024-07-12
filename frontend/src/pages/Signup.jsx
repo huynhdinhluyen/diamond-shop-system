@@ -157,7 +157,7 @@ export default function Signup() {
         </div>
 
         <div className="md:w-1/2 px-6">
-          <h2 className="font-bold text-2xl text-accent text-center">
+          <h2 className="font-bold text-2xl text-accent text-center uppercase">
             Đăng Ký
           </h2>
           <p className="text-sm my-2 text-center uppercase tracking-[1px]">
@@ -288,7 +288,7 @@ export default function Signup() {
             )}
 
             <div className="flex flex-col gap-y-2 items-center mt-2 ">
-              <Link to="/login" className=" text-md hover:underline">
+              <Link to="/login" className=" text-md hover:underline text-center">
                 Quay lại đăng nhập nếu bạn đã có tài khoản
               </Link>
               <Link to="/" className=" text-md hover:underline">

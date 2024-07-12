@@ -14,7 +14,6 @@ import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import AdminProductManagement from "./pages/AdminProductManagement";
 import AdminCategoryManagement from "./pages/AdminCategoryManagement";
-import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminDiamondCasingManagement from "./pages/AdminDiamondCasingManagement";
 import AdminDiamondManagement from "./pages/AdminDiamondManagement";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -54,6 +53,10 @@ import OrderDetailOfDeliveryStaff from "./pages/OrderDetailOfDeliveryStaff";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import ProfileStaffLayout from "./layouts/ProfileSaleStaffLayout";
 import AdminPromotionManagement from "./pages/AdminPromotionManagement";
+import StaffsManagement from "./pages/StaffsManagement";
+import OrderListOfAdmin from "./pages/OrderListOfAdmin";
+import OrderDetailOfAdmin from "./pages/OrderDetailOfAdmin";
+import OrderListOfManager from "./pages/OrderListOfManager";
 
 function App() {
   return (
@@ -187,14 +190,10 @@ function App() {
             path="delivery-staffs-management"
             element={<DeliveryStaffManagement />}
           />
-          <Route
-            path="profile"
-            element={<ProfileStaffLayout />}
-          />
-          <Route
-            path="promotions"
-            element={<AdminPromotionManagement />}
-          />
+          <Route path="profile" element={<ProfileStaffLayout />} />
+          <Route path="promotions" element={<AdminPromotionManagement />} />
+          <Route path="orders" element={<OrderListOfManager />} />
+          <Route path="orders/:orderId" element={<OrderDetailOfAdmin />} />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
@@ -206,9 +205,15 @@ function App() {
             element={<AdminDiamondCasingManagement />}
           />
           <Route path="diamonds" element={<AdminDiamondManagement />} />
-          <Route path="users" element={<AdminUserManagement />} />
+          <Route path="customers-management" element={<CustomerManagement />} />
+          <Route path="staffs-management" element={<StaffsManagement />} />
           <Route path="profile" element={<ProfileStaffLayout />} />
           <Route path="promotions" element={<AdminPromotionManagement />} />
+          <Route path="orders" element={<OrderListOfAdmin />} />
+          <Route
+            path="orders/:orderId"
+            element={<OrderDetailOfAdmin />}
+          />
         </Route>
 
         <Route

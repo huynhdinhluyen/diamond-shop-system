@@ -34,7 +34,7 @@ export default function MyOrder() {
     const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return (
-        <div className="w-full lg:ml-5">
+        <div className="w-full lg:ml-5 lg:mt-5">
             <div>
                 <h3 className="h3 mb-3 text-center lg:text-left">Đơn hàng của tôi</h3>
             </div>

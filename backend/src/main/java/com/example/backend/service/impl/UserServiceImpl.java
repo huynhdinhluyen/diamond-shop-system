@@ -57,6 +57,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateUserByAdmin(Integer userId, User updatedUser) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        user.setLastName(updatedUser.getLastName());
+        user.setFirstName(updatedUser.getFirstName());
+        user.setUsername(updatedUser.getUsername());
+        user.setEmail(updatedUser.getEmail());
+        user.setPhoneNumber(updatedUser.getPhoneNumber());
+        user.setAddress(updatedUser.getAddress());
+        user.setRoleName(updatedUser.getRoleName());
+        // Cập nhật các thuộc tính khác của người dùng
+        return userRepository.save(user);
+    }
+
+    @Override
     public void deleteUser(Integer id) throws UserNotFoundException {
         if (!userRepository.existsById(id)) {
             throw new UserNotFoundException(id);
@@ -69,5 +84,21 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findByRole(roleName.name());
         return users.stream().map(userMapper::maptoUserDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public User blockUser(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setBlocked(true);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User unblockUser(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setBlocked(false);
+        return userRepository.save(user);
     }
 }

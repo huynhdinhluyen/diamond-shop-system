@@ -4,9 +4,11 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import {
   createUser,
-  deleteUser,
+  // deleteUser,
   getUserByRole,
   updateUser,
+  blockUser,
+  unblockUser
 } from "../service/userService";
 import { toast } from "react-toastify";
 import {
@@ -38,11 +40,12 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import { highlightText } from "../utils/highlightText";
+import BlockIcon from '@mui/icons-material/Block';
 
 const roleOptions = [
   { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
@@ -51,7 +54,11 @@ const roleOptions = [
 ];
 
 const salesStaffSchema = yup.object({
-  username: yup.string().required("Tên người dùng không được để trống"),
+  username: yup
+    .string()
+    .min(4, "Tên người dùng phải có ít nhất 4 ký tự")
+    .max(24, "Tên người dùng không được quá 24 ký tự")
+    .required("Vui lòng nhập tên người dùng"),
   password: yup.string().required("Mật khẩu không được để trống"),
   email: yup
     .string()
@@ -59,11 +66,16 @@ const salesStaffSchema = yup.object({
     .required("Email không được để trống"),
   phoneNumber: yup
     .string()
-    .matches(/^[0-9]+$/, "Số điện thoại phải là số")
+    .matches(/^0\d{9}$/, "Số điện thoại không hợp lệ")
     .required("Số điện thoại không được để trống"),
-  firstName: yup.string().required("Họ không được để trống"),
-  lastName: yup.string().required("Tên không được để trống"),
-  city: yup.string().optional(),
+  firstName: yup
+    .string()
+    .max(50, "Họ không được quá 50 ký tự")
+    .required("Vui lòng nhập tên"),
+  lastName: yup
+    .string()
+    .max(50, "Tên không được quá 50 ký tự")
+    .required("Vui lòng nhập họ"),
   address: yup.string().optional(),
   roleName: yup.string().default("SALES_STAFF"),
 });
@@ -77,10 +89,24 @@ export default function SaleStaffManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  // const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  // const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [sortBy, setSortBy] = useState("id");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
+  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
+  const [userIdToBlock, setUserIdToBlock] = useState(null);
+  const [userIdToUnblock, setUserIdToUnblock] = useState(null);
+
+  const [defaultUser, setDefaultUser] = useState({
+    username: "",
+    password: "",
+    email: "",
+    phoneNumber: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+  });
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -130,7 +156,7 @@ export default function SaleStaffManagement() {
 
   const handleOpenDialog = (salesStaff = null) => {
     setSelectedSalesStaff(salesStaff);
-    reset(salesStaff || {});
+    reset(salesStaff || defaultUser);
     setOpenDialog(true);
   };
 
@@ -138,6 +164,15 @@ export default function SaleStaffManagement() {
     setOpenDialog(false);
     setSelectedSalesStaff(null);
     reset();
+    setDefaultUser({
+      username: "",
+      password: "",
+      email: "",
+      phoneNumber: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+    });
     fetchData();
   };
 
@@ -160,23 +195,59 @@ export default function SaleStaffManagement() {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    setUserIdToDelete(userId);
-    setOpenConfirmDialog(true);
-  };
+  // const handleDeleteUser = async (userId) => {
+  //   setUserIdToDelete(userId);
+  //   setOpenConfirmDialog(true);
+  // };
 
-  const handleConfirmDelete = async () => {
+  // const handleConfirmDelete = async () => {
+  //   try {
+  //     await deleteUser(userIdToDelete);
+  //     fetchData();
+  //     toast.success("Xóa nhân viên thành công");
+  //   } catch (error) {
+  //     toast.error("Lỗi khi xóa nhân viên");
+  //   } finally {
+  //     setOpenConfirmDialog(false);
+  //     setUserIdToDelete(null);
+  //   }
+  // };
+
+  const handleBlockUser = async (userId) => {
+    setUserIdToBlock(userId);
+    setOpenConfirmBlockDialog(true);
+  }
+
+  const handleUnblockUser = async (userId) => {
+    setUserIdToUnblock(userId);
+    setOpenConfirmUnblockDialog(true);
+  }
+
+  const handleConfirmBlock = async () => {
     try {
-      await deleteUser(userIdToDelete);
+      await blockUser(userIdToBlock);
       fetchData();
-      toast.success("Xóa nhân viên thành công");
+      toast.success("Chặn nhân viên thành công");
     } catch (error) {
-      toast.error("Lỗi khi xóa nhân viên");
+      toast.error("Lỗi khi chặn nhân viên");
     } finally {
-      setOpenConfirmDialog(false);
-      setUserIdToDelete(null);
+      setOpenConfirmBlockDialog(false);
+      setUserIdToBlock(null);
     }
-  };
+  }
+
+  const handleConfirmUnblock = async () => {
+    try {
+      await unblockUser(userIdToUnblock);
+      fetchData();
+      toast.success("Hủy chặn nhân viên thành công");
+    } catch (error) {
+      toast.error("Lỗi khi hủy chặn nhân viên");
+    } finally {
+      setOpenConfirmUnblockDialog(false);
+      setUserIdToUnblock(null);
+    }
+  }
 
   const sortedUsers = [...filteredSalesStaffs].sort((a, b) => {
     const aValue = a[sortBy];
@@ -203,7 +274,7 @@ export default function SaleStaffManagement() {
   return (
     <div className="container mx-auto mt-8">
       <Typography variant="h4" component="h1" gutterBottom>
-        Quản lý nhân viên bán hàng
+        Quản Lý Nhân Viên Bán Hàng
       </Typography>
 
       <TextField
@@ -227,7 +298,7 @@ export default function SaleStaffManagement() {
         onClick={() => handleOpenDialog()}
         className="!mt-4"
       >
-        Thêm nhân viên
+        Thêm Nhân Viên
       </Button>
 
       {isLoading ? (
@@ -249,6 +320,7 @@ export default function SaleStaffManagement() {
                     active={sortBy === "id"}
                     direction={sortOrder}
                     onClick={() => handleSort("id")}
+                    className="!font-semibold"
                   >
                     ID
                   </TableSortLabel>
@@ -258,33 +330,18 @@ export default function SaleStaffManagement() {
                     active={sortBy === "username"}
                     direction={sortOrder}
                     onClick={() => handleSort("username")}
+                    className="!font-semibold"
                   >
                     Username
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={sortBy === "email"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("email")}
-                  >
-                    Email
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={sortBy === "phoneNumber"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("phoneNumber")}
-                  >
-                    Số điện thoại
-                  </TableSortLabel>
-                </TableCell>
+
                 <TableCell>
                   <TableSortLabel
                     active={sortBy === "lastName"}
                     direction={sortOrder}
                     onClick={() => handleSort("lastName")}
+                    className="!font-semibold"
                   >
                     Họ
                   </TableSortLabel>
@@ -294,8 +351,39 @@ export default function SaleStaffManagement() {
                     active={sortBy === "firstName"}
                     direction={sortOrder}
                     onClick={() => handleSort("firstName")}
+                    className="!font-semibold"
                   >
                     Tên
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "email"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("email")}
+                    className="!font-semibold"
+                  >
+                    Email
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "phoneNumber"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("phoneNumber")}
+                    className="!font-semibold"
+                  >
+                    Số Điện Thoại
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "blocked"}
+                    direction={sortOrder}
+                    onClick={() => handleSort("blocked")}
+                    className="!font-semibold"
+                  >
+                    Đã chặn
                   </TableSortLabel>
                 </TableCell>
                 <TableCell></TableCell>
@@ -304,11 +392,17 @@ export default function SaleStaffManagement() {
             <TableBody>
               {sortedUsers.map((salesStaff) => (
                 <TableRow key={salesStaff.id}>
-                  <TableCell className="!text-center">
+                  <TableCell>
                     {salesStaff.id}
                   </TableCell>
                   <TableCell>
                     {highlightText(salesStaff.username, searchTerm)}
+                  </TableCell>
+                  <TableCell>
+                    {highlightText(salesStaff.lastName, searchTerm)}
+                  </TableCell>
+                  <TableCell>
+                    {highlightText(salesStaff.firstName, searchTerm)}
                   </TableCell>
                   <TableCell>
                     {highlightText(salesStaff.email, searchTerm)}
@@ -317,10 +411,7 @@ export default function SaleStaffManagement() {
                     {highlightText(salesStaff.phoneNumber, searchTerm)}
                   </TableCell>
                   <TableCell>
-                    {highlightText(salesStaff.lastName, searchTerm)}
-                  </TableCell>
-                  <TableCell>
-                    {highlightText(salesStaff.firstName, searchTerm)}
+                    {highlightText(salesStaff.blocked === true ? "Đã chặn" : "Không", searchTerm)}
                   </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <IconButton
@@ -329,11 +420,19 @@ export default function SaleStaffManagement() {
                     >
                       <EditIcon />
                     </IconButton>
-                    <IconButton
+                    {/* <IconButton
                       color="error"
                       onClick={() => handleDeleteUser(salesStaff.id)}
                     >
                       <DeleteIcon />
+                    </IconButton> */}
+                    <IconButton
+                      color="error"
+                      onClick={salesStaff.blocked === true
+                        ? () => handleUnblockUser(salesStaff.id)
+                        : () => handleBlockUser(salesStaff.id)}
+                    >
+                      <BlockIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -346,8 +445,8 @@ export default function SaleStaffManagement() {
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>
           {selectedSalesStaff
-            ? "Chỉnh sửa thông tin nhân viên"
-            : "Thêm nhân viên"}
+            ? "Chỉnh Sửa Thông Tin Nhân Viên"
+            : "Thêm Nhân Viên Mới"}
         </DialogTitle>
         <DialogContent>
           {selectedSalesStaff ? (
@@ -360,28 +459,6 @@ export default function SaleStaffManagement() {
                 error={!!errors.username}
                 helperText={errors?.username?.message}
                 className="!my-4"
-              />
-              <TextField
-                label="Mật khẩu"
-                fullWidth
-                margin="normal"
-                type={showPassword ? "text" : "password"}
-                {...register("password")}
-                error={!!errors.password}
-                helperText={errors?.password?.message}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleTogglePasswordVisibility}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
               />
               <TextField
                 label="Email"
@@ -420,16 +497,7 @@ export default function SaleStaffManagement() {
                 className="!my-4"
               />
               <TextField
-                label="Thành phố"
-                fullWidth
-                margin="normal"
-                {...register("city")}
-                error={!!errors.city}
-                helperText={errors?.city?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Địa chỉ"
+                label="Địa Chỉ"
                 fullWidth
                 margin="normal"
                 {...register("address")}
@@ -539,16 +607,7 @@ export default function SaleStaffManagement() {
                 className="!my-4"
               />
               <TextField
-                label="Thành phố"
-                fullWidth
-                margin="normal"
-                {...register("city")}
-                error={!!errors.city}
-                helperText={errors?.city?.message}
-                className="!my-4"
-              />
-              <TextField
-                label="Địa chỉ"
+                label="Địa Chỉ"
                 fullWidth
                 margin="normal"
                 {...register("address")}
@@ -571,7 +630,7 @@ export default function SaleStaffManagement() {
           )}
         </DialogContent>
       </Dialog>
-      <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
+      {/* <Dialog open={openConfirmDialog} onClose={handleCloseDialog}>
         <DialogTitle>Xác nhận xóa</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -584,6 +643,38 @@ export default function SaleStaffManagement() {
           </Button>
           <Button onClick={handleConfirmDelete} color="error" autoFocus>
             Xóa
+          </Button>
+        </DialogActions>
+      </Dialog> */}
+      <Dialog open={openConfirmBlockDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận chặn</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn chặn nhân viên này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmBlockDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmBlock} color="error" autoFocus>
+            Chặn
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openConfirmUnblockDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Xác nhận hủy chặn</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có chắc chắn muốn hủy chặn nhân viên này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmUnblockDialog(false)} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmUnblock} color="error" autoFocus>
+            Hủy Chặn
           </Button>
         </DialogActions>
       </Dialog>
