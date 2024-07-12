@@ -77,12 +77,6 @@ export default function SalesStaffLayout() {
               </ListItemIcon>
               <ListItemText primary="Đơn hàng" />
             </ListItem>
-            <ListItem component={Link} to="/sales-staff/customers" className="hover:bg-gray-100">
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Khách hàng" />
-            </ListItem>
             <ListItem component={Link} to="/sales-staff/profile" className="hover:bg-gray-100">
               <ListItemIcon>
                 <PeopleIcon />

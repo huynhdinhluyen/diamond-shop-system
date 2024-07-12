@@ -66,3 +66,29 @@ export async function completeOrder(orderId) {
     handleError("Error complete order:", error);
   }
 }
+
+export async function reassignOrderToAnotherSalesStaff(
+  orderId,
+  oldStaffId,
+  newStaffId
+) {
+  try {
+    const response = await axiosInstance.post(
+      `/api/order-assignments/reassign`,
+      null,
+      { params: { orderId, oldStaffId, newStaffId } }
+    );
+    return response.data;
+  } catch (error) {
+    handleError("Error reassign order:", error);
+  }
+}
+
+export async function getOrderAssignments() {
+  try {
+    const response = await axiosInstance.get(`/api/order-assignments`);
+    return response.data;
+  } catch (error) {
+    handleError("Error fetching order assignments:", error);
+  }
+}

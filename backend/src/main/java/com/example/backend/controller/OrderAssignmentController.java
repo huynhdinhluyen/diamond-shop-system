@@ -68,4 +68,16 @@ public class OrderAssignmentController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/reassign")
+    public ResponseEntity<OrderAssignment> reassignOrder(@RequestParam Integer orderId,
+                                                         @RequestParam Integer oldStaffId,
+                                                         @RequestParam Integer newStaffId) {
+        return ResponseEntity.ok(orderService.reassignOrdersToAnotherSalesStaff(orderId, oldStaffId, newStaffId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderAssignment>> getAllOrderAssignments() {
+        return ResponseEntity.ok(orderService.getAllOrderAssignments());
+    }
 }
