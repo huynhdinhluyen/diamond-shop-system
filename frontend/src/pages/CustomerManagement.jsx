@@ -42,7 +42,8 @@ import GoldIcon from "@mui/icons-material/EmojiEvents"; // Gold icon
 import DiamondIcon from "@mui/icons-material/Star"; // Diamond icon
 import PlatinumIcon from "@mui/icons-material/EmojiEvents"; // Platinum icon
 import { highlightText } from "../utils/highlightText";
-import BlockIcon from "@mui/icons-material/Block";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 
 const customerSchema = yup.object({
   username: yup
@@ -446,16 +447,17 @@ export default function CustomerManagement() {
                     >
                       <DeleteIcon />
                     </IconButton> */}
-                    <IconButton
+                    {customer.blocked === true ? <IconButton
                       color="error"
-                      onClick={
-                        customer.blocked === true
-                          ? () => handleUnblockUser(customer.id)
-                          : () => handleBlockUser(customer.id)
-                      }
+                      onClick={() => handleUnblockUser(customer.id)}
                     >
-                      <BlockIcon />
-                    </IconButton>
+                      <LockOutlinedIcon />
+                    </IconButton> : <IconButton
+                      color="error"
+                      onClick={() => handleBlockUser(customer.id)}
+                    >
+                      <LockOpenOutlinedIcon />
+                    </IconButton>}
                   </TableCell>
                 </TableRow>
               ))}

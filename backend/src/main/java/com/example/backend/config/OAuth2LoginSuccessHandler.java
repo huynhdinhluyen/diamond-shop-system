@@ -40,7 +40,6 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
             user.setAddress(null);
             userRepository.save(user);
         }
-
         this.setAlwaysUseDefaultTargetUrl(true);
         this.setDefaultTargetUrl("http://localhost:5173");
         super.onAuthenticationSuccess(request, response, authentication);

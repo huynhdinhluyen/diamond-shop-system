@@ -4,6 +4,7 @@ import MyProfile from "./MyProfile";
 import MyOrder from "./MyOrder";
 import MyAddress from "./MyAddress";
 import ChangePassword from "./ChangePassword";
+import { Link } from "react-router-dom";
 
 export default function SidebarProfile({ onMainComponentChange }) {
 
@@ -59,7 +60,10 @@ export default function SidebarProfile({ onMainComponentChange }) {
                         <span className="text-accent font-semibold"> {user.username}</span>
                     </p>
                     <p className="text-md">Điểm tích lũy của bạn: <span className="text-accent font-semibold">{user.points}</span> </p>
-                    <p className="text-md">Thành viên: <span className="text-accent font-semibold">{translateMembershipLevel(user.membershipLevel.name)}</span></p>
+                    <p className="text-md">
+                        Thành viên: <span className="text-accent font-semibold">{translateMembershipLevel(user.membershipLevel.name)}</span>
+                    </p>
+                    <Link to="/about-points" className="cursor-pointer hover:text-accent">Tìm hiểu thêm về tích lũy điểm</Link>
                 </div>
             </div>
             <ul className="list-none md:flex md:flex-row sm:flex-col gap-x-2 mb-4 lg:block">

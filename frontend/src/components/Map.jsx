@@ -19,7 +19,8 @@ const FixedMapComponent = () => {
 
   return (
     <div>
-      <h4 className="text-2xl text-center font-bold mb-4 mx-8 text-nowrap text-accent uppercase">
+      <hr />
+      <h4 className="text-2xl text-center font-bold my-4 mx-8 text-nowrap text-accent uppercase">
         Vị trí của chúng tôi
       </h4>
       <MapContainer

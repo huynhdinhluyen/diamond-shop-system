@@ -36,7 +36,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import BlockIcon from '@mui/icons-material/Block';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import * as yup from "yup";
 import {
   createUser,
@@ -373,7 +374,7 @@ export default function StaffsManagement() {
                     active={sortBy === "phoneNumber"}
                     direction={sortOrder}
                     onClick={() => handleSort("phoneNumber")}
-                    className="!font-bold"
+                    className="!font-bold text-nowrap"
                   >
                     Số Điện Thoại
                   </TableSortLabel>
@@ -388,7 +389,7 @@ export default function StaffsManagement() {
                     Vai Trò
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>
+                <TableCell className="text-nowrap">
                   <TableSortLabel
                     active={sortBy === "blocked"}
                     direction={sortOrder}
@@ -418,7 +419,7 @@ export default function StaffsManagement() {
                   <TableCell>
                     {highlightText(user.phoneNumber, searchTerm)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-nowrap">
                     {highlightText(
                       (() => {
                         switch (user.role) {
@@ -456,14 +457,17 @@ export default function StaffsManagement() {
                       </IconButton>
                     </Tooltip> */}
                     <Tooltip>
-                      <IconButton
+                      {user.blocked === true ? <IconButton
                         color="error"
-                        onClick={user.blocked === true
-                          ? () => handleUnblockUser(user.id)
-                          : () => handleBlockUser(user.id)}
+                        onClick={() => handleUnblockUser(user.id)}
                       >
-                        <BlockIcon />
-                      </IconButton>
+                        <LockOutlinedIcon />
+                      </IconButton> : <IconButton
+                        color="error"
+                        onClick={() => handleBlockUser(user.id)}
+                      >
+                        <LockOpenOutlinedIcon />
+                      </IconButton>}
                     </Tooltip>
                   </TableCell>
                 </TableRow>

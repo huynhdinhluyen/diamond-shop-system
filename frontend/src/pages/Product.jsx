@@ -9,6 +9,7 @@ import { getProductById } from "../service/productService";
 import { getSizesByCategory } from "../service/sizeService";
 import SimilarProduct from "../components/SimilarProduct";
 import { toast } from "react-toastify";
+import FullScreenImageModal from "../components/FullScreenImage";
 
 export default function Product() {
     const { user } = useAuth();
@@ -20,6 +21,7 @@ export default function Product() {
     const { productId } = useParams();
     const { addToCart } = useCart();
     const navigate = useNavigate();
+    const [isImageModalOpen, setImageModalOpen] = useState(false);
 
     useEffect(() => {
         getProductById(productId).then(product => {
@@ -40,7 +42,7 @@ export default function Product() {
         const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
 
         if (!isSizeNotRequiredCategory && !selectedSize) {
-            alert("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng");
+            toast.error("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng");
             return;
         }
 
@@ -73,7 +75,7 @@ export default function Product() {
         const isSizeNotRequiredCategory = ["kim cương viên", "bông tai", "hoa tai"].includes(product?.category?.name.toLowerCase());
 
         if (!isSizeNotRequiredCategory && !selectedSize) {
-            alert("Vui lòng chọn kích thước trước khi mua hàng");
+            toast.error("Vui lòng chọn kích thước trước khi mua hàng");
             return;
         }
 
@@ -130,6 +132,14 @@ export default function Product() {
 
         return sizeGuideImages[category.toLowerCase()] || null;
     }
+
+    const handleImageClick = () => {
+        setImageModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setImageModalOpen(false);
+    };
 
     return (
         <div className="lg:mt-16 mt-0">
@@ -272,7 +282,6 @@ export default function Product() {
                                                 <li>Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
                                                 <li>Kiểu cắt: {product.mainDiamond.cutType}</li>
                                                 <li>Độ trong: {product.mainDiamond.clarity}</li>
-                                                <li>Chứng chỉ GIA: {product.mainDiamond.giaCertificate}</li>
                                             </ul>
                                         ) : (
                                             "Không có"
@@ -289,7 +298,6 @@ export default function Product() {
                                                 <li>Trọng lượng carat: {product.auxiliaryDiamond.caratWeight}</li>
                                                 <li>Kiểu cắt: {product.auxiliaryDiamond.cutType}</li>
                                                 <li>Độ trong: {product.auxiliaryDiamond.clarity}</li>
-                                                <li>Chứng chỉ GIA: {product.auxiliaryDiamond.giaCertificate}</li>
                                             </ul>
                                         ) : (
                                             "Không có"
@@ -298,11 +306,21 @@ export default function Product() {
                                 </tr>
                             </tbody>
                         </table>
+                        <img
+                            src="/src/assets/img/GIA/GIA.png"
+                            alt="" className="w-[80%] mx-auto cursor-pointer"
+                            onClick={handleImageClick}
+                        />
                     </div>
                     <div>
                         <h3 className="h3 text-accent text-center uppercase mt-10">Sản phẩm tương tự</h3>
                         <SimilarProduct category={product.category.name} />
                     </div>
+                    <FullScreenImageModal
+                        isOpen={isImageModalOpen}
+                        onClose={handleCloseModal}
+                        imageUrl="/src/assets/img/GIA/GIA.png"
+                    />
                 </div>
             )}
         </div>
