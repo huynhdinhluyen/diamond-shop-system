@@ -56,6 +56,7 @@ import StaffsManagement from "./pages/StaffsManagement";
 import OrderListOfAdmin from "./pages/OrderListOfAdmin";
 import OrderDetailOfAdmin from "./pages/OrderDetailOfAdmin";
 import OrderListOfManager from "./pages/OrderListOfManager";
+import AboutPoints from "./pages/AboutPoints";
 
 function App() {
   return (
@@ -379,6 +380,14 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/about-points"
+          element={
+            <Layout>
+              <AboutPoints />
+            </Layout>
+          }
+        />
       </Routes>
     </div>
   );

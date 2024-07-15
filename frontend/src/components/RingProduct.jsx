@@ -69,7 +69,7 @@ function RingProduct() {
 
     return (
         <div className="container mx-auto mt-8">
-            <img src="https://www.tierra.vn/files/overview-km-nch-desk-1--jKSbFSmMu9.webp" alt="" className="w-full lg:h-96 h-auto object-cover" />
+            <img src="https://cdn-media.glamira.com/media/catalog/category/product_image_top_banner_plain_rings_uk.jpg" alt="" className="w-full lg:h-96 h-auto object-cover" />
             <div className="flex items-center justify-between my-4 text-center">
                 <h1 className="text-xl text-center font-bold text-nowrap text-accent mx-auto">
                     {categoryName}

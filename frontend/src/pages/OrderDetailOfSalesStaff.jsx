@@ -24,6 +24,7 @@ import { vi } from "date-fns/locale";
 import { useOrder } from "../hooks/useOrder";
 import { toast } from "react-toastify";
 import statusTranslations from "../utils/statusTranslations";
+import PrintBillPDF from "../components/PrintBillPDF";
 
 export default function OrderDetailOfSalesStaff() {
   const { orderId } = useParams();
@@ -32,6 +33,7 @@ export default function OrderDetailOfSalesStaff() {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -217,6 +219,7 @@ export default function OrderDetailOfSalesStaff() {
             </div>
           )}
         </Box>
+        <PrintBillPDF order={order} />
       </Paper>
     </Box>
   );
