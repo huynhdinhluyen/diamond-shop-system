@@ -7,6 +7,7 @@ import { useOrder } from '../hooks/useOrder';
 import { Dialog, DialogActions, DialogContent, DialogTitle, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useAuth } from '../hooks/useAuth';
+import PrintOrderPDF from '../components/PrintPDF';
 
 const OrderDetail = () => {
     const { orderId } = useParams();
@@ -16,7 +17,6 @@ const OrderDetail = () => {
     const [orderDetails, setOrderDetails] = useState([]);
     const [openCancelDialog, setOpenCancelDialog] = useState(false);
     const [cancelReason, setCancelReason] = useState('');
-
     const fetchOrder = async () => {
         try {
             const fetchedOrder = await getOrderById(orderId);
@@ -75,7 +75,6 @@ const OrderDetail = () => {
         'Thời gian giao hàng quá lâu',
         'Lý do khác'
     ];
-
     return (
         <div className="container mx-auto lg:my-8 my-0">
             {!transactionId ? (
@@ -176,6 +175,7 @@ const OrderDetail = () => {
                     </div>
                 </div>
             )}
+            <PrintOrderPDF order={order} />
             <Dialog open={openCancelDialog} onClose={() => setOpenCancelDialog(false)}>
                 <DialogTitle>Chọn lý do hủy đơn hàng</DialogTitle>
                 <DialogContent>
