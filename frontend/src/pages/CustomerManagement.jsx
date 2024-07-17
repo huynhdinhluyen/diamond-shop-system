@@ -42,8 +42,8 @@ import GoldIcon from "@mui/icons-material/EmojiEvents"; // Gold icon
 import DiamondIcon from "@mui/icons-material/Star"; // Diamond icon
 import PlatinumIcon from "@mui/icons-material/EmojiEvents"; // Platinum icon
 import { highlightText } from "../utils/highlightText";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 
 const customerSchema = yup.object({
   username: yup
@@ -374,16 +374,7 @@ export default function CustomerManagement() {
                 <TableCell className="!font-semibold text-nowrap">
                   Xếp Hạng
                 </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={sortBy === "blocked"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("blocked")}
-                    className="!font-semibold text-nowrap"
-                  >
-                    Đã chặn
-                  </TableSortLabel>
-                </TableCell>
+
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -406,7 +397,9 @@ export default function CustomerManagement() {
                   <TableCell className="text-nowrap">
                     {highlightText(customer.phoneNumber, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-right">{customer.points}</TableCell>
+                  <TableCell className="!text-right">
+                    {customer.points}
+                  </TableCell>
                   <TableCell>
                     {customer.membershipLevel.name === "BRONZE" && (
                       <span>
@@ -434,12 +427,6 @@ export default function CustomerManagement() {
                       </span>
                     )}
                   </TableCell>
-                  <TableCell className="text-nowrap">
-                    {highlightText(
-                      customer.blocked === true ? "Đã chặn" : "Không",
-                      searchTerm
-                    )}
-                  </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     {/* <IconButton
                       color="error"
@@ -447,17 +434,21 @@ export default function CustomerManagement() {
                     >
                       <DeleteIcon />
                     </IconButton> */}
-                    {customer.blocked === true ? <IconButton
-                      color="error"
-                      onClick={() => handleUnblockUser(customer.id)}
-                    >
-                      <LockOutlinedIcon />
-                    </IconButton> : <IconButton
-                      color="error"
-                      onClick={() => handleBlockUser(customer.id)}
-                    >
-                      <LockOpenOutlinedIcon />
-                    </IconButton>}
+                    {customer.blocked === true ? (
+                      <IconButton
+                        color="error"
+                        onClick={() => handleUnblockUser(customer.id)}
+                      >
+                        <LockOutlinedIcon />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        color="error"
+                        onClick={() => handleBlockUser(customer.id)}
+                      >
+                        <LockOpenOutlinedIcon />
+                      </IconButton>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
