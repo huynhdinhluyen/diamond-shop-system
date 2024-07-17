@@ -8,7 +8,7 @@ import {
   getUserByRole,
   updateUser,
   blockUser,
-  unblockUser
+  unblockUser,
 } from "../service/userService";
 import { toast } from "react-toastify";
 import {
@@ -45,8 +45,8 @@ import AddIcon from "@mui/icons-material/Add";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import { highlightText } from "../utils/highlightText";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 
 const roleOptions = [
   { value: "SALES_STAFF", label: "Nhân viên bán hàng" },
@@ -92,7 +92,8 @@ export default function DeliveryStaffManagement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
-  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
+  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] =
+    useState(false);
   // const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [userIdToBlock, setUserIdToBlock] = useState(null);
   const [userIdToUnblock, setUserIdToUnblock] = useState(null);
@@ -221,12 +222,12 @@ export default function DeliveryStaffManagement() {
   const handleBlockUser = async (userId) => {
     setUserIdToBlock(userId);
     setOpenConfirmBlockDialog(true);
-  }
+  };
 
   const handleUnblockUser = async (userId) => {
     setUserIdToUnblock(userId);
     setOpenConfirmUnblockDialog(true);
-  }
+  };
 
   const handleConfirmBlock = async () => {
     try {
@@ -239,7 +240,7 @@ export default function DeliveryStaffManagement() {
       setOpenConfirmBlockDialog(false);
       setUserIdToBlock(null);
     }
-  }
+  };
 
   const handleConfirmUnblock = async () => {
     try {
@@ -252,7 +253,7 @@ export default function DeliveryStaffManagement() {
       setOpenConfirmUnblockDialog(false);
       setUserIdToUnblock(null);
     }
-  }
+  };
 
   const sortedUsers = [...filteredDeliveryStaffs].sort((a, b) => {
     const aValue = a[sortBy];
@@ -381,16 +382,6 @@ export default function DeliveryStaffManagement() {
                     Số Điện Thoại
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={sortBy === "blocked"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("blocked")}
-                    className="!font-semibold"
-                  >
-                    Đã chặn
-                  </TableSortLabel>
-                </TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -413,9 +404,6 @@ export default function DeliveryStaffManagement() {
                   <TableCell>
                     {highlightText(deliveryStaff.phoneNumber, searchTerm)}
                   </TableCell>
-                  <TableCell>
-                    {highlightText(deliveryStaff.blocked === true ? "Đã chặn" : "Không", searchTerm)}
-                  </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <IconButton
                       color="primary"
@@ -429,17 +417,21 @@ export default function DeliveryStaffManagement() {
                     >
                       <DeleteIcon />
                     </IconButton> */}
-                    {deliveryStaff.blocked === true ? <IconButton
-                      color="error"
-                      onClick={() => handleUnblockUser(deliveryStaff.id)}
-                    >
-                      <LockOutlinedIcon />
-                    </IconButton> : <IconButton
-                      color="error"
-                      onClick={() => handleBlockUser(deliveryStaff.id)}
-                    >
-                      <LockOpenOutlinedIcon />
-                    </IconButton>}
+                    {deliveryStaff.blocked === true ? (
+                      <IconButton
+                        color="error"
+                        onClick={() => handleUnblockUser(deliveryStaff.id)}
+                      >
+                        <LockOutlinedIcon />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        color="error"
+                        onClick={() => handleBlockUser(deliveryStaff.id)}
+                      >
+                        <LockOpenOutlinedIcon />
+                      </IconButton>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -660,7 +652,10 @@ export default function DeliveryStaffManagement() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmBlockDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenConfirmBlockDialog(false)}
+            color="primary"
+          >
             Hủy
           </Button>
           <Button onClick={handleConfirmBlock} color="error" autoFocus>
@@ -676,7 +671,10 @@ export default function DeliveryStaffManagement() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmUnblockDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenConfirmUnblockDialog(false)}
+            color="primary"
+          >
             Hủy
           </Button>
           <Button onClick={handleConfirmUnblock} color="error" autoFocus>

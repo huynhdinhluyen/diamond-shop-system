@@ -198,7 +198,7 @@ export default function OrderListOfAdmin() {
                 <TableRow key={orderAssignment.id}>
                   <TableCell>
                     <Link
-                      to={`/admin/orders/${orderAssignment.order.id}`}
+                      to={`/manager/orders/${orderAssignment.order.id}`}
                       className="hover:cursor-pointer underline"
                     >
                       #{orderAssignment.order.id}
