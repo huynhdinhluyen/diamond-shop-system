@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.entity.OrderAssignment;
 import com.example.backend.exception.OrderAssignmentNotFoundException;
+import com.example.backend.request.CancelOrderRequest;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -61,9 +62,9 @@ public class OrderAssignmentController {
     }
 
     @PutMapping("/orders/{id}/cancel")
-    public ResponseEntity<OrderAssignment> cancelOrder(@PathVariable Integer id) {
+    public ResponseEntity<OrderAssignment> cancelOrder(@PathVariable Integer id, @RequestBody CancelOrderRequest cancelOrderRequest) {
         try {
-            return ResponseEntity.ok(orderService.cancelOrder(id));
+            return ResponseEntity.ok(orderService.cancelOrder(id, cancelOrderRequest.getCancelReason()));
         } catch (OrderAssignmentNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

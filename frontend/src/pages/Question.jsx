@@ -14,7 +14,7 @@ export default function Question() {
             </p>
             <ul className="list-item ml-4 mb-3">
                 <li className="list-disc list-inside">Thanh toán bằng tiền mặt</li>
-                <li className="list-disc list-inside">Thanh toán qua chuyển khoản ngân hàng, VNPay</li>
+                <li className="list-disc list-inside">Thanh toán qua Paypal</li>
             </ul>
             <h4 className="h4 mb-2">DHL Diamond có tính phí vận chuyển trang sức kim cương không?</h4>
             <p className="text-left mb-3">
