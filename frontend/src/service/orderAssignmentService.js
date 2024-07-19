@@ -23,10 +23,10 @@ export async function confirmOrder(orderId) {
   }
 }
 
-export async function cancelOrder(orderId) {
+export async function cancelOrder(orderId, cancelReason) {
   try {
     const response = await axiosInstance.put(
-      `/api/order-assignments/orders/${orderId}/cancel`
+      `/api/order-assignments/orders/${orderId}/cancel`, { cancelReason }
     );
     return response.data;
   } catch (error) {

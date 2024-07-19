@@ -326,12 +326,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderAssignment cancelOrder(Integer orderId) {
+    public OrderAssignment cancelOrder(Integer orderId, String cancelReason) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
         OrderStatus orderStatus = orderStatusRepository.findByName("CANCELLED")
                 .orElseThrow(() -> new OrderStatusNotFoundException("CANCELLED"));
         order.setStatus(orderStatus);
+        order.setCancelReason(cancelReason);
         orderRepository.save(order);
         int pointsToDeduct = calculatePoints(order.getTotalPrice());
         updateUserMembershipLevel(order.getUser(), -pointsToDeduct);
