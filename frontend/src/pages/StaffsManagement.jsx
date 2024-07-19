@@ -36,8 +36,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import * as yup from "yup";
 import {
   createUser,
@@ -45,7 +45,7 @@ import {
   getUsers,
   updateUser,
   blockUser,
-  unblockUser
+  unblockUser,
 } from "../service/userService";
 import { highlightText } from "../utils/highlightText";
 
@@ -96,7 +96,8 @@ export default function StaffsManagement() {
   const [sortBy, setSortBy] = useState("role");
   const [sortOrder, setSortOrder] = useState("asc");
   const [openConfirmBlockDialog, setOpenConfirmBlockDialog] = useState(false);
-  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] = useState(false);
+  const [openConfirmUnblockDialog, setOpenConfirmUnblockDialog] =
+    useState(false);
   const [userIdToBlock, setUserIdToBlock] = useState(null);
   const [userIdToUnblock, setUserIdToUnblock] = useState(null);
 
@@ -219,12 +220,12 @@ export default function StaffsManagement() {
   const handleBlockUser = async (userId) => {
     setUserIdToBlock(userId);
     setOpenConfirmBlockDialog(true);
-  }
+  };
 
   const handleUnblockUser = async (userId) => {
     setUserIdToUnblock(userId);
     setOpenConfirmUnblockDialog(true);
-  }
+  };
 
   const handleConfirmBlock = async () => {
     try {
@@ -237,7 +238,7 @@ export default function StaffsManagement() {
       setOpenConfirmBlockDialog(false);
       setUserIdToBlock(null);
     }
-  }
+  };
 
   const handleConfirmUnblock = async () => {
     try {
@@ -250,7 +251,7 @@ export default function StaffsManagement() {
       setOpenConfirmUnblockDialog(false);
       setUserIdToUnblock(null);
     }
-  }
+  };
 
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     const aValue = a[sortBy];
@@ -389,16 +390,6 @@ export default function StaffsManagement() {
                     Vai Trò
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="text-nowrap">
-                  <TableSortLabel
-                    active={sortBy === "blocked"}
-                    direction={sortOrder}
-                    onClick={() => handleSort("blocked")}
-                    className="!font-semibold"
-                  >
-                    Đã chặn
-                  </TableSortLabel>
-                </TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -436,9 +427,6 @@ export default function StaffsManagement() {
                       searchTerm
                     )}
                   </TableCell>
-                  <TableCell>
-                    {highlightText(user.blocked === true ? "Đã chặn" : "Không", searchTerm)}
-                  </TableCell>
                   <TableCell className="!flex !justify-evenly">
                     <Tooltip title="Chỉnh sửa">
                       <IconButton
@@ -457,17 +445,21 @@ export default function StaffsManagement() {
                       </IconButton>
                     </Tooltip> */}
                     <Tooltip>
-                      {user.blocked === true ? <IconButton
-                        color="error"
-                        onClick={() => handleUnblockUser(user.id)}
-                      >
-                        <LockOutlinedIcon />
-                      </IconButton> : <IconButton
-                        color="error"
-                        onClick={() => handleBlockUser(user.id)}
-                      >
-                        <LockOpenOutlinedIcon />
-                      </IconButton>}
+                      {user.blocked === true ? (
+                        <IconButton
+                          color="error"
+                          onClick={() => handleUnblockUser(user.id)}
+                        >
+                          <LockOutlinedIcon />
+                        </IconButton>
+                      ) : (
+                        <IconButton
+                          color="error"
+                          onClick={() => handleBlockUser(user.id)}
+                        >
+                          <LockOpenOutlinedIcon />
+                        </IconButton>
+                      )}
                     </Tooltip>
                   </TableCell>
                 </TableRow>
@@ -707,7 +699,10 @@ export default function StaffsManagement() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmBlockDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenConfirmBlockDialog(false)}
+            color="primary"
+          >
             Hủy
           </Button>
           <Button onClick={handleConfirmBlock} color="error" autoFocus>
@@ -723,7 +718,10 @@ export default function StaffsManagement() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmUnblockDialog(false)} color="primary">
+          <Button
+            onClick={() => setOpenConfirmUnblockDialog(false)}
+            color="primary"
+          >
             Hủy
           </Button>
           <Button onClick={handleConfirmUnblock} color="error" autoFocus>
