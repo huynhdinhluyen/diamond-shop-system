@@ -68,4 +68,8 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<OrderDetail> orderDetails;
+
+    @Nationalized
+    @Column(name = "cancel_reason", columnDefinition = "NVARCHAR(255)")
+    private String cancelReason;
 }

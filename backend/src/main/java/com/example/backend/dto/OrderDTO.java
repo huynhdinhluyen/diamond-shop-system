@@ -26,4 +26,5 @@ public class OrderDTO {
     private String note;
     private OrderStatusDTO status;
     private List<OrderDetailDTO> orderDetails;
+    private String cancelOrder;
 }

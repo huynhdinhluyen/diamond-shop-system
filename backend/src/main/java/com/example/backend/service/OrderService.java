@@ -40,7 +40,7 @@ public interface OrderService {
 
     OrderAssignment completeOrder(Integer orderId);
 
-    OrderAssignment cancelOrder(Integer orderId);
+    OrderAssignment cancelOrder(Integer orderId, String cancelReason);
 
     List<OrderDTO> getAllOrders();
 

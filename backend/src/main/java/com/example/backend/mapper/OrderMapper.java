@@ -42,7 +42,7 @@ public class OrderMapper {
         orderDTO.setShippingAddress(order.getShippingAddress());
         orderDTO.setPhoneNumber(order.getPhoneNumber());
         orderDTO.setNote(order.getNote());
-
+        orderDTO.setCancelOrder(order.getCancelReason());
         // Set order status information
         OrderStatusDTO statusDTO = new OrderStatusDTO();
         statusDTO.setId(order.getStatus().getId());
