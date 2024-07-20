@@ -111,7 +111,7 @@ public class AuthenticationService {
             user.setAccountStatus(UserVerifyStatus.Verified);
             user.setVerificationCode("");
             userRepository.save(user);
-            return "Registration confirmed. You can now log in";
+            return "Registration confirmed. Your account is now verified";
         }
     }
 
