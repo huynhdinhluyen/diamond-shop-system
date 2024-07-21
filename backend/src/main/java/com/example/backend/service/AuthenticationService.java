@@ -111,7 +111,7 @@ public class AuthenticationService {
             user.setAccountStatus(UserVerifyStatus.Verified);
             user.setVerificationCode("");
             userRepository.save(user);
-            return "Registration confirmed. You can now log in";
+            return "Registration confirmed. Your account is now verified";
         }
     }
 
@@ -126,6 +126,7 @@ public class AuthenticationService {
             logger.info("After authenticationManager.authenticate");
             User user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
                     new UsernameNotFoundException("User not found: " + request.getUsername()));
+
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
             logger.info("access token generated for user: {}", user.getUsername());
@@ -185,10 +186,9 @@ public class AuthenticationService {
     public AuthenticationResponse loginGoogle(User googleUser) {
         Optional<User> optionalUser = userRepository.findByEmail(googleUser.getEmail());
         User user;
-        String accessToken = "";
+        String accessToken;
         String refreshToken;
-        Date expiration = null;
-
+        Date expiration;
         if (optionalUser.isEmpty()) {
             user = new User();
             user.setEmail(googleUser.getEmail());
@@ -208,9 +208,7 @@ public class AuthenticationService {
             MembershipLevel membershipLevel = membershipLevelRepository.findByName("BRONZE")
                     .orElseThrow(() -> new MembershipLevelNotFoundException("Membership level not found"));
             user.setMembershipLevel(membershipLevel);
-
             userRepository.save(user);
-
             expiration = jwtService.extractExpiration(accessToken);
         } else {
             user = optionalUser.get();
@@ -218,9 +216,7 @@ public class AuthenticationService {
             refreshToken = jwtService.generateRefreshToken(user);
             user.setAccessToken(accessToken);
             user.setRefreshToken(refreshToken);
-
             userRepository.save(user);
-
             expiration = jwtService.extractExpiration(accessToken);
         }
 
