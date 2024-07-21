@@ -9,6 +9,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import DiamondOutlinedIcon from '@mui/icons-material/DiamondOutlined';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
+import CollectionsIcon from '@mui/icons-material/Collections';
 import { Link } from 'react-router-dom';
 
 function AdminSidebar({ open, onClose }) {
@@ -34,6 +35,14 @@ function AdminSidebar({ open, onClose }) {
               <StoreIcon />
             </ListItemIcon>
             <ListItemText primary="Sản Phẩm" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/admin/collections">
+            <ListItemIcon>
+              <CollectionsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Bộ Sưu Tập" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>

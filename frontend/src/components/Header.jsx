@@ -13,8 +13,9 @@ export const pages = [
   { title: "Trang chủ", href: "/" },
   { title: "Giới thiệu", href: "/about" },
   { title: "Sản phẩm", href: "/products" },
-  { title: "Bảng giá kim cương", href: "/prices-table" },
-  { title: "Kiến thức trang sức", href: "/knowledge" },
+  { title: "Bộ sưu tập", href: "" },
+  { title: "Giá kim cương", href: "/prices-table" },
+  { title: "Kiến thức", href: "/knowledge" },
   { title: "Liên hệ", href: "/contact" },
 ];
 

@@ -57,6 +57,7 @@ import OrderListOfAdmin from "./pages/OrderListOfAdmin";
 import OrderDetailOfAdmin from "./pages/OrderDetailOfAdmin";
 import OrderListOfManager from "./pages/OrderListOfManager";
 import AboutPoints from "./pages/AboutPoints";
+import CollectionsManagement from "./pages/CollectionsManagement";
 
 function App() {
   return (
@@ -209,6 +210,7 @@ function App() {
           <Route path="profile" element={<ProfileStaffLayout />} />
           <Route path="promotions" element={<AdminPromotionManagement />} />
           <Route path="orders" element={<OrderListOfAdmin />} />
+          <Route path="collections" element={<CollectionsManagement />} />
           <Route
             path="orders/:orderId"
             element={<OrderDetailOfAdmin />}
