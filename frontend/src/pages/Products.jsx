@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getProductsByCategory, getProducts } from "../service/productService";
+import { getProductsByCategory, getProducts, getProductsByCollection, getProductById } from "../service/productService";
 import { getCategories } from "../service/categoryService";
+import { getCollections } from "../service/collectionService";
 import ProductCard from "../components/ProductCard";
 import { CircularProgress, Typography } from "@mui/material";
 import Pagination from "../components/Pagination";
+
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 };
@@ -13,8 +15,10 @@ const useQuery = () => {
 export default function Products() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [collections, setCollections] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCollection, setSelectedCollection] = useState('');
     const [selectedCategoryName, setSelectedCategoryName] = useState("Tất cả sản phẩm");
     const [totalProductCount, setTotalProductCount] = useState(0);
     const [selectedPriceRange, setSelectedPriceRange] = useState('');
@@ -32,6 +36,7 @@ export default function Products() {
     const currentProducts = filteredProducts.slice(indexOfFirstPost, indexOfLastProduct);
     const query = useQuery();
     const categoryId = query.get("category");
+    const collectionId = query.get("collection");
     const searchQuery = query.get("query");
     const priceRangeQuery = query.get("priceRange");
     const navigate = useNavigate();
@@ -54,32 +59,45 @@ export default function Products() {
     const materials = ["Vàng trắng 10K", "Vàng trắng 14K", "Vàng trắng 18K", "Vàng vàng 14K", "Vàng vàng 18K", "Bạc", "Bạch kim"];
 
     useEffect(() => {
-        const fetchCategories = async () => {
+        const fetchCategoriesAndCollections = async () => {
             try {
-                const categoriesData = await getCategories();
+                const [categoriesData, collectionsData] = await Promise.all([getCategories(), getCollections()]);
                 const categoriesWithCounts = await Promise.all(categoriesData.map(async (category) => {
                     const products = await getProductsByCategory(category.id);
                     return { ...category, productCount: products.length };
                 }));
                 setCategories(categoriesWithCounts);
+                setCollections(collectionsData);
             } catch (error) {
                 console.error(error);
             }
         };
 
-        fetchCategories();
+        fetchCategoriesAndCollections();
     }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoading(true);
             try {
-                let data = await getProducts();
-                if (categoryId) {
-                    data = data.filter(product => product.category.id === parseInt(categoryId));
-                }
-                if (searchQuery) {
-                    data = data.filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
+                let data;
+                if (collectionId) {
+                    const collectionProductIds = await getProductsByCollection(collectionId);
+                    const collectionProducts = await Promise.all(
+                        collectionProductIds.map(async (productId) => {
+                            const product = await getProductById(productId);
+                            return product;
+                        })
+                    );
+                    data = collectionProducts;
+                } else {
+                    data = await getProducts();
+                    if (categoryId) {
+                        data = data.filter(product => product.category.id === parseInt(categoryId));
+                    }
+                    if (searchQuery) {
+                        data = data.filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
+                    }
                 }
                 setProducts(data);
                 setFilteredProducts(data); // Initially, all products are shown
@@ -92,6 +110,9 @@ export default function Products() {
                 if (categoryId) {
                     const category = categories.find(cat => cat.id === parseInt(categoryId));
                     setSelectedCategoryName(category ? category.name : "Tất cả sản phẩm");
+                } else if (collectionId) {
+                    const collection = collections.find(col => col.id === parseInt(collectionId));
+                    setSelectedCategoryName(collection ? collection.name : "Tất cả sản phẩm");
                 } else {
                     setSelectedCategoryName("Tất cả sản phẩm");
                 }
@@ -103,7 +124,7 @@ export default function Products() {
         };
 
         fetchProducts();
-    }, [categoryId, searchQuery, categories]);
+    }, [categoryId, collectionId, searchQuery, categories, collections]);
 
     useEffect(() => {
         if (priceRangeQuery) {
@@ -157,13 +178,21 @@ export default function Products() {
     const handleCategoryChange = (event) => {
         const selectedCategoryId = event.target.value;
         setSelectedCategory(selectedCategoryId);
+        setSelectedCollection('');  // Clear collection selection when category is changed
         navigate(`/products?category=${selectedCategoryId}${priceRangeQuery ? `&priceRange=${priceRangeQuery}` : ""}${searchQuery ? `&query=${searchQuery}` : ""}`);
+    };
+
+    const handleCollectionChange = (event) => {
+        const selectedCollectionId = event.target.value;
+        setSelectedCollection(selectedCollectionId);
+        setSelectedCategory('');  // Clear category selection when collection is changed
+        navigate(`/products?collection=${selectedCollectionId}${priceRangeQuery ? `&priceRange=${priceRangeQuery}` : ""}${searchQuery ? `&query=${searchQuery}` : ""}`);
     };
 
     const handlePriceRangeChange = (event) => {
         const selectedPriceRange = event.target.value;
         setSelectedPriceRange(selectedPriceRange);
-        navigate(`/products?priceRange=${selectedPriceRange}${categoryId ? `&category=${categoryId}` : ""}${searchQuery ? `&query=${searchQuery}` : ""}`);
+        navigate(`/products?priceRange=${selectedPriceRange}${categoryId ? `&category=${categoryId}` : ""}${collectionId ? `&collection=${collectionId}` : ""}${searchQuery ? `&query=${searchQuery}` : ""}`);
     };
 
     const handleColorChange = (event) => {
@@ -198,6 +227,18 @@ export default function Products() {
                     {categories.map((category) => (
                         <option key={category.id} value={category.id}>
                             {category.name} ({category.productCount})
+                        </option>
+                    ))}
+                </select>
+                <select
+                    className="block w-full sm:w-64 md:w-52 mb-4 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                    value={selectedCollection}
+                    onChange={handleCollectionChange}
+                >
+                    <option value="">Bộ sưu tập</option>
+                    {collections.map((collection) => (
+                        <option key={collection.id} value={collection.id}>
+                            {collection.name}
                         </option>
                     ))}
                 </select>

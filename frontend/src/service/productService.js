@@ -75,3 +75,8 @@ export async function getProductsByPriceRange(categoryId, minPrice, maxPrice) {
     throw error;
   }
 }
+
+export const getProductsByCollection = async (collectionId) => {
+  const response = await axiosInstance.get(`/api/collections/${collectionId}`);
+  return response.data.productIds;
+};
