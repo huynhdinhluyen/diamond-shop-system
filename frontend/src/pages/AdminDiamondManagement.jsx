@@ -45,9 +45,6 @@ const diamondSchema = yup.object({
     .min(0, "Trọng lượng phải là số dương"),
   cutType: yup.string().required("Kiểu cắt không được để trống"),
   clarity: yup.string().required("Độ tinh khiết không được để trống"),
-  giaCertificate: yup
-    .string()
-    .required("Giấy chứng nhận GIA không được để trống"),
   price: yup
     .number()
     .typeError("Giá phải là số")
@@ -80,7 +77,6 @@ export default function AdminDiamondManagement() {
     size: 0,
     cutType: "",
     clarity: "",
-    giaCertificate: "",
     price: 0,
   });
 
@@ -431,16 +427,6 @@ export default function AdminDiamondManagement() {
               {...register("clarity")}
               error={!!errors.clarity}
               helperText={errors.clarity?.message}
-            />
-
-            <TextField
-              label="Mã chứng nhận GIA"
-              variant="outlined"
-              fullWidth
-              className="!my-4"
-              {...register("giaCertificate")}
-              error={!!errors.giaCertificate}
-              helperText={errors.giaCertificate?.message}
             />
 
             <TextField
