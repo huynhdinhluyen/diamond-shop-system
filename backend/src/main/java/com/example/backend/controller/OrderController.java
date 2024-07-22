@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.OrderDTO;
+import com.example.backend.request.CancelOrderRequest;
 import com.example.backend.request.NoteRequest;
 import com.example.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -46,10 +47,10 @@ public class OrderController {
     }
 
     @PostMapping("/{orderId}/cancel")
-    public ResponseEntity<Void> cancelOrder(@PathVariable Integer orderId) {
+    public ResponseEntity<String> cancelOrder(@PathVariable Integer orderId, @RequestBody CancelOrderRequest cancelReasonRequest) {
         try {
-            orderService.cancelOrder(orderId);
-            return ResponseEntity.noContent().build();
+            orderService.cancelOrder(orderId, cancelReasonRequest.getCancelReason());
+            return ResponseEntity.ok("Đã hủy");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

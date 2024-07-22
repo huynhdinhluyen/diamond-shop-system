@@ -17,6 +17,8 @@ const OrderDetail = () => {
     const [orderDetails, setOrderDetails] = useState([]);
     const [openCancelDialog, setOpenCancelDialog] = useState(false);
     const [cancelReason, setCancelReason] = useState('');
+    const [showPrint, setShowPrint] = useState(false);
+
     const fetchOrder = async () => {
         try {
             const fetchedOrder = await getOrderById(orderId);
@@ -54,7 +56,6 @@ const OrderDetail = () => {
     const totalPayment = totalAmount + shippingFee - order.discountPrice;
     const transactionId = order.transaction;
     const orderStatus = order.status.name;
-
     const handleCancelOrder = async () => {
         try {
             await cancelOrder(order.id, cancelReason);
@@ -75,6 +76,14 @@ const OrderDetail = () => {
         'Thời gian giao hàng quá lâu',
         'Lý do khác'
     ];
+
+    const handlePrintClick = () => {
+        setShowPrint(true);
+        setTimeout(() => {
+            setShowPrint(false);
+        }, 1000); // Thời gian đủ để thực hiện in
+    };
+
     return (
         <div className="container mx-auto lg:my-8 my-0">
             {!transactionId ? (

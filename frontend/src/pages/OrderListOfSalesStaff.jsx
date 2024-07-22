@@ -19,6 +19,13 @@ import {
   TableRow,
   TableSortLabel,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
@@ -32,10 +39,14 @@ export default function OrderListOfSalesStaff() {
   const { user } = useAuth();
   const [sortBy, setSortBy] = useState("status.name");
   const [sortOrder, setSortOrder] = useState("des");
+  const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   const fetchOrders = async () => {
     try {
       const response = await getOrdersByStaffId(user.id);
+      console.log(orders)
       setOrders(response);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -81,16 +92,24 @@ export default function OrderListOfSalesStaff() {
     }
   };
 
-  const handleCancelOrder = async (orderId) => {
+  const handleOpenCancelDialog = (orderId) => {
+    setSelectedOrderId(orderId);
+    setOpenCancelDialog(true);
+  };
+
+  const handleCancelOrder = async () => {
     try {
-      await cancelOrder(orderId);
+      await cancelOrder(selectedOrderId, cancelReason);
       setOrders((prevOrders) =>
-        prevOrders.filter((order) => order.id !== orderId)
+        prevOrders.filter((order) => order.id !== selectedOrderId)
       );
       fetchOrders();
       toast.success("Đã hủy đơn hàng thành công!");
     } catch (error) {
+      toast.error("Không thể hủy đơn hàng. Vui lòng thử lại sau.");
       console.error("Error cancelling order:", error);
+    } finally {
+      setOpenCancelDialog(false);
     }
   };
 
@@ -144,9 +163,16 @@ export default function OrderListOfSalesStaff() {
     }
   };
 
+  const reasons = [
+    'Khách hàng yêu cầu hủy',
+    'Thông tin khách hàng không chính xác',
+    'Sản phẩm không còn trong kho',
+    'Các lý do khác'
+  ];
+
   return (
     <Box className="p-4 bg-gray-100">
-      <Typography variant="h4" className="!font-bold !mb-4">
+      <Typography variant="h4" className="!font-bold text-nowrap !mb-4">
         Danh sách đơn hàng của bạn
       </Typography>
 
@@ -164,8 +190,8 @@ export default function OrderListOfSalesStaff() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className="!font-bold">Mã Đơn Hàng</TableCell>
-                <TableCell className="!font-bold">
+                <TableCell className="!font-bold text-nowrap">Mã Đơn Hàng</TableCell>
+                <TableCell className="!font-bold text-nowrap">
                   {" "}
                   <TableSortLabel
                     active={sortBy === "createdAt"}
@@ -175,16 +201,16 @@ export default function OrderListOfSalesStaff() {
                     Thời Gian Đặt Hàng
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!font-bold">Tên Khách Hàng</TableCell>
-                <TableCell className="!font-bold">Số Điện Thoại</TableCell>
-                <TableCell className="!text-right !font-bold">
+                <TableCell className="!font-bold text-nowrap">Tên Khách Hàng</TableCell>
+                <TableCell className="!font-bold text-nowrap">Số Điện Thoại</TableCell>
+                <TableCell className="!text-right !font-bold text-nowrap">
                   Tổng Tiền
                 </TableCell>
-                <TableCell className="!font-bold">
+                <TableCell className="!font-bold text-nowrap">
                   Trạng Thái Giao Dịch
                 </TableCell>
-                <TableCell className="!font-bold">Ghi Chú</TableCell>
-                <TableCell className="!font-bold">
+                <TableCell className="!font-bold text-nowrap">Ghi Chú</TableCell>
+                <TableCell className="!font-bold text-nowrap">
                   <TableSortLabel
                     active={sortBy === "orderStatus.name"}
                     direction={sortOrder}
@@ -193,7 +219,7 @@ export default function OrderListOfSalesStaff() {
                     Trạng Thái Đơn Hàng
                   </TableSortLabel>
                 </TableCell>
-                <TableCell className="!text-center !font-bold">
+                <TableCell className="!text-center !font-bold text-nowrap">
                   Hành Động
                 </TableCell>
               </TableRow>
@@ -216,23 +242,24 @@ export default function OrderListOfSalesStaff() {
                       { locale: vi }
                     )}
                   </TableCell>
-                  <TableCell>{order.order.customerName}</TableCell>
-                  <TableCell>{order.order.phoneNumber}</TableCell>
-                  <TableCell className="!text-right">
+                  <TableCell className="text-nowrap">{order.order.customerName}</TableCell>
+                  <TableCell className="text-nowrap">{order.order.phoneNumber}</TableCell>
+                  <TableCell className="!text-right text-nowrap">
                     {order.order.totalPrice?.toLocaleString("vi-VN") || "0"} VNĐ
                   </TableCell>
                   {order.order.transaction.status === "INCOMPLETE" && (
-                    <TableCell>Chưa thanh toán</TableCell>
+                    <TableCell className="text-nowrap">Chưa thanh toán</TableCell>
                   )}
                   {order.order.transaction.status === "COMPLETE" && (
-                    <TableCell>Đã thanh toán</TableCell>
+                    <TableCell className="text-nowrap">Đã thanh toán</TableCell>
                   )}
-                  <TableCell className="!italic">
+                  <TableCell className="!italic text-nowrap">
                     {order.order?.note || "Không có"}
                   </TableCell>
                   <TableCell>
-                    {statusTranslations[order.orderStatus.name] ||
-                      order.orderStatus.name}
+                    {order.orderStatus.name === 'CANCELLED'
+                      ? `${statusTranslations[order.orderStatus.name] || order.orderStatus.name} (Lý do: ${order.order.cancelReason === null ? "Không có" : order.order.cancelReason})`
+                      : statusTranslations[order.orderStatus.name] || order.orderStatus.name}
                   </TableCell>
                   <TableCell>
                     {order.orderStatus.name === "PENDING" && (
@@ -248,7 +275,7 @@ export default function OrderListOfSalesStaff() {
                         <Button
                           variant="outlined"
                           color="error"
-                          onClick={() => handleCancelOrder(order.order.id)}
+                          onClick={() => handleOpenCancelDialog(order.order.id)}
                         >
                           Hủy
                         </Button>
@@ -269,7 +296,7 @@ export default function OrderListOfSalesStaff() {
                         <Button
                           variant="outlined"
                           color="error"
-                          onClick={() => handleCancelOrder(order.order.id)}
+                          onClick={() => handleOpenCancelDialog(order.order.id)}
                         >
                           Hủy
                         </Button>
@@ -282,6 +309,24 @@ export default function OrderListOfSalesStaff() {
           </Table>
         </TableContainer>
       )}
+      <Dialog open={openCancelDialog} onClose={() => setOpenCancelDialog(false)}>
+        <DialogTitle>Chọn lý do hủy đơn hàng</DialogTitle>
+        <DialogContent>
+          <RadioGroup value={cancelReason} onChange={(e) => setCancelReason(e.target.value)}>
+            {reasons.map((reason, index) => (
+              <FormControlLabel key={index} value={reason} control={<Radio />} label={reason} />
+            ))}
+          </RadioGroup>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenCancelDialog(false)} color="primary">
+            Đóng
+          </Button>
+          <Button onClick={handleCancelOrder} color="secondary" disabled={!cancelReason}>
+            Xác nhận hủy
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
