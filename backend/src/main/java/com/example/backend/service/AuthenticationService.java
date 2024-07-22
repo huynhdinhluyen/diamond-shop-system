@@ -126,7 +126,6 @@ public class AuthenticationService {
             logger.info("After authenticationManager.authenticate");
             User user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
                     new UsernameNotFoundException("User not found: " + request.getUsername()));
-
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
             logger.info("access token generated for user: {}", user.getUsername());
