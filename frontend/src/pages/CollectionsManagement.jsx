@@ -154,8 +154,9 @@ export default function CollectionsManagement() {
         setIsSubmitting(true);
         try {
             const collectionData = {
-                ...data,
-                products: data.products.map((productId) => ({ id: productId })),
+                name: data.name,
+                description: data.description,
+                productIds: data.products
             };
 
             if (selectedCollection) {
@@ -368,7 +369,7 @@ export default function CollectionsManagement() {
                                             <MenuItem
                                                 key={product.id}
                                                 value={product.id}
-                                                disabled={usedProductIds.includes(product.id) && !field.value.includes(product.id)} // Vô hiệu hóa nếu sản phẩm đã thuộc bộ sưu tập khác
+                                                disabled={usedProductIds.includes(product.id) && !field.value.includes(product.id)}
                                             >
                                                 {product.name}
                                             </MenuItem>
