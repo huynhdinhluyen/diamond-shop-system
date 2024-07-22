@@ -279,7 +279,7 @@ export default function Product() {
                                             <ul className="ml-4 list-disc">
                                                 <li>Màu: {product.mainDiamond.color}</li>
                                                 <li>Xuất xứ: {product.mainDiamond.origin}</li>
-                                                <li>Trọng lượng carat: {product.mainDiamond.caratWeight}</li>
+                                                <li>Trọng lượng: {product.mainDiamond.caratWeight} carat</li>
                                                 <li>Kiểu cắt: {product.mainDiamond.cutType}</li>
                                                 <li>Độ trong: {product.mainDiamond.clarity}</li>
                                             </ul>
@@ -295,7 +295,7 @@ export default function Product() {
                                             <ul className="ml-4 list-disc">
                                                 <li>Màu: {product.auxiliaryDiamond.color}</li>
                                                 <li>Xuất xứ: {product.auxiliaryDiamond.origin}</li>
-                                                <li>Trọng lượng carat: {product.auxiliaryDiamond.caratWeight}</li>
+                                                <li>Trọng lượng: {product.auxiliaryDiamond.caratWeight} carat</li>
                                                 <li>Kiểu cắt: {product.auxiliaryDiamond.cutType}</li>
                                                 <li>Độ trong: {product.auxiliaryDiamond.clarity}</li>
                                             </ul>
