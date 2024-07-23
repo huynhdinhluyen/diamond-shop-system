@@ -42,7 +42,6 @@ public class DiamondServiceImpl implements DiamondService {
         existingDiamond.setCaratWeight(diamondDTO.getCaratWeight());
         existingDiamond.setCutType(diamondDTO.getCutType());
         existingDiamond.setClarity(diamondDTO.getClarity());
-        existingDiamond.setGiaCertificate(diamondDTO.getGiaCertificate());
         existingDiamond.setPrice(diamondDTO.getPrice());
         existingDiamond.setSize(diamondDTO.getSize());
         return diamondMapper.toDto(diamondRepository.save(existingDiamond));
