@@ -18,7 +18,6 @@ public class DiamondDTO {
     private BigDecimal caratWeight;
     private String cutType;
     private String clarity;
-    private String giaCertificate;
     private Long price;
     private BigDecimal size;
 }
