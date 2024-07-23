@@ -81,7 +81,7 @@ export default function Product() {
 
         const basePrice = product.discountPrice > 0 ? product.discountPrice : product.salePrice;
         const deliveryFee = basePrice * quantity > 50000000 ? 0 : 50000;
-        const discountPrice = (basePrice * quantity + deliveryFee) * user.membershipLevel.discountRate / 100;
+        const discountPrice = (basePrice * quantity + deliveryFee) * user.membershipLevel.discountRate;
         const order = {
             userId: user.id,
             discountPrice: discountPrice,

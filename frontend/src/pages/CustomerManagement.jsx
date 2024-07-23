@@ -397,10 +397,10 @@ export default function CustomerManagement() {
                   <TableCell className="text-nowrap">
                     {highlightText(customer.phoneNumber, searchTerm)}
                   </TableCell>
-                  <TableCell className="!text-right">
+                  <TableCell className="!text-left">
                     {customer.points}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-nowrap">
                     {customer.membershipLevel.name === "BRONZE" && (
                       <span>
                         <BronzeIcon style={{ color: "#cd7f32" }} /> Đồng

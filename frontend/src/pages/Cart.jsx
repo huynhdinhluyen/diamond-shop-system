@@ -124,7 +124,7 @@ export default function Cart() {
         const orderItems = cart.items.filter((item) => selectedItems.includes(item.productId));
         const totalPrice = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
         const deliveryFee = totalPrice >= 50000000 ? 0 : 50000;
-        const discountPrice = (totalPrice + deliveryFee) * user.membershipLevel.discountRate / 100;
+        const discountPrice = (totalPrice + deliveryFee) * user.membershipLevel.discountRate;
         const order = {
             userId: user.id,
             transaction_id: null,
