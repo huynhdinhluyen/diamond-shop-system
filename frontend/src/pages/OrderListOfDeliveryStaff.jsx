@@ -160,18 +160,18 @@ export default function OrderListOfDeliveryStaff() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className="!font-semibold">Mã Đơn Hàng</TableCell>
-                <TableCell className="!font-semibold">Tên Khách Hàng</TableCell>
-                <TableCell className="!font-semibold">
+                <TableCell className="!font-semibold text-nowrap">Mã Đơn Hàng</TableCell>
+                <TableCell className="!font-semibold text-nowrap">Tên Khách Hàng</TableCell>
+                <TableCell className="!font-semibold text-nowrap">
                   Địa Chỉ Giao Hàng
                 </TableCell>
-                <TableCell className="!font-semibold">
+                <TableCell className="!font-semibold text-nowrap">
                   Số Điện Thoại Khách Hàng
                 </TableCell>
-                <TableCell className="!font-semibold">
+                <TableCell className="!font-semibold text-nowrap">
                   Thời Gian Đặt Hàng
                 </TableCell>
-                <TableCell className="!text-right !font-semibold">
+                <TableCell className="!text-right text-nowrap !font-semibold">
                   Tổng Tiền
                 </TableCell>
                 <TableCell>
@@ -179,13 +179,13 @@ export default function OrderListOfDeliveryStaff() {
                     active={sortBy === "orderStatus.name"}
                     direction={sortOrder}
                     onClick={() => handleSort("orderStatus.name")}
-                    className="!font-semibold"
+                    className="!font-semibold text-nowrap"
                   >
                     Trạng Thái Đơn Hàng
                   </TableSortLabel>
                 </TableCell>
                 <TableCell className="!text-center !font-semibold">
-               
+
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -210,7 +210,7 @@ export default function OrderListOfDeliveryStaff() {
                       { locale: vi }
                     )}
                   </TableCell>
-                  <TableCell className="!text-right">
+                  <TableCell className="!text-right text-nowrap">
                     {order.order.totalPrice.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
