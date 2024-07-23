@@ -302,7 +302,7 @@ export default function CollectionsManagement() {
                                         <TableCell>
                                             {collection.productDetails.map((product) => (
                                                 <Typography key={product.id}>
-                                                    {product.name}
+                                                    - {product.name}
                                                 </Typography>
                                             ))}
                                         </TableCell>
