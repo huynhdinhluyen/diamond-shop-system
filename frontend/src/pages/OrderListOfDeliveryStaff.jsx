@@ -21,8 +21,8 @@ import {
 } from "../service/orderAssignmentService";
 import { toast } from "react-toastify";
 import statusTranslations from "../utils/statusTranslations";
-import { format } from "date-fns";
-import { vi } from "date-fns/locale";
+// import { format } from "date-fns";
+// import { vi } from "date-fns/locale";
 import { Link } from "react-router-dom";
 
 export default function OrderListOfDeliveryStaff() {
@@ -168,9 +168,9 @@ export default function OrderListOfDeliveryStaff() {
                 <TableCell className="!font-semibold text-nowrap">
                   Số Điện Thoại Khách Hàng
                 </TableCell>
-                <TableCell className="!font-semibold text-nowrap">
+                {/* <TableCell className="!font-semibold text-nowrap">
                   Thời Gian Đặt Hàng
-                </TableCell>
+                </TableCell> */}
                 <TableCell className="!text-right text-nowrap !font-semibold">
                   Tổng Tiền
                 </TableCell>
@@ -203,13 +203,13 @@ export default function OrderListOfDeliveryStaff() {
                   <TableCell>{order.order.customerName}</TableCell>
                   <TableCell>{order.order.shippingAddress}</TableCell>
                   <TableCell>{order.order.phoneNumber}</TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     {format(
                       new Date(order.order.createdAt),
                       "dd/MM/yyyy HH:mm",
                       { locale: vi }
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="!text-right text-nowrap">
                     {order.order.totalPrice.toLocaleString("vi-VN", {
                       style: "currency",
