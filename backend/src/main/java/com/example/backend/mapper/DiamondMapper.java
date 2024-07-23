@@ -16,7 +16,6 @@ public class DiamondMapper {
                 diamond.getCaratWeight(),
                 diamond.getCutType(),
                 diamond.getClarity(),
-                diamond.getGiaCertificate(),
                 diamond.getPrice(),
                 diamond.getSize());
     }
@@ -32,7 +31,6 @@ public class DiamondMapper {
                 diamondDTO.getCaratWeight(),
                 diamondDTO.getCutType(),
                 diamondDTO.getClarity(),
-                diamondDTO.getGiaCertificate(),
                 diamondDTO.getPrice(),
                 diamondDTO.getSize()
         );

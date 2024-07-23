@@ -39,9 +39,6 @@ public class Diamond {
     @Column(name = "clarity", nullable = false, length = 10)
     private String clarity;
 
-    @Column(name = "GIA_certificate", nullable = false)
-    private String giaCertificate;
-
     @Column(name = "price", nullable = false)
     private Long price;
 

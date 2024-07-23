@@ -26,7 +26,7 @@ public class CategoryController {
         try {
             return ResponseEntity.ok(categoryService.getCategoryById(id));
         } catch (CategoryNotFoundException ex) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -40,7 +40,7 @@ public class CategoryController {
         try {
             return ResponseEntity.ok(categoryService.updateCategory(id, categoryDTO));
         } catch (CategoryNotFoundException ex) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -48,9 +48,9 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategory(@PathVariable Integer id) {
         try {
             categoryService.deleteCategory(id);
-            return ResponseEntity.noContent().build(); // 204 No Content
+            return ResponseEntity.noContent().build();
         } catch (CategoryNotFoundException ex) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+            return ResponseEntity.notFound().build();
         }
     }
 }
