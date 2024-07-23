@@ -130,7 +130,7 @@ export default function TablePricesDiamond() {
                     <table className="w-full mt-2 ">
                         <thead>
                             <tr>
-                                <th className=" border border-gray-300 px-4 py-2 text-left">Clarity</th>
+                                <th className=" border border-gray-300 px-4 py-2 text-left text-accent">{diamond.size} ly</th>
                                 {colorLevels.map(color => (
                                     <th key={color} className=" border border-gray-300 px-4 py-2 text-left">{color}</th>
                                 ))}

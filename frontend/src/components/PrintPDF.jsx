@@ -78,12 +78,6 @@ const PrintOrderPDF = ({ order }) => {
                         <p><span className='font-semibold'>Ngày đặt hàng:</span> {new Date(order.createdAt).toLocaleDateString('vi-VN', options)}</p>
 
                         <p><span className='font-semibold'>Sản phẩm:</span> {products.map(product => product.name).join(', ')}</p>
-                        {products.map((product, index) =>
-                            <ul key={index}>
-                                <li>{product.name}</li>
-                            </ul>)
-                        }
-
                         <p><span className='font-semibold'>Thời hạn bảo hành:</span> {new Date(order.createdAt).toLocaleDateString('vi-VN', options)} - {calculateWarrantyEndDate(order.createdAt)}</p>
                     </div>
                     <table className="bg-white border mt-4" style={{ borderCollapse: 'collapse' }}>

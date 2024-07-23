@@ -175,7 +175,7 @@ const PaymentPage = () => {
                         />
                     </div>
                     <div className='mb-3 text-accent'>
-                        *Bạn đang là thành viên {translateMembershipLevel(user.membershipLevel)} - Giảm giá {user.membershipLevel.discountRate}% trên toàn hóa đơn
+                        *Bạn đang là thành viên {translateMembershipLevel(user.membershipLevel)} - Giảm giá {user.membershipLevel.discountRate * 100}% trên toàn hóa đơn
                     </div>
                     <h4 className='h4 font-semibold mb-4'>Sản phẩm</h4>
                     <div className="overflow-x-auto">
