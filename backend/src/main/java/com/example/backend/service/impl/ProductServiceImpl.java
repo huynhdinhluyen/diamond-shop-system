@@ -95,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
                     return (mainDiamondDTO == null || !diamondId.equals(mainDiamondDTO.getId())) &&
                             (auxiliaryDiamondDTO == null || !diamondId.equals(auxiliaryDiamondDTO.getId()));
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         for (ProductDiamond pd : toDelete) {
             existingProductDiamonds.remove(pd);
@@ -140,11 +140,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public Long countProducts() {
         return productRepository.count();
-    }
-
-    @Override
-    public Long countLowStockProducts(int threshold) {
-        return productRepository.countByStockQuantityLessThan(threshold);
     }
 
     @Override

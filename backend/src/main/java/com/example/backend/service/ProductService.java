@@ -20,8 +20,6 @@ public interface ProductService {
 
     Long countProducts();
 
-    Long countLowStockProducts(int threshold);
-
     List<ProductDTO> getProductsByCategory(Integer categoryId);
 
     List<ProductDTO> getFilteredProducts(Integer categoryId, String searchQuery, Long minPrice, Long maxPrice);

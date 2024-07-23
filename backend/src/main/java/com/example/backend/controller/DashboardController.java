@@ -38,9 +38,8 @@ public class DashboardController {
         Long totalProducts = productService.countProducts();
         Map<String, Long> monthlySales = orderService.getMonthlySales(startDate, endDate);
         Map<String, Long> categoryRevenue = orderService.getCategoryRevenue();
-        Long lowStockProducts = productService.countLowStockProducts(5);
         DashboardDataDTO data = new DashboardDataDTO(totalOrders, totalCustomers, totalRevenue, totalProducts,
-                monthlySales, categoryRevenue, lowStockProducts);
+                monthlySales, categoryRevenue);
         return ResponseEntity.ok(data);
     }
 
