@@ -302,7 +302,7 @@ export default function AdminDiamondManagement() {
                     onClick={() => handleSort("size")}
                     className="!font-semibold"
                   >
-                    Kích thước (mm)
+                    Kích thước (ly)
                   </TableSortLabel>
                 </TableCell>
                 <TableCell className="!text-right">
@@ -400,7 +400,7 @@ export default function AdminDiamondManagement() {
             />
 
             <TextField
-              label="Size (mm)"
+              label="Size (ly)"
               variant="outlined"
               fullWidth
               className="!my-4"
