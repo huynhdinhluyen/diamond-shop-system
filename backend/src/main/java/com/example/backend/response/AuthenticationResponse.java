@@ -20,7 +20,7 @@ public class AuthenticationResponse {
     private String email;
     private String phoneNumber;
     private String address;
-    private String city;
+//    private String city;
     private String role;
     private MembershipLevelDTO membershipLevel;
     private Integer points;

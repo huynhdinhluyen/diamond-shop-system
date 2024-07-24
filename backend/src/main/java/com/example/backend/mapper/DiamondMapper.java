@@ -10,7 +10,8 @@ public class DiamondMapper {
         if (diamond == null) {
             return null;
         }
-        return new DiamondDTO(diamond.getId(),
+        return new DiamondDTO(
+                diamond.getId(),
                 diamond.getColor(),
                 diamond.getOrigin(),
                 diamond.getCaratWeight(),
